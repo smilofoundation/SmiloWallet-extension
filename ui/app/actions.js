@@ -2501,15 +2501,15 @@ function setPendingTokens (pendingTokens) {
   }
 }
 
-function approveProviderRequest (origin) {
+function approveProviderRequest (tabID) {
   return (dispatch) => {
-    background.approveProviderRequest(origin)
+    background.approveProviderRequest(tabID)
   }
 }
 
-function rejectProviderRequest (origin) {
+function rejectProviderRequest (tabID) {
   return (dispatch) => {
-    background.rejectProviderRequest(origin)
+    background.rejectProviderRequest(tabID)
   }
 }
 
