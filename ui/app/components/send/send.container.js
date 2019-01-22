@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import SendEther from './send.component'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
+import {getSelectedAddress} from '../../selectors'
 import {
   getAmountConversionRate,
   getBlockGasLimit,
@@ -12,7 +13,6 @@ import {
   getGasTotal,
   getPrimaryCurrency,
   getRecentBlocks,
-  getSelectedAddress,
   getSelectedToken,
   getSelectedTokenContract,
   getSelectedTokenToFiatRate,

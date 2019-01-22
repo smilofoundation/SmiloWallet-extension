@@ -1,3 +1,4 @@
+const { getSelectedAddress } = require('../../selectors') 
 const { valuesFor } = require('../../util')
 const abi = require('human-standard-token-abi')
 const {
@@ -34,7 +35,6 @@ const selectors = {
   getPrimaryCurrency,
   getRecentBlocks,
   getSelectedAccount,
-  getSelectedAddress,
   getSelectedIdentity,
   getSelectedToken,
   getSelectedTokenContract,
@@ -166,11 +166,6 @@ function getSelectedAccount (state) {
   return accounts[selectedAddress]
 }
 
-function getSelectedAddress (state) {
-  const selectedAddress = state.metamask.selectedAddress || Object.keys(getMetaMaskAccounts(state))[0]
-
-  return selectedAddress
-}
 
 function getSelectedIdentity (state) {
   const selectedAddress = getSelectedAddress(state)
