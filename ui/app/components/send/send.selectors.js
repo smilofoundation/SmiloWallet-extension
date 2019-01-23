@@ -1,4 +1,4 @@
-const { getSelectedAddress } = require('../../selectors') 
+const { getSelectedAddress } = require('../../selectors')
 const { valuesFor } = require('../../util')
 const abi = require('human-standard-token-abi')
 const {

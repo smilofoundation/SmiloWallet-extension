@@ -273,7 +273,6 @@ describe('send selectors', () => {
     })
   })
 
- 
 
   describe('getSelectedIdentity()', () => {
     it('should return the identity object of the currently selected address', () => {
