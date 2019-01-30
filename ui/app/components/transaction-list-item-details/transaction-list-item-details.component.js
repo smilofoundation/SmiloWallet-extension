@@ -6,7 +6,7 @@ import TransactionActivityLog from '../transaction-activity-log'
 import TransactionBreakdown from '../transaction-breakdown'
 import Button from '../button'
 import Tooltip from '../tooltip'
-import prefixForNetwork from '../../../lib/etherscan-prefix-for-network'
+import prefixForNetwork from '../../../lib/smilo-explorer-prefix-for-network'
 
 export default class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
@@ -26,9 +26,9 @@ export default class TransactionListItemDetails extends PureComponent {
     const { hash, metamaskNetworkId } = primaryTransaction
 
     const prefix = prefixForNetwork(metamaskNetworkId)
-    const etherscanUrl = `https://${prefix}etherscan.io/tx/${hash}`
+    const explorerUrl = `https://${prefix}explorer.smilo.network/tx/${hash}`
 
-    global.platform.openWindow({ url: etherscanUrl })
+    global.platform.openWindow({ url: explorerUrl })
   }
 
   handleCancel = event => {
