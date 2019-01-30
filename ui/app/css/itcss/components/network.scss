@@ -14,20 +14,12 @@
   flex: 0 0 auto;
   display: flex;
 
-  &.ethereum-network .menu-icon-circle div {
+  &.main-network .menu-icon-circle div {
     background-color: rgba(3, 135, 137, .7) !important;
   }
 
-  &.ropsten-test-network .menu-icon-circle div {
-    background-color: rgba(233, 21, 80, .7) !important;
-  }
-
-  &.kovan-test-network .menu-icon-circle div {
-    background-color: rgba(105, 4, 150, .7) !important;
-  }
-
-  &.rinkeby-test-network .menu-icon-circle div {
-    background-color: rgba(235, 179, 63, .7) !important;
+  &.test-network .menu-icon-circle div {
+    background-color: rgba(112, 87, 255, .7) !important;
   }
 }
 

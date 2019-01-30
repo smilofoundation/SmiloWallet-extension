@@ -15,24 +15,28 @@ const extend = require('extend')
 const networks = { networkList: {} }
 
 const {
-  ROPSTEN,
-  RINKEBY,
-  KOVAN,
   MAINNET,
+  TESTNET,
   LOCALHOST,
+  MAINNET_CODE,
+  MAINNET_DISPLAY_NAME,
+  TESTNET_CODE,
+  TESTNET_DISPLAY_NAME,
+  MAINNET_END_POINT,
+  TESTNET_END_POINT
 } = require('./enums')
-const INFURA_PROVIDER_TYPES = [ROPSTEN, RINKEBY, KOVAN, MAINNET]
+const SMILO_PROVIDER_TYPES = [MAINNET, TESTNET]
 
 const env = process.env.METAMASK_ENV
 const METAMASK_DEBUG = process.env.METAMASK_DEBUG
 const testMode = (METAMASK_DEBUG || env === 'test')
 
 const defaultProviderConfig = {
-  type: testMode ? RINKEBY : MAINNET,
+  type: MAINNET,
 }
 
 const defaultNetworkConfig = {
-  ticker: 'ETH',
+  ticker: 'XSM',
 }
 
 module.exports = class NetworkController extends EventEmitter {
@@ -120,7 +124,7 @@ module.exports = class NetworkController extends EventEmitter {
     })
   }
 
-  setRpcTarget (rpcTarget, chainId, ticker = 'ETH', nickname = '') {
+  setRpcTarget (rpcTarget, chainId, ticker = 'XSM', nickname = '') {
     const providerConfig = {
       type: 'rpc',
       rpcTarget,
@@ -133,7 +137,7 @@ module.exports = class NetworkController extends EventEmitter {
 
   async setProviderType (type) {
     assert.notEqual(type, 'rpc', `NetworkController - cannot call "setProviderType" with type 'rpc'. use "setRpcTarget"`)
-    assert(INFURA_PROVIDER_TYPES.includes(type) || type === LOCALHOST, `NetworkController - Unknown rpc type "${type}"`)
+    assert(SMILO_PROVIDER_TYPES.includes(type) || type === LOCALHOST, `NetworkController - Unknown rpc type "${type}"`)
     const providerConfig = { type }
     this.providerConfig = providerConfig
   }
@@ -164,9 +168,16 @@ module.exports = class NetworkController extends EventEmitter {
   _configureProvider (opts) {
     const { type, rpcTarget, chainId, ticker, nickname } = opts
     // infura type-based endpoints
-    const isInfura = INFURA_PROVIDER_TYPES.includes(type)
-    if (isInfura) {
-      this._configureInfuraProvider(opts)
+    const isSmilo = SMILO_PROVIDER_TYPES.includes(type)
+    if (isSmilo) {
+      switch(type) {
+        case(MAINNET): {
+          this._configureStandardProvider({ rpcUrl: MAINNET_END_POINT, chainId: MAINNET_CODE, ticker: "XSM", nickname: MAINNET_DISPLAY_NAME })
+        }
+        case(TESTNET): {
+          this._configureStandardProvider({ rpcUrl: TESTNET_END_POINT, chainId: TESTNET_CODE, ticker: "XSM", nickname: TESTNET_DISPLAY_NAME })
+        }
+      }
     // other type-based rpc endpoints
     } else if (type === LOCALHOST) {
       this._configureLocalhostProvider()
@@ -184,7 +195,7 @@ module.exports = class NetworkController extends EventEmitter {
     this._setNetworkClient(networkClient)
     // setup networkConfig
     var settings = {
-      ticker: 'ETH',
+      ticker: 'XSM',
     }
     this.networkConfig.putState(settings)
   }
@@ -202,7 +213,7 @@ module.exports = class NetworkController extends EventEmitter {
     networks.networkList['rpc'] = {
       chainId: chainId,
       rpcUrl,
-      ticker: ticker || 'ETH',
+      ticker: ticker || 'XSM',
       nickname,
     }
     // setup networkConfig
