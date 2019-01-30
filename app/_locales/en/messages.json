@@ -165,7 +165,7 @@
     "message": "Your Browser is not supported..."
   },
   "builtInCalifornia": {
-    "message": "MetaMask is designed and built in California."
+    "message": "Forked from MetaMask by the Smilo team. MetaMask is designed and built in California."
   },
   "buy": {
     "message": "Buy"

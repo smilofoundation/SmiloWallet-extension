@@ -1,6 +1,5 @@
 const injectCss = require('inject-css')
-const OldMetaMaskUiCss = require('../../old-ui/css')
-const NewMetaMaskUiCss = require('../../ui/css')
+const MetaMaskUiCss = require('../../ui/css')
 const {getShouldUseNewUi} = require('../../ui/app/selectors')
 const startPopup = require('./popup-core')
 const PortStream = require('extension-port-stream')
@@ -59,7 +58,7 @@ async function start () {
     let betaUIState = Boolean(featureFlags && featureFlags.betaUI)
     const useBetaCss = getShouldUseNewUi(state)
 
-    let css = useBetaCss ? NewMetaMaskUiCss() : OldMetaMaskUiCss()
+    let css = MetaMaskUiCss()
     let deleteInjectedCss = injectCss(css)
     let newBetaUIState
 
@@ -69,7 +68,7 @@ async function start () {
       if (newBetaUIState !== betaUIState) {
         deleteInjectedCss()
         betaUIState = newBetaUIState
-        css = betaUIState ? NewMetaMaskUiCss() : OldMetaMaskUiCss()
+        css = MetaMaskUiCss()
         deleteInjectedCss = injectCss(css)
       }
     })

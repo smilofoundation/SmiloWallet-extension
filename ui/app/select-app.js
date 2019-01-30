@@ -4,7 +4,6 @@ const connect = require('react-redux').connect
 const h = require('react-hyperscript')
 const { HashRouter } = require('react-router-dom')
 const App = require('./app')
-const OldApp = require('../../old-ui/app/app')
 const { getShouldUseNewUi } = require('./selectors')
 const { setFeatureFlag } = require('./actions')
 const I18nProvider = require('./i18n-provider')
@@ -53,13 +52,12 @@ SelectedApp.prototype.componentWillReceiveProps = function (nextProps) {
 }
 
 SelectedApp.prototype.render = function () {
-  const { shouldUseNewUi } = this.props
-  const newUi = h(HashRouter, {
+  const ui = h(HashRouter, {
     hashType: 'noslash',
   }, [
     h(I18nProvider, [
       h(App),
     ]),
   ])
-  return shouldUseNewUi ? newUi : h(OldApp)
+  return ui;
 }
