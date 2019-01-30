@@ -6,7 +6,7 @@ const connect = require('react-redux').connect
 const actions = require('../../actions')
 const AccountModalContainer = require('./account-modal-container')
 const { getSelectedIdentity } = require('../../selectors')
-const genAccountLink = require('../../../lib/account-link.js')
+const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
 const QrView = require('../qr-code')
 const EditableLabel = require('../editable-label')
 
@@ -85,7 +85,10 @@ AccountDetailsModal.prototype.render = function () {
       h(Button, {
         type: 'primary',
         className: 'account-modal__button',
-        onClick: () => global.platform.openWindow({ url: genAccountLink(address, network) }),
+        onClick: () => {
+          alert(network);
+          global.platform.openWindow({ url: smiloExplorerLinker.createAccountLink(address, network.type)})
+        },
       }, this.context.t('etherscanView')),
 
       // Holding on redesign for Export Private Key functionality
