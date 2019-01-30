@@ -255,7 +255,10 @@
     "message": "Connecting to Kovan Test Network"
   },
   "connectingToMainnet": {
-    "message": "Connecting to Main Smilo Network"
+    "message": "Connecting to Smilo Main Network"
+  },
+  "connectingToTestnet": {
+    "message": "Connecting to Smilo Test Network"
   },
   "connectingToRopsten": {
     "message": "Connecting to Ropsten Test Network"
@@ -361,7 +364,7 @@
     "message": "Decimals of Precision"
   },
   "defaultNetwork": {
-    "message": "The default network for Smilo transactions is Main Net."
+    "message": "The default network for Smilo transactions is Smilo Main Network."
   },
   "denExplainer": {
     "message": "Your DEN is your password-encrypted storage within the Smilo Browser Extension."
@@ -747,7 +750,10 @@
     "message": "seed words only have lowercase characters"
   },
   "mainnet": {
-    "message": "Main Smilo Network"
+    "message": "Smilo Main Network"
+  },
+  "testnet": {
+    "message": "Smilo Test Network"
   },
   "memorizePhrase": {
     "message": "Memorize this phrase."
