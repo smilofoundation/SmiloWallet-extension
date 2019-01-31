@@ -61,7 +61,6 @@ Network.prototype.render = function () {
       },
     }, [
       (function () {
-        console.log("ICON NAME =", iconName);
         switch (iconName) {
           case 'main-network':
             return h('.network-indicator', [

@@ -17,7 +17,7 @@ function getPrefix(networkType) {
     let prefix
     switch (networkType) {
       case "mainnet": // main net
-        prefix = ''
+        prefix = 'testnet-' // TODO: fix at later time when mainnet is live
         break
       case "testnet": // ropsten test net
         prefix = 'testnet-'

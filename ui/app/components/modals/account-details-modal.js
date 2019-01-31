@@ -17,6 +17,7 @@ function mapStateToProps (state) {
     network: state.metamask.network,
     selectedIdentity: getSelectedIdentity(state),
     keyrings: state.metamask.keyrings,
+    provider: state.metamask.provider
   }
 }
 
@@ -54,6 +55,7 @@ AccountDetailsModal.prototype.render = function () {
     showExportPrivateKeyModal,
     setAccountLabel,
     keyrings,
+    provider
   } = this.props
   const { name, address } = selectedIdentity
 
@@ -86,8 +88,7 @@ AccountDetailsModal.prototype.render = function () {
         type: 'primary',
         className: 'account-modal__button',
         onClick: () => {
-          alert(network);
-          global.platform.openWindow({ url: smiloExplorerLinker.createAccountLink(address, network.type)})
+          global.platform.openWindow({ url: smiloExplorerLinker.createAccountLink(address, provider.type)})
         },
       }, this.context.t('etherscanView')),
 
