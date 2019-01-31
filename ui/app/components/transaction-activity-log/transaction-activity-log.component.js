@@ -5,9 +5,10 @@ import { getEthConversionFromWeiHex, getValueFromWeiHex } from '../../helpers/co
 import { formatDate } from '../../util'
 import TransactionActivityLogIcon from './transaction-activity-log-icon'
 import { CONFIRMED_STATUS } from './transaction-activity-log.constants'
-import prefixForNetwork from '../../../lib/etherscan-prefix-for-network'
+import { connect } from 'react-redux'
+const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
 
-export default class TransactionActivityLog extends PureComponent {
+class TransactionActivityLog extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   }
@@ -25,13 +26,11 @@ export default class TransactionActivityLog extends PureComponent {
   }
 
   handleActivityClick = hash => {
-    const { primaryTransaction } = this.props
-    const { metamaskNetworkId } = primaryTransaction
+    const { provider } = this.props
 
-    const prefix = prefixForNetwork(metamaskNetworkId)
-    const etherscanUrl = `https://${prefix}etherscan.io/tx/${hash}`
+    const url = smiloExplorerLinker.createTxLink(hash, provider.type)
 
-    global.platform.openWindow({ url: etherscanUrl })
+    global.platform.openWindow({ url: url })
   }
 
   renderInlineRetry (index, activity) {
@@ -128,3 +127,11 @@ export default class TransactionActivityLog extends PureComponent {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    provider: state.metamask.provider
+  };
+}
+
+export default connect(mapStateToProps)(TransactionActivityLog);

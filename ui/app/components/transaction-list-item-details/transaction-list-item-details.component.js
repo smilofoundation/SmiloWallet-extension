@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'
 import SenderToRecipient from '../sender-to-recipient'
 import { FLAT_VARIANT } from '../sender-to-recipient/sender-to-recipient.constants'
 import TransactionActivityLog from '../transaction-activity-log'
+import { connect } from 'react-redux'
 import TransactionBreakdown from '../transaction-breakdown'
 import Button from '../button'
 import Tooltip from '../tooltip'
 const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
 
-export default class TransactionListItemDetails extends PureComponent {
+class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   }
@@ -22,12 +23,12 @@ export default class TransactionListItemDetails extends PureComponent {
   }
 
   handleEtherscanClick = () => {
-    const { transactionGroup: { primaryTransaction } } = this.props
-    const { hash, metamaskNetworkId } = primaryTransaction
+    const { transactionGroup: { primaryTransaction }, provider } = this.props
+    const { hash } = primaryTransaction
 
-    const explorerUrl = smiloExplorerLinker.createTxLink(hash, metamaskNetworkId)
+    const url = smiloExplorerLinker.createTxLink(hash, provider.type)
 
-    global.platform.openWindow({ url: explorerUrl })
+    global.platform.openWindow({ url: url })
   }
 
   handleCancel = event => {
@@ -114,3 +115,13 @@ export default class TransactionListItemDetails extends PureComponent {
     )
   }
 }
+
+
+
+function mapStateToProps(state) {
+  return {
+    provider: state.metamask.provider
+  };
+}
+
+export default connect(mapStateToProps)(TransactionListItemDetails);
