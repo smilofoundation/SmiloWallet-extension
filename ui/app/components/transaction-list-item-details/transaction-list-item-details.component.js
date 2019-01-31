@@ -6,7 +6,7 @@ import TransactionActivityLog from '../transaction-activity-log'
 import TransactionBreakdown from '../transaction-breakdown'
 import Button from '../button'
 import Tooltip from '../tooltip'
-import prefixForNetwork from '../../../lib/smilo-explorer-prefix-for-network'
+const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
 
 export default class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
@@ -25,8 +25,7 @@ export default class TransactionListItemDetails extends PureComponent {
     const { transactionGroup: { primaryTransaction } } = this.props
     const { hash, metamaskNetworkId } = primaryTransaction
 
-    const prefix = prefixForNetwork(metamaskNetworkId)
-    const explorerUrl = `https://${prefix}explorer.smilo.network/tx/${hash}`
+    const explorerUrl = smiloExplorerLinker.createTxLink(hash, metamaskNetworkId)
 
     global.platform.openWindow({ url: explorerUrl })
   }
