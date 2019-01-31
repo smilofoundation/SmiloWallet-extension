@@ -458,7 +458,7 @@
     "message": "XSM"
   },
   "etherscanView": {
-    "message": "View account on Etherscan"
+    "message": "View account on block explorer"
   },
   "estimatedProcessingTimes": {
     "message": "Estimated Processing Times"
@@ -1505,7 +1505,7 @@
     "message": "View Account"
   },
   "viewOnEtherscan": {
-    "message": "View on Etherscan"
+    "message": "View on block explorer"
   },
   "visitWebSite": {
     "message": "Visit our web site"

@@ -52,6 +52,14 @@ export function getValueFromWeiHex ({
   numberOfDecimals,
   toDenomination,
 }) {
+  // The below values will be passed as XSM but should be treated as ETH
+  if(fromCurrency == "XSM")
+    fromCurrency = "ETH";
+  if(toCurrency == "XSM")
+    toCurrency = "ETH";
+  if(toDenomination == "XSM")
+    toDenomination = "ETH";
+
   return conversionUtil(value, {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',

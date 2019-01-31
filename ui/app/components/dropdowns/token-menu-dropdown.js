@@ -4,7 +4,7 @@ const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const connect = require('react-redux').connect
 const actions = require('../../actions')
-const genAccountLink = require('etherscan-link').createAccountLink
+const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
 const { Menu, Item, CloseArea } = require('./components/menu')
 
 TokenMenuDropdown.contextTypes = {
@@ -16,6 +16,7 @@ module.exports = connect(mapStateToProps, mapDispatchToProps)(TokenMenuDropdown)
 function mapStateToProps (state) {
   return {
     network: state.metamask.network,
+    provider: state.metamask.provider
   }
 }
 
@@ -58,7 +59,9 @@ TokenMenuDropdown.prototype.render = function () {
     h(Item, {
       onClick: (e) => {
         e.stopPropagation()
-        const url = genAccountLink(this.props.token.address, this.props.network)
+
+        const url = smiloExplorerLinker.createAccountLink(this.props.token.address, this.props.provider.type);
+
         global.platform.openWindow({ url })
         this.props.onClose()
       },
