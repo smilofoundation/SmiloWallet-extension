@@ -75,7 +75,7 @@ class ExtensionPlatform {
     let prefix
     switch (providerType) {
       case "mainnet":
-        prefix = ''
+        prefix = 'testnet-' // Must be changed when main net is released!
         break
       case "testnet":
         prefix = 'testnet-'
