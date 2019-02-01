@@ -195,7 +195,7 @@ module.exports = class MetamaskController extends EventEmitter {
     this.txController.on(`tx:status-update`, (txId, status) => {
       if (status === 'confirmed' || status === 'failed') {
         const txMeta = this.txController.txStateManager.getTx(txId)
-        this.platform.showTransactionNotification(txMeta)
+        this.platform.showTransactionNotification(txMeta, this.networkController.getProviderConfig())
       }
     })
 
