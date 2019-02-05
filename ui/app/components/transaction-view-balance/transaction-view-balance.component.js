@@ -6,6 +6,8 @@ import TokenBalance from '../token-balance'
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display'
 import { SEND_ROUTE } from '../../routes'
 import { PRIMARY, SECONDARY } from '../../constants/common'
+const Web3 = require("web3");
+let web3 = new Web3();
 
 export default class TransactionViewBalance extends PureComponent {
   static contextTypes = {
@@ -22,7 +24,7 @@ export default class TransactionViewBalance extends PureComponent {
   }
 
   renderBalance () {
-    const { selectedToken, balance } = this.props
+    const { selectedToken, balance, xsp } = this.props
 
     return selectedToken
       ? (
@@ -47,8 +49,18 @@ export default class TransactionViewBalance extends PureComponent {
             type={SECONDARY}
             ethNumberOfDecimals={4}
           />
+          <div className="transaction-view-balance__separator">
+            |
+          </div>
+          <div className="transaction-view-balance__secondary-balance">
+            { this.formatXSP(xsp) } XSP
+          </div>
         </div>
       )
+  }
+
+  formatXSP(xsp) {
+    return web3.fromWei(xsp, "ether");
   }
 
   renderButtons () {

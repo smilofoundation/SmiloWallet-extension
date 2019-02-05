@@ -11,7 +11,7 @@ const EthQuery = require('eth-query')
 const ObservableStore = require('obs-store')
 const log = require('loglevel')
 const pify = require('pify')
-
+const request = require('request');
 
 class AccountTracker {
 
@@ -183,13 +183,36 @@ class AccountTracker {
   async _updateAccount (address) {
     // query balance
     const balance = await this._query.getBalance(address)
-    const result = { address, balance }
+    // query xsp
+    const xsp = await this._getXSPBalance(address)
+
+    const result = { address, balance, xsp }
     // update accounts state
     const { accounts } = this.store.getState()
     // only populate if the entry is still present
     if (!accounts[address]) return
     accounts[address] = result
     this.store.updateState({ accounts })
+  }
+
+  async _getXSPBalance (address) {
+    return new Promise((resolve, reject) => {
+      request.post(
+        'https://testnet-wallet.smilo.network/api',
+        {
+          json: true,
+          body: {
+            jsonrpc: '2.0',
+            id: 0,
+            method: 'eth_getSmiloPay',
+            params: [address.toLowerCase(), 'latest']
+          }
+        },
+        (error, res, body) => {
+          resolve(body.result.toString())
+        }
+      );
+    });
   }
 
 }
