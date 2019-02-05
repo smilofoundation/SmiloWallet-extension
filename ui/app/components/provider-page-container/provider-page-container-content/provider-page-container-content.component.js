@@ -69,7 +69,6 @@ export default class ProviderPageContainerContent extends PureComponent {
           </p>
         </section>
         <section className="secure-badge">
-          <img src="/images/mm-secure.svg" />
         </section>
       </div>
     )

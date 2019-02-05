@@ -91,7 +91,7 @@ export default class Identicon extends PureComponent {
     return (
       <img
         className={classnames('balance-icon', className)}
-        src="./images/eth_logo.svg"
+        src="./images/smilo_coin.png"
         style={getStyles(diameter)}
       />
     )
