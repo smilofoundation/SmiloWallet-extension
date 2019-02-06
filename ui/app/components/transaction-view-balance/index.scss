@@ -43,9 +43,21 @@
   }
 
   &__secondary-balance {
-    font-size: 1.15rem;
+    font-size: 0.8rem;
     color: #a0a0a0;
-    display: inline-block;
+    display: inline-flex;
+
+    .xsp {
+      max-width: 120px;
+      display: inline-block;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .xsp-suffix {
+      margin-left: 5px;
+    }
   }
 
   &__balance-container {

@@ -61,8 +61,11 @@ export default class Balance extends PureComponent {
                 |
               </div>
               <div className="balance-display__secondary-balance">
-                <span>
-                  {this.formatXSP(account.xsp)} XSP
+                <span className="xsp" title={ this.formatXSP(account.xsp) }>
+                  {this.formatXSP(account.xsp)}
+                </span>
+                <span className="xsp-suffix">
+                  XSP
                 </span>
               </div>
             </div>

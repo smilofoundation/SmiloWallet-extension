@@ -53,7 +53,8 @@ export default class TransactionViewBalance extends PureComponent {
             |
           </div>
           <div className="transaction-view-balance__secondary-balance">
-            { this.formatXSP(xsp) } XSP
+            <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+            <span className="xsp-suffix">XSP</span>
           </div>
         </div>
       )
