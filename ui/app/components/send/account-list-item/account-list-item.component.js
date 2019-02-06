@@ -4,6 +4,8 @@ import { checksumAddress } from '../../../util'
 import Identicon from '../../identicon'
 import UserPreferencedCurrencyDisplay from '../../user-preferenced-currency-display'
 import { PRIMARY, SECONDARY } from '../../../constants/common'
+const Web3 = require("web3");
+let web3 = new Web3();
 
 export default class AccountListItem extends Component {
 
@@ -32,7 +34,7 @@ export default class AccountListItem extends Component {
       icon = null,
     } = this.props
 
-    const { name, address, balance } = account || {}
+    const { name, address, balance, xsp } = account || {}
 
     return (<div
       className={`account-list-item ${className}`}
@@ -67,10 +69,21 @@ export default class AccountListItem extends Component {
               type={SECONDARY}
               value={balance}
             />
+            <div className="account-list-item__separator">
+              |
+            </div>
+            <div className="account-list-item__secondary-balance">
+              <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+              <span className="xsp-suffix">XSP</span>
+            </div>
           </div>
         )
       }
 
     </div>)
+  }
+
+  formatXSP(xsp) {
+    return web3.fromWei(xsp, "ether");
   }
 }
