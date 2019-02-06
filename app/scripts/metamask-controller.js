@@ -126,16 +126,21 @@ module.exports = class MetamaskController extends EventEmitter {
     this.recentBlocksController = new RecentBlocksController({
       blockTracker: this.blockTracker,
       provider: this.provider,
+      networkProvider: initState.provider
     })
 
     // account tracker watches balances, nonces, and any code at their address.
     this.accountTracker = new AccountTracker({
       provider: this.provider,
       blockTracker: this.blockTracker,
+      networkProvider: (initState.NetworkController || {}).provider
     })
 
     // start and stop polling for balances based on activeControllerConnections
     this.on('controllerConnectionChanged', (activeControllerConnections) => {
+      let store = this.networkController.providerStore.getState()
+      this.accountTracker.setNetworkProvider(store)
+      
       if (activeControllerConnections > 0) {
         this.accountTracker.start()
       } else {
@@ -151,6 +156,8 @@ module.exports = class MetamaskController extends EventEmitter {
 
     // ensure accountTracker updates balances after network change
     this.networkController.on('networkDidChange', () => {
+      let store = this.networkController.providerStore.getState()
+      this.accountTracker.setNetworkProvider(store)
       this.accountTracker._updateAccounts()
     })
 
@@ -1468,7 +1475,7 @@ module.exports = class MetamaskController extends EventEmitter {
       this.currencyController.setCurrentCurrency(currencyCode)
       this.currencyController.updateConversionRate()
       const data = {
-        nativeCurrency: ticker || 'ETH',
+        nativeCurrency: ticker || 'XSM',
         conversionRate: this.currencyController.getConversionRate(),
         currentCurrency: this.currencyController.getCurrentCurrency(),
         conversionDate: this.currencyController.getConversionDate(),
@@ -1512,7 +1519,7 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param {string} nickname - Optional nickname of the selected network.
    * @returns {Promise<String>} - The RPC Target URL confirmed.
    */
-  async setCustomRpc (rpcTarget, chainId, ticker = 'ETH', nickname = '') {
+  async setCustomRpc (rpcTarget, chainId, ticker = 'XSM', nickname = '') {
     this.networkController.setRpcTarget(rpcTarget, chainId, ticker, nickname)
     await this.preferencesController.addToFrequentRpcList(rpcTarget, chainId, ticker, nickname)
     return rpcTarget

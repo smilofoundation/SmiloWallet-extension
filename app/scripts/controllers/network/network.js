@@ -33,6 +33,7 @@ const testMode = (METAMASK_DEBUG || env === 'test')
 
 const defaultProviderConfig = {
   type: MAINNET,
+  ticker: "XSM"
 }
 
 const defaultNetworkConfig = {

@@ -28,7 +28,7 @@ class TokenRatesController {
   async updateExchangeRates () {
     if (!this.isActive) { return }
     const contractExchangeRates = {}
-    const nativeCurrency = this.currency ? this.currency.getState().nativeCurrency.toUpperCase() : 'ETH'
+    const nativeCurrency = this.currency ? this.currency.getState().nativeCurrency.toUpperCase() : 'XSM'
     const pairs = this._tokens.map(token => `pairs[]=${token.address}/${nativeCurrency}`)
     const query = pairs.join('&')
     if (this._tokens.length > 0) {
