@@ -82,6 +82,7 @@
   "dependencies": {
     "@material-ui/core": "1.0.0",
     "@sentry/browser": "^4.1.1",
+    "@smilo-platform/smiloicon": "^2.0.0",
     "@zxing/library": "^0.8.0",
     "abi-decoder": "^1.0.9",
     "asmcrypto.js": "0.22.0",
@@ -149,7 +150,6 @@
     "iframe": "^1.0.0",
     "iframe-stream": "^3.0.0",
     "inject-css": "^0.1.1",
-    "jazzicon": "^1.2.0",
     "json-rpc-engine": "^4.0.0",
     "json-rpc-middleware-stream": "^2.1.0",
     "jsonschema": "^1.2.4",
