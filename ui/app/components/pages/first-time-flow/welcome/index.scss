@@ -6,6 +6,11 @@
   width: 400px;
   padding: 0 18px;
 
+  &__logo {
+    width: 50%;
+    margin-bottom: 30px;
+  }
+
   &__wrapper {
     display: flex;
     flex-direction: row;
