@@ -39,6 +39,7 @@ export default class Welcome extends PureComponent {
     return (
       <div className="welcome-page__wrapper">
         <div className="welcome-page">
+          <img className="welcome-page__logo" src="images/icon-512.png"></img>
           {/* <Mascot
             animationEventEmitter={this.animationEventEmitter}
             width="225"
