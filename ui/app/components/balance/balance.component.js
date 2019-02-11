@@ -5,6 +5,8 @@ import Identicon from '../identicon'
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display'
 import { PRIMARY, SECONDARY } from '../../constants/common'
 import { formatBalance } from '../../util'
+const Web3 = require("web3");
+let web3 = new Web3();
 
 export default class Balance extends PureComponent {
   static propTypes = {
@@ -49,15 +51,32 @@ export default class Balance extends PureComponent {
         />
         {
           showFiat && (
-            <UserPreferencedCurrencyDisplay
-              value={balanceValue}
-              type={SECONDARY}
-              ethNumberOfDecimals={4}
-            />
+            <div className="fiat-container">
+              <UserPreferencedCurrencyDisplay
+                value={balanceValue}
+                type={SECONDARY}
+                ethNumberOfDecimals={4}
+              />
+              <div className="balance-display__separator">
+                |
+              </div>
+              <div className="balance-display__secondary-balance">
+                <span className="xsp" title={ this.formatXSP(account.xsp) }>
+                  {this.formatXSP(account.xsp)}
+                </span>
+                <span className="xsp-suffix">
+                  XSP
+                </span>
+              </div>
+            </div>
           )
         }
       </div>
     )
+  }
+
+  formatXSP(xsp) {
+    return web3.fromWei(xsp, "ether");
   }
 
   renderTokenBalance () {

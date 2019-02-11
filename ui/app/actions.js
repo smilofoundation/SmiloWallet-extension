@@ -1971,7 +1971,7 @@ function setPreviousProvider (type) {
   }
 }
 
-function setRpcTarget (newRpc, chainId, ticker = 'ETH', nickname = '') {
+function setRpcTarget (newRpc, chainId, ticker = 'XSM', nickname = '') {
   return (dispatch) => {
     log.debug(`background.setRpcTarget: ${newRpc} ${chainId} ${ticker} ${nickname}`)
     background.setCustomRpc(newRpc, chainId, ticker, nickname, (err, result) => {

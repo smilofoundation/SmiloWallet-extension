@@ -40,13 +40,45 @@ $wallet-balance-breakpoint-range: "screen and (min-width: #{$break-large}) and (
     margin-left: 15px;
     min-width: 0;
 
+    &__secondary-balance {
+      display: inline-flex;
+
+      .xsp {
+        max-width: 60px;
+        @media screen and (min-width: 1700px) {
+          max-width: 120px;
+        }
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+  
+      .xsp-suffix {
+        margin-left: 5px;
+      }
+    }
+
     .token-amount {
       font-size: 1.5rem;
+    }
+
+    .fiat-container {
+      display: flex;
+      align-items: center;
+      font-size: 0.8rem;
     }
 
     .fiat-amount {
       margin-top: .25%;
       font-size: 105%;
+    }
+
+    &__separator {
+      margin-left: 5px;
+      margin-right: 5px;
+      display: inline-block;
+      font-size: 1.15rem;
     }
 
     @media #{$wallet-balance-breakpoint-range} {

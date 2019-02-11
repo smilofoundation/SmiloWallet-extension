@@ -11,7 +11,14 @@ const EthQuery = require('eth-query')
 const ObservableStore = require('obs-store')
 const log = require('loglevel')
 const pify = require('pify')
-
+const request = require('request');
+const {
+  MAINNET,
+  TESTNET,
+  LOCALHOST,
+  MAINNET_END_POINT,
+  TESTNET_END_POINT
+} = require("../controllers/network/enums")
 
 class AccountTracker {
 
@@ -40,6 +47,8 @@ class AccountTracker {
     }
     this.store = new ObservableStore(initState)
 
+    this.setNetworkProvider(opts.networkProvider)
+
     this._provider = opts.provider
     this._query = pify(new EthQuery(this._provider))
     this._blockTracker = opts.blockTracker
@@ -50,6 +59,32 @@ class AccountTracker {
     })
     // bind function for easier listener syntax
     this._updateForBlock = this._updateForBlock.bind(this)
+  }
+
+  _extractNetworkUrl(provider) {
+    if(!provider) {
+      console.warn("Could not read provider at this time. Is SWE not initialized yet?")
+      return null;
+    }
+    
+    switch(provider.type) {
+      case(MAINNET): {
+        return MAINNET_END_POINT
+      }
+      case(TESTNET): {
+        return TESTNET_END_POINT
+      }
+      case(LOCALHOST): {
+        return "http://localhost:8545"
+      }
+      default: {
+        return provider.rpcTarget;
+      }
+    }
+  }
+
+  setNetworkProvider(provider) {
+    this._rpcTarget = this._extractNetworkUrl(provider)
   }
 
   start () {
@@ -183,13 +218,41 @@ class AccountTracker {
   async _updateAccount (address) {
     // query balance
     const balance = await this._query.getBalance(address)
-    const result = { address, balance }
+    // query xsp
+    const xsp = await this._getXSPBalance(address)
+
+    const result = { address, balance, xsp }
     // update accounts state
     const { accounts } = this.store.getState()
     // only populate if the entry is still present
     if (!accounts[address]) return
     accounts[address] = result
     this.store.updateState({ accounts })
+  }
+
+  async _getXSPBalance (address) {
+    if(!this._rpcTarget) {
+      console.warn('No rpc target defined, could not read XPS')
+      return "0"
+    }
+
+    return new Promise((resolve, reject) => {
+      request.post(
+        this._rpcTarget,
+        {
+          json: true,
+          body: {
+            jsonrpc: '2.0',
+            id: 0,
+            method: 'eth_getSmiloPay',
+            params: [address.toLowerCase(), 'latest']
+          }
+        },
+        (error, res, body) => {
+          resolve(body.result.toString())
+        }
+      );
+    });
   }
 
 }
