@@ -65,16 +65,19 @@ export default class AccountListItem extends Component {
               type={PRIMARY}
               value={balance}
             />
-            <UserPreferencedCurrencyDisplay
-              type={SECONDARY}
-              value={balance}
-            />
-            <div className="account-list-item__separator">
-              |
-            </div>
-            <div className="account-list-item__secondary-balance">
-              <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
-              <span className="xsp-suffix">XSP</span>
+            {/* Inline styling is really not the way to go...however I can't get it to work when adding to a scss file... */}
+            <div style={{display: "flex"}}>
+              <UserPreferencedCurrencyDisplay
+                type={SECONDARY}
+                value={balance}
+              />
+              <div style={{marginLeft: "5px", marginRight: "5px"}}>
+                |
+              </div>
+              <div className="currency-container__secondary-balance">
+                <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+                <span className="xsp-suffix">      XSP</span>
+              </div>
             </div>
           </div>
         )
