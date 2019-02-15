@@ -74,9 +74,9 @@ export default class AccountListItem extends Component {
               <div style={{marginLeft: "5px", marginRight: "5px"}}>
                 |
               </div>
-              <div className="currency-container__secondary-balance">
-                <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
-                <span className="xsp-suffix">      XSP</span>
+              <div className="currency-container__secondary-balance" style={{display: "flex"}}>
+                <span className="xsp" style={{display: "inline-block", maxWidth: "60px", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}} title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+                <span className="xsp-suffix"> XSP</span>
               </div>
             </div>
           </div>
