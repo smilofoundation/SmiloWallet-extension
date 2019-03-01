@@ -70,7 +70,7 @@ export default class TransactionViewBalance extends PureComponent {
 
     return (
       <div className="transaction-view-balance__buttons">
-        {
+        {/* {
           !selectedToken && (
             <Button
               type="primary"
@@ -80,7 +80,7 @@ export default class TransactionViewBalance extends PureComponent {
               { t('deposit') }
             </Button>
           )
-        }
+        } */}
         <Button
           type="primary"
           className="transaction-view-balance__button"
