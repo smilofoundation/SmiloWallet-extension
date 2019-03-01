@@ -5,7 +5,7 @@ import { setCompletedOnboarding, showModal } from '../../../../../actions'
 const mapDispatchToProps = dispatch => {
   return {
     completeOnboarding: () => dispatch(setCompletedOnboarding()),
-    openBuyEtherModal: () => dispatch(showModal({ name: 'DEPOSIT_ETHER'})),
+    // openBuyEtherModal: () => dispatch(showModal({ name: 'DEPOSIT_ETHER'})),
   }
 }
 
