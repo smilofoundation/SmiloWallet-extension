@@ -26,7 +26,6 @@ import SendAmountRow from './gas-cost-row.component'
 export default connect(mapStateToProps, mapDispatchToProps)(SendAmountRow)
 
 function mapStateToProps (state) {
-  console.log(state);
   return {
     amount: getSendAmount(state),
     amountConversionRate: getAmountConversionRate(state),
