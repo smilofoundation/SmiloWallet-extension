@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import SendRowWrapper from '../send-row-wrapper/'
 import UserPreferencedCurrencyInput from '../../../user-preferenced-currency-input'
 import UserPreferencedTokenInput from '../../../user-preferenced-token-input'
+import { GWEI } from '../../../../constants/common';
+const Web3 = require("web3");
+let web3 = new Web3();
 
 export default class GasCostRow extends Component {
 
@@ -87,6 +90,8 @@ export default class GasCostRow extends Component {
     const { amount, inError, selectedToken } = this.props
     const Component = selectedToken ? UserPreferencedTokenInput : UserPreferencedCurrencyInput
 
+    let value = parseInt(this.props.gasTotal, 16);
+
     return (
       <input style={
         {
@@ -98,17 +103,12 @@ export default class GasCostRow extends Component {
           padding: "8px 10px",
           width: "100%"
         }
-      } type="text" disabled value="1 XSP"></input>
-      // <Component
-      //   onChange={newAmount => this.validateAmount(newAmount)}
-      //   onBlur={newAmount => {
-      //     this.updateGas(newAmount)
-      //     this.updateAmount(newAmount)
-      //   }}
-      //   error={inError}
-      //   value={amount}
-      // />
+      } type="text" disabled value={this.formatXSP(value) + " XSP"}></input>
     )
+  }
+
+  formatXSP(xsp) {
+    return web3.fromWei(xsp, "ether");
   }
 
   render () {

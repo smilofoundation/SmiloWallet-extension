@@ -15,7 +15,9 @@ export default class SendContent extends Component {
     showHexData: PropTypes.bool,
   }
 
-  updateGas = (updateData) => this.props.updateGas(updateData)
+  updateGas = (updateData) => {
+    return this.props.updateGas(updateData)
+  }
 
   render () {
     return (
