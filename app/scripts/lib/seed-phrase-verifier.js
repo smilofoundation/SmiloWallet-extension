@@ -1,4 +1,4 @@
-const KeyringController = require('eth-keyring-controller')
+const KeyringController = require('@smilo-platform/eth-keyring-controller')
 const log = require('loglevel')
 
 const seedPhraseVerifier = {

@@ -8,7 +8,7 @@ const TESTNET_CODE = 2
 const MAINNET_DISPLAY_NAME = 'Smilo Main Network'
 const TESTNET_DISPLAY_NAME = 'Smilo Test Network'
 
-const MAINNET_END_POINT = 'https://testnet-wallet.smilo.network/api'
+const MAINNET_END_POINT = 'https://api.smilo.network/'
 const TESTNET_END_POINT = 'https://testnet-wallet.smilo.network/api'
 
 module.exports = {
