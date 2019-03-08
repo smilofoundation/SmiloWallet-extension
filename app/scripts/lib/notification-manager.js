@@ -13,7 +13,7 @@ class NotificationManager {
    */
 
   /**
-   * Either brings an existing MetaMask notification window into focus, or creates a new notification window. New
+   * Either brings an existing SmiloWallet Extension window into focus, or creates a new notification window. New
    * notification windows are given a 'popup' type.
    *
    */
@@ -40,7 +40,7 @@ class NotificationManager {
   }
 
   /**
-   * Closes a MetaMask notification if it window exists.
+   * Closes a SmiloWallet Extension notification if it window exists.
    *
    */
   closePopup () {

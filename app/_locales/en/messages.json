@@ -894,10 +894,10 @@
     "message": "You have returned to the old UI. You can switch back to the New UI through the option in the top right dropdown menu."
   },
   "onlySendToEtherAddress": {
-    "message": "Only send XSM to an Smilo address."
+    "message": "Only send XSM to a Smilo address."
   },
   "onlySendTokensToAccountAddress": {
-    "message": "Only send $1 to an Smilo account address.",
+    "message": "Only send $1 to a Smilo account address.",
     "description": "displays token symbol"
   },
   "openInTab": {

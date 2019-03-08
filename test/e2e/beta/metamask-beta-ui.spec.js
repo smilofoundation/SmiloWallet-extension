@@ -414,7 +414,7 @@ describe('MetaMask', function () {
       windowHandles = await driver.getAllWindowHandles()
 
       extension = windowHandles[0]
-      popup = await switchToWindowWithTitle(driver, 'MetaMask Notification', windowHandles)
+      popup = await switchToWindowWithTitle(driver, 'SmiloWallet Extension', windowHandles)
       dapp = windowHandles.find(handle => handle !== extension && handle !== popup)
 
       await delay(regularDelayMs)
@@ -431,7 +431,7 @@ describe('MetaMask', function () {
       await delay(5000)
 
       windowHandles = await driver.getAllWindowHandles()
-      await switchToWindowWithTitle(driver, 'MetaMask Notification', windowHandles)
+      await switchToWindowWithTitle(driver, 'SmiloWallet Extension', windowHandles)
       await delay(regularDelayMs)
 
       await assertElementNotPresent(webdriver, driver, By.xpath(`//li[contains(text(), 'Data')]`))

@@ -10,7 +10,7 @@ const configureStore = require('redux-mock-store').default
 const thunk = require('redux-thunk').default
 const EthQuery = require('eth-query')
 const Eth = require('ethjs')
-const KeyringController = require('eth-keyring-controller')
+const KeyringController = require('@smilo-platform/eth-keyring-controller')
 
 const { createTestProviderTools } = require('../../../stub/provider')
 const provider = createTestProviderTools({ scaffold: {}}).provider

@@ -29,7 +29,7 @@ export default class UserPreferencedCurrencyDisplay extends PureComponent {
 
     return currency === ETH && showEthLogo && (
       <img
-        src="/images/eth.svg"
+        src="/images/smilo_coin.png"
         height={ethLogoHeight}
       />
     )

@@ -37,10 +37,10 @@ export default class GasPriceButtonGroup extends Component {
     showCheck,
   }) {
     return (<div>
-      { labelKey && <div className={`${className}__label`}>{ this.context.t(labelKey) }</div> }
-      { timeEstimate && <div className={`${className}__time-estimate`}>{ timeEstimate }</div> }
-      { feeInPrimaryCurrency && <div className={`${className}__primary-currency`}>{ feeInPrimaryCurrency }</div> }
-      { feeInSecondaryCurrency && <div className={`${className}__secondary-currency`}>{ feeInSecondaryCurrency }</div> }
+      { labelKey && <div className={`${className}__label`}>{ this.context.t(labelKey) } LABEL</div> }
+      { timeEstimate && <div className={`${className}__time-estimate`}>{ timeEstimate } TIME</div> }
+      { feeInPrimaryCurrency && <div className={`${className}__primary-currency`}>{ feeInPrimaryCurrency } PRIMCUR</div> }
+      { feeInSecondaryCurrency && <div className={`${className}__secondary-currency`}>{ feeInSecondaryCurrency } SECCUR</div> }
       { showCheck && <div className="button-check-wrapper"><i className="fa fa-check fa-sm" /></div> }
     </div>)
   }

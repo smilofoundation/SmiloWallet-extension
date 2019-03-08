@@ -3,7 +3,7 @@ module.exports = function (address, network) {
   let link
   switch (net) {
     case 1: // main net
-      link = `https://testnet-explorer.smilo.network/addr/${address}`
+      link = `https://explorer.smilo.network/addr/${address}`
       break
     case 2: // test net
       link = `https://testnet-explorer.smilo.network/addr/${address}`
