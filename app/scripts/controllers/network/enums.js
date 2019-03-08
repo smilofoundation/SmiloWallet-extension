@@ -2,8 +2,8 @@ const MAINNET = 'mainnet'
 const TESTNET = 'testnet'
 const LOCALHOST = 'localhost'
 
-const MAINNET_CODE = 1
-const TESTNET_CODE = 2
+const MAINNET_CODE = 20080914
+const TESTNET_CODE = 10
 
 const MAINNET_DISPLAY_NAME = 'Smilo Main Network'
 const TESTNET_DISPLAY_NAME = 'Smilo Test Network'
