@@ -253,7 +253,7 @@ export default class AccountMenu extends PureComponent {
           }
           text={t('importAccount')}
         />
-        <Item
+        {/* <Item
           onClick={() => {
             toggleAccountMenu()
 
@@ -270,7 +270,7 @@ export default class AccountMenu extends PureComponent {
             />
           }
           text={t('connectHardwareWallet')}
-        />
+        /> */}
         <Divider />
         <Item
           onClick={() => {
