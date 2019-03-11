@@ -3,6 +3,7 @@ import {
   conversionUtil,
   multiplyCurrencies,
   conversionGreaterThan,
+  conversionGTE
 } from '../conversion-util'
 import {
   getCurrentCurrency,
@@ -100,15 +101,7 @@ function getDefaultActiveButtonIndex (gasButtonInfo, customGasPriceInHex, gasPri
 }
 
 function getSafeLowEstimate (state) {
-  const {
-    gas: {
-      basicEstimates: {
-        safeLow,
-      },
-    },
-  } = state
-
-  return safeLow
+  return 1;
 }
 
 function isCustomPriceSafe (state) {
@@ -119,7 +112,7 @@ function isCustomPriceSafe (state) {
     return true
   }
 
-  const customPriceSafe = conversionGreaterThan(
+  const customPriceSafe = conversionGTE(
     {
       value: customGasPrice,
       fromNumericBase: 'hex',
