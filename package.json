@@ -6,7 +6,9 @@
   "scripts": {
     "start": "gulp dev:extension",
     "mascara": "gulp dev:mascara & node ./mascara/example/server",
-    "dist": "gulp dist",
+    "clean": "rm -rf dist && rm -rf builds",
+    "zip-src": "zip -r builds/src.zip . -x \"./node_modules/*\" \"./dist/*\" \"./.github/*\" \"./.circleci/*\" \"./.git/*\" \"./builds/*\" \"./test/*\"",
+    "dist": "npm run clean && gulp dist && npm run zip-src",
     "doc": "jsdoc -c development/tools/.jsdoc.json",
     "publish-docs": "gh-pages -d docs/jsdocs",
     "test": "npm run test:unit && npm run test:integration && npm run lint",
