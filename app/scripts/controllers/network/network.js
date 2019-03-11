@@ -168,15 +168,18 @@ module.exports = class NetworkController extends EventEmitter {
 
   _configureProvider (opts) {
     const { type, rpcTarget, chainId, ticker, nickname } = opts
-    // infura type-based endpoints
+
+    // smilo type-based endpoints
     const isSmilo = SMILO_PROVIDER_TYPES.includes(type)
     if (isSmilo) {
       switch(type) {
         case(MAINNET): {
           this._configureStandardProvider({ rpcUrl: MAINNET_END_POINT, chainId: MAINNET_CODE, ticker: "XSM", nickname: MAINNET_DISPLAY_NAME })
+          break
         }
         case(TESTNET): {
           this._configureStandardProvider({ rpcUrl: TESTNET_END_POINT, chainId: TESTNET_CODE, ticker: "XSM", nickname: TESTNET_DISPLAY_NAME })
+          break
         }
       }
     // other type-based rpc endpoints
