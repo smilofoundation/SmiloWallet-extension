@@ -175,58 +175,27 @@ export function gasEstimatesLoadingFinished () {
 
 export function fetchBasicGasEstimates () {
   return (dispatch, getState) => {
-    const {
-      basicPriceEstimatesLastRetrieved,
-      basicPriceAndTimeEstimates,
-    } = getState().gas
-    const timeLastRetrieved = basicPriceEstimatesLastRetrieved || loadLocalStorageData('BASIC_PRICE_ESTIMATES_LAST_RETRIEVED') || 0
-
     dispatch(basicGasEstimatesLoadingStarted())
 
-    const promiseToFetch = Date.now() - timeLastRetrieved > 75000
-    ? fetch('https://dev.blockscale.net/api/gasexpress.json', {
-      'headers': {},
-      'referrer': 'https://dev.blockscale.net/api/',
-      'referrerPolicy': 'no-referrer-when-downgrade',
-      'body': null,
-      'method': 'GET',
-      'mode': 'cors'}
-    )
-      .then(r => r.json())
-      .then(({
-        safeLow,
-        standard: average,
-        fast,
-        fastest,
-        block_time: blockTime,
-        blockNum,
-      }) => {
-        const basicEstimates = {
-          safeLow,
-          average,
-          fast,
-          fastest,
-          blockTime,
-          blockNum,
-        }
+    // TODO: do not make hardcoded
+    const basicEstimates = {
+      safeLow: 1,
+      standard: 2,
+      fast: 4,
+      fastest: 8,
+      block_time: 1,
+      blockNum: 0
+    };
 
-        const timeRetrieved = Date.now()
-        dispatch(setBasicPriceEstimatesLastRetrieved(timeRetrieved))
-        saveLocalStorageData(timeRetrieved, 'BASIC_PRICE_ESTIMATES_LAST_RETRIEVED')
-        saveLocalStorageData(basicEstimates, 'BASIC_PRICE_ESTIMATES')
+    const timeRetrieved = Date.now()
+    dispatch(setBasicPriceEstimatesLastRetrieved(timeRetrieved))
+    saveLocalStorageData(timeRetrieved, 'BASIC_PRICE_ESTIMATES_LAST_RETRIEVED')
+    saveLocalStorageData(basicEstimates, 'BASIC_PRICE_ESTIMATES')
 
-        return basicEstimates
-      })
-    : Promise.resolve(basicPriceAndTimeEstimates.length
-        ? basicPriceAndTimeEstimates
-        : loadLocalStorageData('BASIC_PRICE_ESTIMATES')
-      )
+    dispatch(setBasicGasEstimateData(basicEstimates))
+    dispatch(basicGasEstimatesLoadingFinished())
 
-    return promiseToFetch.then(basicEstimates => {
-      dispatch(setBasicGasEstimateData(basicEstimates))
-      dispatch(basicGasEstimatesLoadingFinished())
-      return basicEstimates
-    })
+    return Promise.resolve(basicEstimates)
   }
 }
 

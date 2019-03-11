@@ -101,7 +101,15 @@ function getDefaultActiveButtonIndex (gasButtonInfo, customGasPriceInHex, gasPri
 }
 
 function getSafeLowEstimate (state) {
-  return 1;
+  const {
+    gas: {
+      basicEstimates: {
+        safeLow
+      }
+    }
+  } = state;
+
+  return safeLow;
 }
 
 function isCustomPriceSafe (state) {
