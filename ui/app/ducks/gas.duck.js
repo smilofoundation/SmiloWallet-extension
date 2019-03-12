@@ -180,9 +180,9 @@ export function fetchBasicGasEstimates () {
     // TODO: do not make hardcoded
     const basicEstimates = {
       safeLow: 1,
-      standard: 2,
-      fast: 4,
-      fastest: 8,
+      standard: 1,
+      fast: 2,
+      fastest: 4,
       block_time: 1,
       blockNum: 0
     };
