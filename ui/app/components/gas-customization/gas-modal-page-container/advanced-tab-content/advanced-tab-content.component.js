@@ -109,13 +109,13 @@ export default class AdvancedTabContent extends Component {
       <div className="advanced-tab__transaction-data-summary">
         <div className="advanced-tab__transaction-data-summary__titles">
           <span>{ this.context.t('newTransactionFee') }</span>
-          <span>~{ this.context.t('transactionTime') }</span>
+          {/* <span>~{ this.context.t('transactionTime') }</span> */}
         </div>
         <div className="advanced-tab__transaction-data-summary__container">
           <div className="advanced-tab__transaction-data-summary__fee">
             {transactionFee}
           </div>
-          <div className="time-remaining">{timeRemaining}</div>
+          {/* <div className="time-remaining">{timeRemaining}</div> */}
         </div>
       </div>
     )
@@ -193,15 +193,15 @@ export default class AdvancedTabContent extends Component {
             customPriceIsSafe,
             isSpeedUp,
           }) }
-          <div className="advanced-tab__fee-chart__title">{ t('liveGasPricePredictions') }</div>
-          {!gasEstimatesLoading
+          {/* <div className="advanced-tab__fee-chart__title">{ t('liveGasPricePredictions') }</div> */}
+          {/* {!gasEstimatesLoading
             ? <GasPriceChart {...gasChartProps} updateCustomGasPrice={updateCustomGasPrice} />
             : <Loading />
-          }
-          <div className="advanced-tab__fee-chart__speed-buttons">
+          } */}
+          {/* <div className="advanced-tab__fee-chart__speed-buttons">
             <span>{ t('slower') }</span>
             <span>{ t('faster') }</span>
-          </div>
+          </div> */}
         </div>
       </div>
     )
