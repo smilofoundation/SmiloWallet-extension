@@ -51,8 +51,6 @@ const browserPlatforms = [
   'opera',
 ]
 const commonPlatforms = [
-  // browser webapp
-  'mascara',
   // browser extensions
   ...browserPlatforms,
 ]
@@ -108,14 +106,6 @@ createCopyTasks('manifest', {
   source: './app/',
   pattern: '/*.json',
   destinations: browserPlatforms.map(platform => `./dist/${platform}`),
-})
-
-// copy mascara
-
-createCopyTasks('html:mascara', {
-  source: './mascara/',
-  pattern: 'proxy/index.html',
-  destinations: [`./dist/mascara/`],
 })
 
 function createCopyTasks (label, opts) {
@@ -298,11 +288,10 @@ const buildJsFiles = [
 createTasksForBuildJsUIDeps({ dependenciesToBundle: uiDependenciesToBundle, filename: 'libs' })
 createTasksForBuildJsExtension({ buildJsFiles, taskPrefix: 'dev:extension:js', devMode: true })
 createTasksForBuildJsExtension({ buildJsFiles, taskPrefix: 'build:extension:js' })
-createTasksForBuildJsMascara({ taskPrefix: 'build:mascara:js' })
-createTasksForBuildJsMascara({ taskPrefix: 'dev:mascara:js', devMode: true })
 
 function createTasksForBuildJsUIDeps ({ dependenciesToBundle, filename }) {
   const destinations = browserPlatforms.map(platform => `./dist/${platform}`)
+
 
   const bundleTaskOpts = Object.assign({
     buildSourceMaps: true,
@@ -337,22 +326,6 @@ function createTasksForBuildJsExtension ({ buildJsFiles, taskPrefix, devMode, bu
     devMode,
   }, bundleTaskOpts)
   createTasksForBuildJs({ rootDir, taskPrefix, bundleTaskOpts, destinations, buildPhase1, buildPhase2 })
-}
-
-function createTasksForBuildJsMascara ({ taskPrefix, devMode, bundleTaskOpts = {} }) {
-  // inpage must be built before all other scripts:
-  const rootDir = './mascara/src/'
-  const buildPhase1 = ['ui', 'proxy', 'background', 'metamascara']
-  const destinations = ['./dist/mascara']
-  bundleTaskOpts = Object.assign({
-    buildSourceMaps: true,
-    sourceMapDir: './',
-    minifyBuild: !devMode,
-    buildWithFullPaths: devMode,
-    watch: devMode,
-    devMode,
-  }, bundleTaskOpts)
-  createTasksForBuildJs({ rootDir, taskPrefix, bundleTaskOpts, destinations, buildPhase1 })
 }
 
 function createTasksForBuildJs ({ rootDir, taskPrefix, bundleTaskOpts, destinations, buildPhase1 = [], buildPhase2 = [] }) {
@@ -404,7 +377,6 @@ gulp.task('dev',
     'dev:scss',
     gulp.parallel(
       'dev:extension:js',
-      'dev:mascara:js',
       'dev:copy',
       'dev:reload'
     )
@@ -423,18 +395,6 @@ gulp.task('dev:extension',
   )
 )
 
-gulp.task('dev:mascara',
-  gulp.series(
-    'clean',
-    'dev:scss',
-    gulp.parallel(
-      'dev:mascara:js',
-      'dev:copy',
-      'dev:reload'
-    )
-  )
-)
-
 gulp.task('build',
   gulp.series(
     'clean',
@@ -442,7 +402,6 @@ gulp.task('build',
     gulpParallel(
       'build:extension:js:uideps',
       'build:extension:js',
-      'build:mascara:js',
       'copy'
     )
   )
@@ -454,17 +413,6 @@ gulp.task('build:extension',
     'build:scss',
     gulp.parallel(
       'build:extension:js',
-      'copy'
-    )
-  )
-)
-
-gulp.task('build:mascara',
-  gulp.series(
-    'clean',
-    'build:scss',
-    gulp.parallel(
-      'build:mascara:js',
       'copy'
     )
   )
@@ -512,6 +460,8 @@ function generateBundler (opts, performBundle) {
   bundler.transform(envify({
     METAMASK_DEBUG: opts.devMode,
     NODE_ENV: opts.devMode ? 'development' : 'production',
+    PUBNUB_SUB_KEY: process.env.PUBNUB_SUB_KEY || '',
+    PUBNUB_PUB_KEY: process.env.PUBNUB_PUB_KEY || '',
   }), {
     global: true,
   })

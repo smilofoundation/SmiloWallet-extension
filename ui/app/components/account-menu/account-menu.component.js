@@ -20,6 +20,7 @@ import {
 export default class AccountMenu extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
+    metricsEvent: PropTypes.func,
   }
 
   static propTypes = {
@@ -27,6 +28,7 @@ export default class AccountMenu extends PureComponent {
     history: PropTypes.object,
     identities: PropTypes.object,
     isAccountMenuOpen: PropTypes.bool,
+    prevIsAccountMenuOpen: PropTypes.bool,
     keyrings: PropTypes.array,
     lockMetamask: PropTypes.func,
     selectedAddress: PropTypes.string,
@@ -73,7 +75,16 @@ export default class AccountMenu extends PureComponent {
       return (
         <div
           className="account-menu__account menu__item--clickable"
-          onClick={() => showAccountDetail(identity.address)}
+          onClick={() => {
+            this.context.metricsEvent({
+              eventOpts: {
+                category: 'Navigation',
+                action: 'Main Menu',
+                name: 'Switched Account',
+              },
+            })
+            showAccountDetail(identity.address)
+          }}
           key={identity.address}
         >
           <div className="account-menu__check-mark">
@@ -197,6 +208,7 @@ export default class AccountMenu extends PureComponent {
       lockMetamask,
       history,
     } = this.props
+    const { metricsEvent } = this.context
 
     return (
       <Menu
@@ -230,6 +242,13 @@ export default class AccountMenu extends PureComponent {
         <Item
           onClick={() => {
             toggleAccountMenu()
+            metricsEvent({
+              eventOpts: {
+                category: 'Navigation',
+                action: 'Main Menu',
+                name: 'Clicked Create Account',
+              },
+            })
             history.push(NEW_ACCOUNT_ROUTE)
           }}
           icon={
@@ -243,6 +262,13 @@ export default class AccountMenu extends PureComponent {
         <Item
           onClick={() => {
             toggleAccountMenu()
+            metricsEvent({
+              eventOpts: {
+                category: 'Navigation',
+                action: 'Main Menu',
+                name: 'Clicked Import Account',
+              },
+            })
             history.push(IMPORT_ACCOUNT_ROUTE)
           }}
           icon={
@@ -256,7 +282,13 @@ export default class AccountMenu extends PureComponent {
         {/* <Item
           onClick={() => {
             toggleAccountMenu()
-
+            metricsEvent({
+              eventOpts: {
+                category: 'Navigation',
+                action: 'Main Menu',
+                name: 'Clicked Connect Hardware',
+              },
+            })
             if (getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_POPUP) {
               global.platform.openExtensionInBrowser(CONNECT_HARDWARE_ROUTE)
             } else {
@@ -286,6 +318,13 @@ export default class AccountMenu extends PureComponent {
           onClick={() => {
             toggleAccountMenu()
             history.push(SETTINGS_ROUTE)
+            this.context.metricsEvent({
+              eventOpts: {
+                category: 'Navigation',
+                action: 'Main Menu',
+                name: 'Opened Settings',
+              },
+            })
           }}
           icon={
             <img

@@ -8,17 +8,17 @@ import {
   clearConfirmTransaction,
   updateGasAndCalculate,
 } from '../../../ducks/confirm-transaction.duck'
-import { clearSend, cancelTx, cancelTxs, updateAndApproveTx, showModal } from '../../../actions'
+import { clearSend, cancelTx, cancelTxs, updateAndApproveTx, showModal, setMetaMetricsSendCount } from '../../../actions'
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   GAS_LIMIT_TOO_LOW_ERROR_KEY,
 } from '../../../constants/error-keys'
 import { getHexGasTotal } from '../../../helpers/confirm-transaction/util'
-import { isBalanceSufficient } from '../../send/send.utils'
+import { isBalanceSufficient, calcGasTotal } from '../../send/send.utils'
 import { conversionGreaterThan } from '../../../conversion-util'
 import { MIN_GAS_LIMIT_DEC } from '../../send/send.constants'
-import { addressSlicer, valuesFor } from '../../../util'
-import { getMetaMaskAccounts } from '../../../selectors'
+import { checksumAddress, addressSlicer, valuesFor } from '../../../util'
+import {getMetaMaskAccounts, getAdvancedInlineGasShown, preferencesSelector, getIsMainnet} from '../../../selectors'
 
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
   return {
@@ -29,6 +29,8 @@ const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
 
 const mapStateToProps = (state, props) => {
   const { toAddress: propsToAddress } = props
+  const { showFiatInTestnets } = preferencesSelector(state)
+  const isMainnet = getIsMainnet(state)
   const { confirmTransaction, metamask, gas } = state
   const {
     ethTransactionAmount,
@@ -47,7 +49,13 @@ const mapStateToProps = (state, props) => {
     nonce,
   } = confirmTransaction
   const { txParams = {}, lastGasPrice, id: transactionId } = txData
-  const { from: fromAddress, to: txParamsToAddress } = txParams
+  const {
+    from: fromAddress,
+    to: txParamsToAddress,
+    gasPrice,
+    gas: gasLimit,
+    value: amount,
+  } = txParams
   const accounts = getMetaMaskAccounts(state)
   const {
     conversionRate,
@@ -58,6 +66,7 @@ const mapStateToProps = (state, props) => {
     assetImages,
     network,
     unapprovedTxs,
+    metaMetricsSendCount,
   } = metamask
   const assetImage = assetImages[txParamsToAddress]
 
@@ -71,7 +80,11 @@ const mapStateToProps = (state, props) => {
   const toAddress = propsToAddress || txParamsToAddress
   const toName = identities[toAddress]
     ? identities[toAddress].name
-    : casedContractMap[toAddress] ? casedContractMap[toAddress].name : addressSlicer(toAddress)
+    : (
+      casedContractMap[toAddress]
+        ? casedContractMap[toAddress].name
+        : addressSlicer(checksumAddress(toAddress))
+    )
 
   const isTxReprice = Boolean(lastGasPrice)
 
@@ -83,6 +96,13 @@ const mapStateToProps = (state, props) => {
     unapprovedTxs,
   )
   const unapprovedTxCount = valuesFor(currentNetworkUnapprovedTxs).length
+
+  const insufficientBalance = !isBalanceSufficient({
+    amount,
+    gasTotal: calcGasTotal(gasLimit, gasPrice),
+    balance,
+    conversionRate,
+  })
 
   return {
     balance,
@@ -113,9 +133,14 @@ const mapStateToProps = (state, props) => {
     unapprovedTxCount,
     currentNetworkUnapprovedTxs,
     customGas: {
-      gasLimit: customGasLimit || txData.gasPrice,
-      gasPrice: customGasPrice || txData.gasLimit,
+      gasLimit: customGasLimit || gasLimit,
+      gasPrice: customGasPrice || gasPrice,
     },
+    advancedInlineGasShown: getAdvancedInlineGasShown(state),
+    insufficientBalance,
+    hideSubtitle: (!isMainnet && !showFiatInTestnets),
+    hideFiatConversion: (!isMainnet && !showFiatInTestnets),
+    metaMetricsSendCount,
   }
 }
 
@@ -138,6 +163,7 @@ const mapDispatchToProps = dispatch => {
     cancelTransaction: ({ id }) => dispatch(cancelTx({ id })),
     cancelAllTransactions: (txList) => dispatch(cancelTxs(txList)),
     sendTransaction: txData => dispatch(updateAndApproveTx(txData)),
+    setMetaMetricsSendCount: val => dispatch(setMetaMetricsSendCount(val)),
   }
 }
 
@@ -206,6 +232,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       validate: validateEditGas,
     }),
     cancelAllTransactions: () => dispatchCancelAllTransactions(valuesFor(unapprovedTxs)),
+    updateGasAndCalculate: dispatchUpdateGasAndCalculate,
   }
 }
 

@@ -1,3 +1,6 @@
+import {NETWORK_TYPES} from './constants/common'
+import { stripHexPrefix } from 'ethereumjs-util'
+
 const abi = require('human-standard-token-abi')
 import {
   transactionsSelector,
@@ -28,8 +31,6 @@ const selectors = {
   getSendAmount,
   getSelectedTokenToFiatRate,
   getSelectedTokenContract,
-  autoAddToBetaUI,
-  getShouldUseNewUi,
   getSendMaxModeState,
   getCurrentViewContext,
   getTotalUnapprovedCount,
@@ -37,6 +38,15 @@ const selectors = {
   getMetaMaskAccounts,
   getCurrentEthBalance,
   getNetworkIdentifier,
+  isBalanceCached,
+  getAdvancedInlineGasShown,
+  getIsMainnet,
+  getCurrentNetworkId,
+  getSelectedAsset,
+  getCurrentKeyring,
+  getAccountType,
+  getNumberOfAccounts,
+  getNumberOfTokens,
 }
 
 module.exports = selectors
@@ -45,6 +55,46 @@ function getNetworkIdentifier (state) {
   const { metamask: { provider: { type, nickname, rpcTarget } } } = state
 
   return nickname || rpcTarget || type
+}
+
+function getCurrentKeyring (state) {
+  const identity = getSelectedIdentity(state)
+
+  if (!identity) {
+    return null
+  }
+
+  const simpleAddress = stripHexPrefix(identity.address).toLowerCase()
+
+  const keyring = state.metamask.keyrings.find((kr) => {
+    return kr.accounts.includes(simpleAddress) ||
+      kr.accounts.includes(identity.address)
+  })
+
+  return keyring
+}
+
+function getAccountType (state) {
+  const currentKeyring = getCurrentKeyring(state)
+  const type = currentKeyring && currentKeyring.type
+
+  switch (type) {
+    case 'Trezor Hardware':
+    case 'Ledger Hardware':
+      return 'hardware'
+    case 'Simple Key Pair':
+      return 'imported'
+    default:
+      return 'default'
+  }
+}
+
+function getSelectedAsset (state) {
+  return getSelectedToken(state) || 'ETH'
+}
+
+function getCurrentNetworkId (state) {
+  return state.metamask.network
 }
 
 function getSelectedAddress (state) {
@@ -60,9 +110,18 @@ function getSelectedIdentity (state) {
   return identities[selectedAddress]
 }
 
+function getNumberOfAccounts (state) {
+  return Object.keys(state.metamask.accounts).length
+}
+
+function getNumberOfTokens (state) {
+  const tokens = state.metamask.tokens
+  return tokens ? tokens.length : 0
+}
+
 function getMetaMaskAccounts (state) {
   const currentAccounts = state.metamask.accounts
-  const cachedBalances = state.metamask.cachedBalances
+  const cachedBalances = state.metamask.cachedBalances[state.metamask.network]
   const selectedAccounts = {}
 
   Object.keys(currentAccounts).forEach(accountID => {
@@ -70,13 +129,27 @@ function getMetaMaskAccounts (state) {
     if (account && account.balance === null || account.balance === undefined) {
       selectedAccounts[accountID] = {
         ...account,
-        balance: cachedBalances[accountID],
+        balance: cachedBalances && cachedBalances[accountID],
       }
     } else {
       selectedAccounts[accountID] = account
     }
   })
   return selectedAccounts
+}
+
+function isBalanceCached (state) {
+  const selectedAccountBalance = state.metamask.accounts[getSelectedAddress(state)].balance
+  const cachedBalance = getSelectedAccountCachedBalance(state)
+
+  return Boolean(!selectedAccountBalance && cachedBalance)
+}
+
+function getSelectedAccountCachedBalance (state) {
+  const cachedBalances = state.metamask.cachedBalances[state.metamask.network]
+  const selectedAddress = getSelectedAddress(state)
+
+  return cachedBalances && cachedBalances[selectedAddress]
 }
 
 function getSelectedAccount (state) {
@@ -197,30 +270,6 @@ function getSelectedTokenContract (state) {
     : null
 }
 
-function autoAddToBetaUI (state) {
-  const autoAddTransactionThreshold = 12
-  const autoAddAccountsThreshold = 2
-  const autoAddTokensThreshold = 1
-
-  const numberOfTransactions = state.metamask.selectedAddressTxList.length
-  const numberOfAccounts = Object.keys(getMetaMaskAccounts(state)).length
-  const numberOfTokensAdded = state.metamask.tokens.length
-
-  const userPassesThreshold = (numberOfTransactions > autoAddTransactionThreshold) &&
-    (numberOfAccounts > autoAddAccountsThreshold) &&
-    (numberOfTokensAdded > autoAddTokensThreshold)
-  const userIsNotInBeta = !state.metamask.featureFlags.betaUI
-
-  return userIsNotInBeta && userPassesThreshold
-}
-
-function getShouldUseNewUi (state) {
-  const isAlreadyUsingBetaUi = state.metamask.featureFlags.betaUI
-  const isMascara = state.metamask.isMascara
-  const isFreshInstall = Object.keys(state.metamask.identities).length === 0
-  return isAlreadyUsingBetaUi || isMascara || isFreshInstall
-}
-
 function getCurrentViewContext (state) {
   const { currentView = {} } = state.appState
   return currentView.context
@@ -238,6 +287,15 @@ function getTotalUnapprovedCount ({ metamask }) {
     unapprovedTypedMessagesCount
 }
 
+function getIsMainnet (state) {
+  const networkType = getNetworkIdentifier(state)
+  return networkType === NETWORK_TYPES.MAINNET
+}
+
 function preferencesSelector ({ metamask }) {
   return metamask.preferences
+}
+
+function getAdvancedInlineGasShown (state) {
+  return Boolean(state.metamask.featureFlags.advancedInlineGas)
 }

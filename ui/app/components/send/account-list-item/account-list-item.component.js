@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import { checksumAddress } from '../../../util'
 import Identicon from '../../identicon'
 import UserPreferencedCurrencyDisplay from '../../user-preferenced-currency-display'
 import { PRIMARY, SECONDARY } from '../../../constants/common'
 const Web3 = require("web3");
 let web3 = new Web3();
+import Tooltip from '../../tooltip-v2'
 
 export default class AccountListItem extends Component {
 
@@ -18,7 +20,13 @@ export default class AccountListItem extends Component {
     displayBalance: PropTypes.bool,
     handleClick: PropTypes.func,
     icon: PropTypes.node,
+    balanceIsCached: PropTypes.bool,
+    showFiat: PropTypes.bool,
   };
+
+  static defaultProps = {
+    showFiat: true,
+  }
 
   static contextTypes = {
     t: PropTypes.func,
@@ -32,6 +40,8 @@ export default class AccountListItem extends Component {
       displayBalance = true,
       handleClick,
       icon = null,
+      balanceIsCached,
+      showFiat,
     } = this.props
 
     const { name, address, balance, xsp } = account || {}
@@ -60,26 +70,47 @@ export default class AccountListItem extends Component {
 
       {
         displayBalance && (
-          <div className="account-list-item__account-balances">
-            <UserPreferencedCurrencyDisplay
-              type={PRIMARY}
-              value={balance}
-            />
-            {/* Inline styling is really not the way to go...however I can't get it to work when adding to a scss file... */}
-            <div style={{display: "flex"}}>
-              <UserPreferencedCurrencyDisplay
-                type={SECONDARY}
-                value={balance}
-              />
-              <div style={{marginLeft: "5px", marginRight: "5px"}}>
-                |
+          <Tooltip
+            position="left"
+            title={this.context.t('balanceOutdated')}
+            disabled={!balanceIsCached}
+            style={{
+              left: '-20px !important',
+            }}
+          >
+            <div className={classnames('account-list-item__account-balances', {
+              'account-list-item__cached-balances': balanceIsCached,
+            })}>
+              <div className="account-list-item__primary-cached-container">
+                <UserPreferencedCurrencyDisplay
+                  type={PRIMARY}
+                  value={balance}
+                  hideTitle={true}
+                />
+                {
+                  balanceIsCached ? <span className="account-list-item__cached-star">*</span> : null
+                }
               </div>
-              <div className="currency-container__secondary-balance" style={{display: "flex"}}>
-                <span className="xsp" style={{display: "inline-block", maxWidth: "60px", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}} title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
-                <span className="xsp-suffix"> XSP</span>
-              </div>
+              {
+                showFiat && (
+                  <div style={{display: "flex"}}>
+                  <UserPreferencedCurrencyDisplay
+                    type={SECONDARY}
+                    value={balance}
+                    hideTitle={true}
+                  />
+                  <div style={{marginLeft: "5px", marginRight: "5px"}}>
+                    |
+                  </div>
+                  <div className="currency-container__secondary-balance" style={{display: "flex"}}>
+                    <span className="xsp" style={{display: "inline-block", maxWidth: "60px", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}} title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+                    <span className="xsp-suffix"> XSP</span>
+                  </div>
+                </div>
+                )
+              }
             </div>
-          </div>
+          </Tooltip>
         )
       }
 

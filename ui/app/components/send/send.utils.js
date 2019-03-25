@@ -234,6 +234,10 @@ async function estimateGas ({
     if (to) {
       paramsForGasEstimate.to = to
     }
+
+    if (!value || value === '0') {
+      paramsForGasEstimate.value = '0xff'
+    }
   }
 
   // if not, fall back to block gasLimit

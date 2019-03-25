@@ -2,6 +2,65 @@
 
 ## Current Develop Branch
 
+## 6.2.2 Tue Mar 12 2019
+
+- [#6271](https://github.com/MetaMask/metamask-extension/pull/6271): Centre all notification popups
+- [#6268](https://github.com/MetaMask/metamask-extension/pull/6268): Improve Korean translations
+- [#6279](https://github.com/MetaMask/metamask-extension/pull/6279): Nonmultiple notifications for batch txs
+- [#6280](https://github.com/MetaMask/metamask-extension/pull/6280): No longer check network when validating checksum addresses
+
+## 6.2.1 Wed Mar 06 2019
+
+## 6.2.0 Tue Mar 05 2019
+- [#6192](https://github.com/MetaMask/metamask-extension/pull/6192): Improves design and UX of onboarding flow
+- [#6195](https://github.com/MetaMask/metamask-extension/pull/6195): Fixes gas estimation when sending to contracts
+- [#6223](https://github.com/MetaMask/metamask-extension/pull/6223): Fixes display of notification windows when metamask is active in a tab
+- [#6171](https://github.com/MetaMask/metamask-extension/pull/6171): Adds MetaMetrics usage analytics system
+
+## 6.1.0 Tue Feb 19 2019
+
+- [#6182](https://github.com/MetaMask/metamask-extension/pull/6182): Change "Token Address" to "Token Contract Address"
+- [#6177](https://github.com/MetaMask/metamask-extension/pull/6177): Fixes #6176
+- [#6146](https://github.com/MetaMask/metamask-extension/pull/6146): * Add Copy Tx ID button to transaction-list-item-details
+- [#6133](https://github.com/MetaMask/metamask-extension/pull/6133): Checksum address before slicing it for the confirm screen
+- [#6147](https://github.com/MetaMask/metamask-extension/pull/6147): Add button to force edit token symbol when adding custom token
+- [#6124](https://github.com/MetaMask/metamask-extension/pull/6124): recent-blocks - dont listen for block when on infura providers
+-[#5973] (https://github.com/MetaMask/metamask-extension/pull/5973): Fix incorrectly showing checksums on non-ETH blockchains (issue 5838)
+
+## 6.0.1 Tue Feb 12 2019
+
+- [#6139](https://github.com/MetaMask/metamask-extension/pull/6139) Fix advanced gas controls on the confirm screen
+- [#6134](https://github.com/MetaMask/metamask-extension/pull/6134) Trim whitespace from seed phrase during import
+- [#6119](https://github.com/MetaMask/metamask-extension/pull/6119) Update Italian translation
+- [#6125](https://github.com/MetaMask/metamask-extension/pull/6125) Improved Traditional Chinese translation
+
+
+## 6.0.0 Thu Feb 07 2019
+
+- [#6082](https://github.com/MetaMask/metamask-extension/pull/6082): Migrate all users to the new UI
+- [#6114](https://github.com/MetaMask/metamask-extension/pull/6114): Add setting for inputting gas price with a text field for advanced users.
+- [#6091](https://github.com/MetaMask/metamask-extension/pull/6091): Add Swap feature to CurrencyInput
+- [#6090](https://github.com/MetaMask/metamask-extension/pull/6090): Change gas labels to Slow/Average/Fast
+- [#6112](https://github.com/MetaMask/metamask-extension/pull/6112): Extract advanced gas input controls to their own component
+- [#5929](https://github.com/MetaMask/metamask-extension/pull/5929): Update design of phishing warning screen
+- [#6120](https://github.com/MetaMask/metamask-extension/pull/6120): Add class to sign footer button
+- [#6116](https://github.com/MetaMask/metamask-extension/pull/6116): Fix locale codes contains underscore never being preferred
+
+## 5.3.5 Mon Feb 4 2019
+
+- [#6084](https://github.com/MetaMask/metamask-extension/pull/6087): Privacy mode fixes
+
+## 5.3.4 Thu Jan 31 2019
+
+- [#6079](https://github.com/MetaMask/metamask-extension/pull/6079): fix - migration 30
+
+## 5.3.3 Wed Jan 30 2019
+
+- [#6006](https://github.com/MetaMask/metamask-extension/pull/6006): Update privacy notice
+- [#6072](https://github.com/MetaMask/metamask-extension/pull/6072): Improved Spanish translations
+- [#5854](https://github.com/MetaMask/metamask-extension/pull/5854): Add visual indicator when displaying a cached balance.
+- [#6044](https://github.com/MetaMask/metamask-extension/pull/6044): Fix bug that interferred with using multiple custom networks.
+
 ## 5.3.2 Mon Jan 28 2019
 
 - [#6021](https://github.com/MetaMask/metamask-extension/pull/6021): Order shapeshift transactions by time within the transactions list

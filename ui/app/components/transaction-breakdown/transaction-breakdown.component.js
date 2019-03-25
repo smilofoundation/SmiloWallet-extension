@@ -6,8 +6,6 @@ import CurrencyDisplay from '../currency-display'
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display'
 import HexToDecimal from '../hex-to-decimal'
 import { GWEI, PRIMARY, SECONDARY } from '../../constants/common'
-import { getHexGasTotal } from '../../helpers/confirm-transaction/util'
-import { sumHexes } from '../../helpers/transactions.util'
 
 export default class TransactionBreakdown extends PureComponent {
   static contextTypes = {
@@ -18,21 +16,22 @@ export default class TransactionBreakdown extends PureComponent {
     transaction: PropTypes.object,
     className: PropTypes.string,
     nativeCurrency: PropTypes.string.isRequired,
+    showFiat: PropTypes.bool,
+    gas: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    gasPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    gasUsed: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    totalInHex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }
 
   static defaultProps = {
     transaction: {},
+    showFiat: true,
   }
 
   render () {
     const { t } = this.context
-    const { transaction, className, nativeCurrency } = this.props
-    const { txParams: { gas, gasPrice, value } = {}, txReceipt: { gasUsed } = {} } = transaction
-
-    const gasLimit = typeof gasUsed === 'string' ? gasUsed : gas
-
-    const hexGasTotal = getHexGasTotal({ gasLimit, gasPrice })
-    const totalInHex = sumHexes(hexGasTotal, value)
+    const { gas, gasPrice, value, className, nativeCurrency, showFiat, totalInHex, gasUsed } = this.props
 
     return (
       <div className={classnames('transaction-breakdown', className)}>
@@ -50,10 +49,13 @@ export default class TransactionBreakdown extends PureComponent {
           title={`${t('gasLimit')} (${t('units')})`}
           className="transaction-breakdown__row-title"
         >
-          <HexToDecimal
-            className="transaction-breakdown__value"
-            value={gas}
-          />
+          {typeof gas !== 'undefined'
+            ? <HexToDecimal
+              className="transaction-breakdown__value"
+              value={gas}
+            />
+            : '?'
+          }
         </TransactionBreakdownRow>
         {
           typeof gasUsed === 'string' && (
@@ -69,13 +71,16 @@ export default class TransactionBreakdown extends PureComponent {
           )
         }
         <TransactionBreakdownRow title={t('gasPrice')}>
-          <CurrencyDisplay
-            className="transaction-breakdown__value"
-            currency={nativeCurrency}
-            denomination={GWEI}
-            value={gasPrice}
-            hideLabel
-          />
+          {typeof gasPrice !== 'undefined'
+            ? <CurrencyDisplay
+              className="transaction-breakdown__value"
+              currency={nativeCurrency}
+              denomination={GWEI}
+              value={gasPrice}
+              hideLabel
+            />
+            : '?'
+          }
         </TransactionBreakdownRow>
         <TransactionBreakdownRow title={t('total')}>
           <div>
@@ -84,11 +89,15 @@ export default class TransactionBreakdown extends PureComponent {
               type={PRIMARY}
               value={totalInHex}
             />
-            <UserPreferencedCurrencyDisplay
-              className="transaction-breakdown__value"
-              type={SECONDARY}
-              value={totalInHex}
-            />
+            {
+              showFiat && (
+                <UserPreferencedCurrencyDisplay
+                  className="transaction-breakdown__value"
+                  type={SECONDARY}
+                  value={totalInHex}
+                />
+              )
+            }
           </div>
         </TransactionBreakdownRow>
       </div>

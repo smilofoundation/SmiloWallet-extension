@@ -26,7 +26,6 @@ const PreferencesController = require('./controllers/preferences')
 const CurrencyController = require('./controllers/currency')
 const NoticeController = require('./notice-controller')
 const ShapeShiftController = require('./controllers/shapeshift')
-const AddressBookController = require('./controllers/address-book')
 const InfuraController = require('./controllers/infura')
 const BlacklistController = require('./controllers/blacklist')
 const CachedBalancesController = require('./controllers/cached-balances')
@@ -42,9 +41,9 @@ const ProviderApprovalController = require('./controllers/provider-approval')
 const nodeify = require('./lib/nodeify')
 const accountImporter = require('./account-import-strategies')
 const getBuyEthUrl = require('./lib/buy-eth-url')
-const Mutex = require('await-semaphore').Mutex
-const version = require('../manifest.json').version
-const BN = require('ethereumjs-util').BN
+const {Mutex} = require('await-semaphore')
+const {version} = require('../manifest.json')
+const {BN} = require('ethereumjs-util')
 const GWEI_BN = new BN('1000000000')
 const percentile = require('percentile')
 const seedPhraseVerifier = require('./lib/seed-phrase-verifier')
@@ -55,6 +54,8 @@ const HW_WALLETS_KEYRINGS = [TrezorKeyring.type, LedgerBridgeKeyring.type]
 const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')
+const { AddressBookController } = require('gaba')
+
 
 module.exports = class MetamaskController extends EventEmitter {
 
@@ -86,7 +87,7 @@ module.exports = class MetamaskController extends EventEmitter {
     this.createVaultMutex = new Mutex()
 
     // network store
-    this.networkController = new NetworkController(initState.NetworkController)
+    this.networkController = new NetworkController(initState.NetworkController, this.platform)
 
     // preferences controller
     this.preferencesController = new PreferencesController({
@@ -126,14 +127,16 @@ module.exports = class MetamaskController extends EventEmitter {
     this.recentBlocksController = new RecentBlocksController({
       blockTracker: this.blockTracker,
       provider: this.provider,
-      networkProvider: initState.provider
+      networkProvider: initState.provider,
+      networkController: this.networkController,
     })
 
     // account tracker watches balances, nonces, and any code at their address.
     this.accountTracker = new AccountTracker({
       provider: this.provider,
       blockTracker: this.blockTracker,
-      networkProvider: (initState.NetworkController || {}).provider
+      networkProvider: (initState.NetworkController || {}).provider,
+      network: this.networkController,
     })
 
     // start and stop polling for balances based on activeControllerConnections
@@ -179,11 +182,7 @@ module.exports = class MetamaskController extends EventEmitter {
       keyringMemStore: this.keyringController.memStore,
     })
 
-    // address book controller
-    this.addressBookController = new AddressBookController({
-      initState: initState.AddressBookController,
-      preferencesStore: this.preferencesController.store,
-    })
+    this.addressBookController = new AddressBookController(undefined, initState.AddressBookController)
 
     // tx mgmt
     this.txController = new TransactionController({
@@ -214,7 +213,7 @@ module.exports = class MetamaskController extends EventEmitter {
     })
     this.networkController.on('networkDidChange', () => {
       this.balancesController.updateAllBalances()
-      var currentCurrency = this.currencyController.getCurrentCurrency()
+      const currentCurrency = this.currencyController.getCurrentCurrency()
       this.setCurrentCurrency(currentCurrency, function () {})
     })
     this.balancesController.updateAllBalances()
@@ -249,7 +248,7 @@ module.exports = class MetamaskController extends EventEmitter {
       TransactionController: this.txController.store,
       KeyringController: this.keyringController.store,
       PreferencesController: this.preferencesController.store,
-      AddressBookController: this.addressBookController.store,
+      AddressBookController: this.addressBookController,
       CurrencyController: this.currencyController.store,
       NoticeController: this.noticeController.store,
       ShapeShiftController: this.shapeshiftController.store,
@@ -271,7 +270,7 @@ module.exports = class MetamaskController extends EventEmitter {
       KeyringController: this.keyringController.memStore,
       PreferencesController: this.preferencesController.store,
       RecentBlocksController: this.recentBlocksController.store,
-      AddressBookController: this.addressBookController.store,
+      AddressBookController: this.addressBookController,
       CurrencyController: this.currencyController.store,
       NoticeController: this.noticeController.memStore,
       ShapeshiftController: this.shapeshiftController.store,
@@ -380,7 +379,6 @@ module.exports = class MetamaskController extends EventEmitter {
     const preferencesController = this.preferencesController
     const txController = this.txController
     const noticeController = this.noticeController
-    const addressBookController = this.addressBookController
     const networkController = this.networkController
     const providerApprovalController = this.providerApprovalController
 
@@ -389,6 +387,9 @@ module.exports = class MetamaskController extends EventEmitter {
       getState: (cb) => cb(null, this.getState()),
       setCurrentCurrency: this.setCurrentCurrency.bind(this),
       setUseBlockie: this.setUseBlockie.bind(this),
+      setParticipateInMetaMetrics: this.setParticipateInMetaMetrics.bind(this),
+      setMetaMetricsSendCount: this.setMetaMetricsSendCount.bind(this),
+      setFirstTimeFlowType: this.setFirstTimeFlowType.bind(this),
       setCurrentLocale: this.setCurrentLocale.bind(this),
       markAccountsFound: this.markAccountsFound.bind(this),
       markPasswordForgotten: this.markPasswordForgotten.bind(this),
@@ -415,12 +416,16 @@ module.exports = class MetamaskController extends EventEmitter {
       checkHardwareStatus: nodeify(this.checkHardwareStatus, this),
       unlockHardwareWalletAccount: nodeify(this.unlockHardwareWalletAccount, this),
 
+      // mobile
+      fetchInfoToSync: nodeify(this.fetchInfoToSync, this),
+
       // vault management
       submitPassword: nodeify(this.submitPassword, this),
 
       // network management
       setProviderType: nodeify(networkController.setProviderType, networkController),
       setCustomRpc: nodeify(this.setCustomRpc, this),
+      updateAndSetCustomRpc: nodeify(this.updateAndSetCustomRpc, this),
       delCustomRpc: nodeify(this.delCustomRpc, this),
 
       // PreferencesController
@@ -432,6 +437,7 @@ module.exports = class MetamaskController extends EventEmitter {
       setAccountLabel: nodeify(preferencesController.setAccountLabel, preferencesController),
       setFeatureFlag: nodeify(preferencesController.setFeatureFlag, preferencesController),
       setPreference: nodeify(preferencesController.setPreference, preferencesController),
+      completeUiMigration: nodeify(preferencesController.completeUiMigration, preferencesController),
       completeOnboarding: nodeify(preferencesController.completeOnboarding, preferencesController),
       addKnownMethodData: nodeify(preferencesController.addKnownMethodData, preferencesController),
 
@@ -439,7 +445,7 @@ module.exports = class MetamaskController extends EventEmitter {
       whitelistPhishingDomain: this.whitelistPhishingDomain.bind(this),
 
       // AddressController
-      setAddressBook: nodeify(addressBookController.setAddressBook, addressBookController),
+      setAddressBook: this.addressBookController.set.bind(this.addressBookController),
 
       // KeyringController
       setLocked: nodeify(this.setLocked, this),
@@ -587,6 +593,60 @@ module.exports = class MetamaskController extends EventEmitter {
         })
       }
     })
+  }
+
+  /**
+   * Collects all the information that we want to share
+   * with the mobile client for syncing purposes
+   * @returns Promise<Object> Parts of the state that we want to syncx
+   */
+   async fetchInfoToSync () {
+    // Preferences
+    const {
+      accountTokens,
+      currentLocale,
+      frequentRpcList,
+      identities,
+      selectedAddress,
+      tokens,
+    } = this.preferencesController.store.getState()
+
+    const preferences = {
+      accountTokens,
+      currentLocale,
+      frequentRpcList,
+      identities,
+      selectedAddress,
+      tokens,
+    }
+
+    // Accounts
+    const hdKeyring = this.keyringController.getKeyringsByType('HD Key Tree')[0]
+    const hdAccounts = await hdKeyring.getAccounts()
+    const accounts = {
+      hd: hdAccounts.filter((item, pos) => (hdAccounts.indexOf(item) === pos)).map(address => ethUtil.toChecksumAddress(address)),
+      simpleKeyPair: [],
+      ledger: [],
+      trezor: [],
+    }
+
+    // transactions
+
+    let transactions = this.txController.store.getState().transactions
+    // delete tx for other accounts that we're not importing
+    transactions = transactions.filter(tx => {
+      const checksummedTxFrom = ethUtil.toChecksumAddress(tx.txParams.from)
+      return (
+        accounts.hd.includes(checksummedTxFrom)
+      )
+    })
+
+    return {
+      accounts,
+      preferences,
+      transactions,
+      network: this.networkController.store.getState(),
+    }
   }
 
   /*
@@ -1510,6 +1570,21 @@ module.exports = class MetamaskController extends EventEmitter {
   }
 
   // network
+  /**
+   * A method for selecting a custom URL for an ethereum RPC provider and updating it
+   * @param {string} rpcUrl - A URL for a valid Ethereum RPC API.
+   * @param {number} chainId - The chainId of the selected network.
+   * @param {string} ticker - The ticker symbol of the selected network.
+   * @param {string} nickname - Optional nickname of the selected network.
+   * @returns {Promise<String>} - The RPC Target URL confirmed.
+   */
+
+  async updateAndSetCustomRpc (rpcUrl, chainId, ticker = 'ETH', nickname) {
+    await this.preferencesController.updateRpc({ rpcUrl, chainId, ticker, nickname })
+    this.networkController.setRpcTarget(rpcUrl, chainId, ticker, nickname)
+    return rpcUrl
+  }
+
 
   /**
    * A method for selecting a custom URL for an ethereum RPC provider.
@@ -1520,8 +1595,15 @@ module.exports = class MetamaskController extends EventEmitter {
    * @returns {Promise<String>} - The RPC Target URL confirmed.
    */
   async setCustomRpc (rpcTarget, chainId, ticker = 'XSM', nickname = '') {
-    this.networkController.setRpcTarget(rpcTarget, chainId, ticker, nickname)
-    await this.preferencesController.addToFrequentRpcList(rpcTarget, chainId, ticker, nickname)
+    const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail()
+    const rpcSettings = frequentRpcListDetail.find((rpc) => rpcTarget === rpc.rpcUrl)
+
+    if (rpcSettings) {
+      this.networkController.setRpcTarget(rpcSettings.rpcUrl, rpcSettings.chainId, rpcSettings.ticker, rpcSettings.nickname)
+    } else {
+      this.networkController.setRpcTarget(rpcTarget, chainId, ticker, nickname)
+      await this.preferencesController.addToFrequentRpcList(rpcTarget, chainId, ticker, nickname)
+    }
     return rpcTarget
   }
 
@@ -1546,6 +1628,44 @@ module.exports = class MetamaskController extends EventEmitter {
       cb(err)
     }
   }
+
+  /**
+   * Sets whether or not the user will have usage data tracked with MetaMetrics
+   * @param {boolean} bool - True for users that wish to opt-in, false for users that wish to remain out.
+   * @param {Function} cb - A callback function called when complete.
+   */
+  setParticipateInMetaMetrics (bool, cb) {
+    try {
+      const metaMetricsId = this.preferencesController.setParticipateInMetaMetrics(bool)
+      cb(null, metaMetricsId)
+    } catch (err) {
+      cb(err)
+    }
+  }
+
+  setMetaMetricsSendCount (val, cb) {
+    try {
+      this.preferencesController.setMetaMetricsSendCount(val)
+      cb(null)
+    } catch (err) {
+      cb(err)
+    }
+  }
+
+  /**
+   * Sets the type of first time flow the user wishes to follow: create or import
+   * @param {String} type - Indicates the type of first time flow the user wishes to follow
+   * @param {Function} cb - A callback function called when complete.
+   */
+  setFirstTimeFlowType (type, cb) {
+    try {
+      this.preferencesController.setFirstTimeFlowType(type)
+      cb(null)
+    } catch (err) {
+      cb(err)
+    }
+  }
+
 
   /**
    * A method for setting a user's current locale, affecting the language rendered.

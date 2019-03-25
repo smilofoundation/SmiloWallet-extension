@@ -121,6 +121,20 @@ describe('AccountListItem Component', function () {
         {
           type: 'PRIMARY',
           value: 'mockBalance',
+          hideTitle: true,
+        }
+      )
+    })
+
+    it('should only render one CurrencyDisplay if showFiat is false', () => {
+      wrapper.setProps({ showFiat: false, displayBalance: true })
+      assert.equal(wrapper.find(UserPreferencedCurrencyDisplay).length, 1)
+      assert.deepEqual(
+        wrapper.find(UserPreferencedCurrencyDisplay).at(0).props(),
+        {
+          type: 'PRIMARY',
+          value: 'mockBalance',
+          hideTitle: true,
         }
       )
     })
@@ -129,5 +143,6 @@ describe('AccountListItem Component', function () {
       wrapper.setProps({ displayBalance: false })
       assert.equal(wrapper.find(UserPreferencedCurrencyDisplay).length, 0)
     })
+
   })
 })

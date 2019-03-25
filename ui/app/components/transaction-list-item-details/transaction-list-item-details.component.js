@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import copyToClipboard from 'copy-to-clipboard'
 import SenderToRecipient from '../sender-to-recipient'
 import { FLAT_VARIANT } from '../sender-to-recipient/sender-to-recipient.constants'
 import TransactionActivityLog from '../transaction-activity-log'
@@ -12,6 +13,7 @@ const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
 class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
+    metricsEvent: PropTypes.func,
   }
 
   static propTypes = {
@@ -22,11 +24,23 @@ class TransactionListItemDetails extends PureComponent {
     transactionGroup: PropTypes.object,
   }
 
+  state = {
+    justCopied: false,
+  }
+
   handleEtherscanClick = () => {
     const { transactionGroup: { primaryTransaction }, provider } = this.props
     const { hash } = primaryTransaction
 
     const url = smiloExplorerLinker.createTxLink(hash, provider.type)
+
+    this.context.metricsEvent({
+      eventOpts: {
+        category: 'Navigation',
+        action: 'Activity Log',
+        name: 'Clicked "View on Block Explorer"',
+      },
+    })
 
     global.platform.openWindow({ url: url })
   }
@@ -45,8 +59,28 @@ class TransactionListItemDetails extends PureComponent {
     onRetry(id)
   }
 
+  handleCopyTxId = () => {
+    const { transactionGroup} = this.props
+    const { primaryTransaction: transaction } = transactionGroup
+    const { hash } = transaction
+
+    this.context.metricsEvent({
+      eventOpts: {
+        category: 'Navigation',
+        action: 'Activity Log',
+        name: 'Copied Transaction ID',
+      },
+    })
+
+    this.setState({ justCopied: true }, () => {
+      copyToClipboard(hash)
+      setTimeout(() => this.setState({ justCopied: false }), 1000)
+    })
+  }
+
   render () {
     const { t } = this.context
+    const { justCopied } = this.state
     const { transactionGroup, showCancel, showRetry, onCancel, onRetry } = this.props
     const { primaryTransaction: transaction } = transactionGroup
     const { txParams: { to, from } = {} } = transaction
@@ -78,6 +112,18 @@ class TransactionListItemDetails extends PureComponent {
                 </Button>
               )
             }
+            <Tooltip title={justCopied ? t('copiedTransactionId') : t('copyTransactionId')}>
+              <Button
+                type="raised"
+                onClick={this.handleCopyTxId}
+                className="transaction-list-item-details__header-button"
+              >
+                <img
+                  className="transaction-list-item-details__header-button__copy-icon"
+                  src="/images/copy-to-clipboard.svg"
+                />
+              </Button>
+            </Tooltip>
             <Tooltip title={t('viewOnEtherscan')}>
               <Button
                 type="raised"
@@ -96,6 +142,24 @@ class TransactionListItemDetails extends PureComponent {
               addressOnly
               recipientAddress={to}
               senderAddress={from}
+              onRecipientClick={() => {
+                this.context.metricsEvent({
+                  eventOpts: {
+                    category: 'Navigation',
+                    action: 'Activity Log',
+                    name: 'Copied "To" Address',
+                  },
+                })
+              }}
+              onSenderClick={() => {
+                this.context.metricsEvent({
+                  eventOpts: {
+                    category: 'Navigation',
+                    action: 'Activity Log',
+                    name: 'Copied "From" Address',
+                  },
+                })
+              }}
             />
           </div>
           <div className="transaction-list-item-details__cards-container">

@@ -1,7 +1,6 @@
 {
   "name": "smilo-wallet-extension",
   "version": "0.0.0",
-  "public": false,
   "private": true,
   "scripts": {
     "start": "gulp dev:extension",
@@ -15,15 +14,11 @@
     "watch:test:unit": "nodemon --exec \"npm run test:unit\" ./test ./app ./ui",
     "test:unit": "cross-env METAMASK_ENV=test mocha --exit --require test/setup.js --recursive \"test/unit/**/*.js\" \"ui/app/**/*.test.js\"",
     "test:single": "cross-env METAMASK_ENV=test mocha --require test/helper.js",
-    "test:integration": "npm run test:integration:build && npm run test:flat && npm run test:mascara",
+    "test:integration": "npm run test:integration:build && npm run test:flat",
     "test:integration:build": "gulp build:scss",
-    "test:e2e:chrome": "shell-parallel -s 'npm run ganache:start' -x 'sleep 3 && npm run test:e2e:run:chrome'",
     "test:e2e:drizzle:beta": "SELENIUM_BROWSER=chrome test/e2e/beta/run-drizzle.sh",
-    "test:e2e:chrome:beta": "SELENIUM_BROWSER=chrome test/e2e/beta/run-all.sh",
-    "test:e2e:firefox": "shell-parallel -s 'npm run ganache:start' -x 'sleep 3 && npm run test:e2e:run:firefox'",
-    "test:e2e:firefox:beta": "SELENIUM_BROWSER=firefox test/e2e/beta/run-all.sh",
-    "test:e2e:run:chrome": "SELENIUM_BROWSER=chrome mocha test/e2e/metamask.spec --bail --recursive",
-    "test:e2e:run:firefox": "SELENIUM_BROWSER=firefox mocha test/e2e/metamask.spec --bail --recursive",
+    "test:e2e:chrome": "SELENIUM_BROWSER=chrome test/e2e/beta/run-all.sh",
+    "test:e2e:firefox": "SELENIUM_BROWSER=firefox test/e2e/beta/run-all.sh",
     "test:screens": "shell-parallel -s 'npm run ganache:start' -x 'sleep 3 && npm run test:screens:run'",
     "test:screens:run": "node test/screens/new-ui.js",
     "test:coverage": "nyc --reporter=text --reporter=html npm run test:unit && npm run test:coveralls-upload",
@@ -34,13 +29,7 @@
     "test:flat:build:states": "node development/genStates.js",
     "test:flat:build:locales": "mkdirp dist/chrome && cp -R app/_locales dist/chrome/_locales",
     "test:flat:build:ui": "npm run test:flat:build:states && browserify ./development/mock-dev.js -o ./development/bundle.js",
-    "test:mascara": "npm run test:mascara:build && karma start test/mascara.conf.js",
-    "test:mascara:build": "mkdirp dist/mascara && npm run test:mascara:build:ui && npm run test:mascara:build:background && npm run test:mascara:build:tests && npm run test:mascara:build:locales",
-    "test:mascara:build:ui": "browserify mascara/test/test-ui.js -o dist/mascara/ui.js",
-    "test:mascara:build:locales": "mkdirp dist/chrome && cp -R app/_locales dist/chrome/_locales",
-    "test:mascara:build:background": "browserify mascara/src/background.js -o dist/mascara/background.js",
-    "test:mascara:build:tests": "browserify test/integration/lib/first-time.js -o dist/mascara/tests.js",
-    "ganache:start": "ganache-cli --noVMErrorsOnRPCResponse -m 'phrase upgrade clock rough situate wedding elder clever doctor stamp excess tent'",
+    "ganache:start": "ganache-cli --noVMErrorsOnRPCResponse -i 5777 -m 'phrase upgrade clock rough situate wedding elder clever doctor stamp excess tent'",
     "sentry:publish": "node ./development/sentry-publish.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -50,33 +39,12 @@
     "announce": "node development/announcer.js",
     "version:bump": "node development/run-version-bump.js",
     "storybook": "start-storybook -p 6006 -c .storybook",
-    "update-changelog": "./auto-changelog.sh"
+    "update-changelog": "./development/auto-changelog.sh",
+    "rollback": "./development/rollback.sh"
   },
   "browserify": {
     "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            [
-              "env",
-              {
-                "browsers": [
-                  ">0.25%",
-                  "not ie 11",
-                  "not op_mini all"
-                ]
-              }
-            ],
-            "stage-0"
-          ]
-        },
-        {
-          "plugins": [
-            "transform-class-properties"
-          ]
-        }
-      ],
+      "babelify",
       "reactify",
       "brfs"
     ]
@@ -128,7 +96,7 @@
     "eth-query": "^2.1.2",
     "eth-sig-util": "^2.0.2",
     "eth-token-tracker": "^1.1.5",
-    "eth-trezor-keyring": "^0.2.0",
+    "eth-trezor-keyring": "^0.3.0",
     "ethereumjs-abi": "^0.6.4",
     "ethereumjs-tx": "^1.3.0",
     "ethereumjs-util": "github:ethereumjs/ethereumjs-util#ac5d0908536b447083ea422b435da27f26615de9",
@@ -138,7 +106,6 @@
     "ethjs-contract": "^0.2.3",
     "ethjs-ens": "^2.0.0",
     "ethjs-query": "^0.3.4",
-    "express": "^4.15.5",
     "extension-link-enabler": "^1.0.0",
     "extension-port-stream": "^1.0.0",
     "extensionizer": "^1.0.1",
@@ -147,10 +114,7 @@
     "fuse.js": "^3.2.0",
     "hat": "0.0.3",
     "human-standard-token-abi": "^2.0.0",
-    "idb-global": "^2.1.0",
     "identicon.js": "^2.3.1",
-    "iframe": "^1.0.0",
-    "iframe-stream": "^3.0.0",
     "inject-css": "^0.1.1",
     "json-rpc-engine": "^4.0.0",
     "json-rpc-middleware-stream": "^2.1.0",
@@ -161,7 +125,6 @@
     "lodash.uniqby": "^4.7.0",
     "loglevel": "^1.4.1",
     "luxon": "^1.8.2",
-    "metamascara": "^2.0.0",
     "metamask-inpage-provider": "^1.3.0",
     "metamask-logo": "^2.1.4",
     "mkdirp": "^0.5.1",
@@ -179,9 +142,10 @@
     "promise-filter": "^1.1.0",
     "promise-to-callback": "^1.0.0",
     "prop-types": "^15.6.1",
+    "pubnub": "^4.21.5",
     "pump": "^3.0.0",
     "pumpify": "^1.3.4",
-    "qrcode-npm": "0.0.3",
+    "qrcode-generator": "1.4.1",
     "ramda": "^0.24.1",
     "react": "^15.6.2",
     "react-addons-css-transition-group": "^15.6.0",
@@ -214,8 +178,6 @@
     "semver": "^5.4.1",
     "shallow-copy": "0.0.1",
     "single-call-balance-checker-abi": "^1.0.0",
-    "sw-controller": "^1.0.3",
-    "sw-stream": "^2.0.2",
     "swappable-obj-proxy": "^1.1.0",
     "textarea-caret": "^3.0.1",
     "valid-url": "^1.0.9",
@@ -245,7 +207,6 @@
     "chai": "^4.1.0",
     "chromedriver": "^2.41.0",
     "clipboardy": "^1.2.3",
-    "compression": "^1.7.1",
     "coveralls": "^3.0.0",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.11",
@@ -263,8 +224,9 @@
     "file-loader": "^1.1.11",
     "fs-extra": "^6.0.1",
     "fs-promise": "^2.0.3",
+    "gaba": "1.0.0-beta.65",
     "ganache-cli": "^6.1.0",
-    "ganache-core": "^2.3.1",
+    "ganache-core": "^2.5.3",
     "geckodriver": "^1.14.1",
     "gh-pages": "^1.2.0",
     "gifencoder": "^1.1.0",

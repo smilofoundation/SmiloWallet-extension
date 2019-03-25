@@ -60,6 +60,7 @@ function NetworkDropdown () {
 
 NetworkDropdown.contextTypes = {
   t: PropTypes.func,
+  metricsEvent: PropTypes.func,
 }
 
 module.exports = compose(
@@ -120,7 +121,7 @@ NetworkDropdown.prototype.render = function () {
       {
         key: 'main',
         closeMenu: () => this.props.hideNetworkDropdown(),
-        onClick: () => props.setProviderType('mainnet'),
+        onClick: () => this.handleClick('mainnet'),
         style: { ...dropdownMenuItemStyle, borderColor: '#038789' },
       },
       [
@@ -142,7 +143,7 @@ NetworkDropdown.prototype.render = function () {
       {
         key: 'test',
         closeMenu: () => this.props.hideNetworkDropdown(),
-        onClick: () => props.setProviderType('testnet'),
+        onClick: () => this.handleClick('testnet'),
         style: dropdownMenuItemStyle,
       },
       [
@@ -164,7 +165,7 @@ NetworkDropdown.prototype.render = function () {
       {
         key: 'default',
         closeMenu: () => this.props.hideNetworkDropdown(),
-        onClick: () => props.setProviderType('localhost'),
+        onClick: () => this.handleClick('localhost'),
         style: dropdownMenuItemStyle,
       },
       [
@@ -208,6 +209,23 @@ NetworkDropdown.prototype.render = function () {
   ])
 }
 
+NetworkDropdown.prototype.handleClick = function (newProviderType) {
+  const { provider: { type: providerType }, setProviderType } = this.props
+  const { metricsEvent } = this.context
+
+  metricsEvent({
+    eventOpts: {
+      category: 'Navigation',
+      action: 'Home',
+      name: 'Switched Networks',
+    },
+    customVariables: {
+      fromNetwork: providerType,
+      toNetwork: newProviderType,
+    },
+  })
+  setProviderType(newProviderType)
+}
 
 NetworkDropdown.prototype.getNetworkName = function () {
   const { provider } = this.props
@@ -229,7 +247,6 @@ NetworkDropdown.prototype.getNetworkName = function () {
 NetworkDropdown.prototype.renderCommonRpc = function (rpcListDetail, provider) {
   const props = this.props
   const reversedRpcListDetail = rpcListDetail.slice().reverse()
-  const network = props.network
 
   return reversedRpcListDetail.map((entry) => {
     const rpc = entry.rpcUrl
@@ -240,7 +257,7 @@ NetworkDropdown.prototype.renderCommonRpc = function (rpcListDetail, provider) {
     if ((rpc === 'http://localhost:8545') || currentRpcTarget) {
       return null
     } else {
-      const chainId = entry.chainId || network
+      const chainId = entry.chainId
       return h(
         DropdownMenuItem,
         {

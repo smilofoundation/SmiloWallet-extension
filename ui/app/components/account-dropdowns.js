@@ -235,6 +235,7 @@ class AccountDropdowns extends Component {
   }
 
   render () {
+    const { metricsEvent } = this.context
     const { style, enableAccountsSelector, enableAccountOptions } = this.props
     const { optionsMenuActive, accountSelectorActive } = this.state
 
@@ -274,6 +275,17 @@ class AccountDropdowns extends Component {
               fontSize: '1.8em',
             },
             onClick: (event) => {
+              metricsEvent({
+                eventOpts: {
+                  category: 'Accounts',
+                  action: 'userClick',
+                  name: 'accountsOpenedMenu',
+                },
+                pageOpts: {
+                  section: 'header',
+                  component: 'accountDropdownIcon',
+                },
+              })
               event.stopPropagation()
               this.setState({
                 accountSelectorActive: false,
@@ -320,6 +332,7 @@ const mapDispatchToProps = (dispatch) => {
 
 AccountDropdowns.contextTypes = {
   t: PropTypes.func,
+  metricsEvent: PropTypes.func,
 }
 
 module.exports = {

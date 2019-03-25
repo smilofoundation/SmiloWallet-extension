@@ -1,13 +1,13 @@
 import { connect } from 'react-redux'
+import { WALLET_VIEW_SIDEBAR } from '../sidebars/sidebar.constants'
 import MenuBar from './menu-bar.component'
 import { showSidebar, hideSidebar } from '../../actions'
 
 const mapStateToProps = state => {
-  const { appState: { sidebar: { isOpen }, isMascara } } = state
+  const { appState: { sidebar: { isOpen } } } = state
 
   return {
     sidebarOpen: isOpen,
-    isMascara,
   }
 }
 
@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch => {
     showSidebar: () => {
       dispatch(showSidebar({
         transitionName: 'sidebar-right',
-        type: 'wallet-view',
+        type: WALLET_VIEW_SIDEBAR,
       }))
     },
     hideSidebar: () => dispatch(hideSidebar()),

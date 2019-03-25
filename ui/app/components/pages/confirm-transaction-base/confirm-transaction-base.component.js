@@ -11,10 +11,12 @@ import {
 import { CONFIRMED_STATUS, DROPPED_STATUS } from '../../../constants/transactions'
 import UserPreferencedCurrencyDisplay from '../../user-preferenced-currency-display'
 import { PRIMARY, SECONDARY } from '../../../constants/common'
+import AdvancedGasInputs from '../../gas-customization/advanced-gas-inputs'
 
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
     t: PropTypes.func,
+    metricsEvent: PropTypes.func,
   }
 
   static propTypes = {
@@ -57,6 +59,8 @@ export default class ConfirmTransactionBase extends Component {
     txData: PropTypes.object,
     unapprovedTxCount: PropTypes.number,
     currentNetworkUnapprovedTxs: PropTypes.object,
+    updateGasAndCalculate: PropTypes.func,
+    customGas: PropTypes.object,
     // Component props
     action: PropTypes.string,
     contentComponent: PropTypes.node,
@@ -74,6 +78,8 @@ export default class ConfirmTransactionBase extends Component {
     onEdit: PropTypes.func,
     onEditGas: PropTypes.func,
     onSubmit: PropTypes.func,
+    setMetaMetricsSendCount: PropTypes.func,
+    metaMetricsSendCount: PropTypes.number,
     subtitle: PropTypes.string,
     subtitleComponent: PropTypes.node,
     summaryComponent: PropTypes.node,
@@ -81,6 +87,9 @@ export default class ConfirmTransactionBase extends Component {
     titleComponent: PropTypes.node,
     valid: PropTypes.bool,
     warning: PropTypes.string,
+    advancedInlineGasShown: PropTypes.bool,
+    insufficientBalance: PropTypes.bool,
+    hideFiatConversion: PropTypes.bool,
   }
 
   state = {
@@ -148,7 +157,20 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   handleEditGas () {
-    const { onEditGas, showCustomizeGasModal } = this.props
+    const { onEditGas, showCustomizeGasModal, action, txData: { origin }, methodData = {} } = this.props
+
+    this.context.metricsEvent({
+      eventOpts: {
+        category: 'Transactions',
+        action: 'Confirm Screen',
+        name: 'User clicks "Edit" on gas',
+      },
+      customVariables: {
+        recipientKnown: null,
+        functionType: action || getMethodName(methodData.name) || this.context.t('contractInteraction'),
+        origin,
+      },
+    })
 
     if (onEditGas) {
       onEditGas()
@@ -165,6 +187,11 @@ export default class ConfirmTransactionBase extends Component {
       hexTransactionFee,
       hexTransactionTotal,
       hideDetails,
+      advancedInlineGasShown,
+      customGas,
+      insufficientBalance,
+      updateGasAndCalculate,
+      hideFiatConversion,
     } = this.props
 
     if (hideDetails) {
@@ -181,14 +208,27 @@ export default class ConfirmTransactionBase extends Component {
               headerText="Edit"
               headerTextClassName="confirm-detail-row__header-text--edit"
               onHeaderClick={() => this.handleEditGas()}
+              secondaryText={hideFiatConversion ? this.context.t('noConversionRateAvailable') : ''}
             />
+            {advancedInlineGasShown
+              ? <AdvancedGasInputs
+                updateCustomGasPrice={newGasPrice => updateGasAndCalculate({ ...customGas, gasPrice: newGasPrice })}
+                updateCustomGasLimit={newGasLimit => updateGasAndCalculate({ ...customGas, gasLimit: newGasLimit })}
+                customGasPrice={customGas.gasPrice}
+                customGasLimit={customGas.gasLimit}
+                insufficientBalance={insufficientBalance}
+                customPriceIsSafe={true}
+                isSpeedUp={false}
+              />
+              : null
+            }
           </div>
           <div>
             <ConfirmDetailRow
               label="Total"
               value={hexTransactionTotal}
               primaryText={primaryTotalTextOverride}
-              secondaryText={secondaryTotalTextOverride}
+              secondaryText={hideFiatConversion ? this.context.t('noConversionRateAvailable') : secondaryTotalTextOverride}
               headerText="Amount + Gas Fee"
               headerTextClassName="confirm-detail-row__header-text--total"
               primaryValueTextColor="#2f9ae0"
@@ -250,7 +290,21 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   handleEdit () {
-    const { txData, tokenData, tokenProps, onEdit } = this.props
+    const { txData, tokenData, tokenProps, onEdit, action, txData: { origin }, methodData = {} } = this.props
+
+    this.context.metricsEvent({
+      eventOpts: {
+        category: 'Transactions',
+        action: 'Confirm Screen',
+        name: 'Edit Transaction',
+      },
+      customVariables: {
+        recipientKnown: null,
+        functionType: action || getMethodName(methodData.name) || this.context.t('contractInteraction'),
+        origin,
+      },
+    })
+
     onEdit({ txData, tokenData, tokenProps })
   }
 
@@ -274,9 +328,22 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   handleCancel () {
-    const { onCancel, txData, cancelTransaction, history, clearConfirmTransaction } = this.props
+    const { metricsEvent } = this.context
+    const { onCancel, txData, cancelTransaction, history, clearConfirmTransaction, action, txData: { origin }, methodData = {} } = this.props
 
     if (onCancel) {
+      metricsEvent({
+        eventOpts: {
+          category: 'Transactions',
+          action: 'Confirm Screen',
+          name: 'Cancel',
+        },
+        customVariables: {
+          recipientKnown: null,
+          functionType: action || getMethodName(methodData.name) || this.context.t('contractInteraction'),
+          origin,
+        },
+      })
       onCancel(txData)
     } else {
       cancelTransaction(txData)
@@ -288,7 +355,8 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   handleSubmit () {
-    const { sendTransaction, clearConfirmTransaction, txData, history, onSubmit } = this.props
+    const { metricsEvent } = this.context
+    const { txData: { origin }, sendTransaction, clearConfirmTransaction, txData, history, onSubmit, action, metaMetricsSendCount = 0, setMetaMetricsSendCount, methodData = {} } = this.props
     const { submitting } = this.state
 
     if (submitting) {
@@ -299,30 +367,46 @@ export default class ConfirmTransactionBase extends Component {
       submitting: true,
       submitError: null,
     }, () => {
-      if (onSubmit) {
-        Promise.resolve(onSubmit(txData))
-          .then(() => {
-            this.setState({
-              submitting: false,
-            })
-          })
-      } else {
-        sendTransaction(txData)
-          .then(() => {
-            clearConfirmTransaction()
-            this.setState({
-              submitting: false,
-            }, () => {
-              history.push(DEFAULT_ROUTE)
-            })
-          })
-          .catch(error => {
-            this.setState({
-              submitting: false,
-              submitError: error.message,
-            })
-          })
-      }
+      metricsEvent({
+        eventOpts: {
+          category: 'Transactions',
+          action: 'Confirm Screen',
+          name: 'Transaction Completed',
+        },
+        customVariables: {
+          recipientKnown: null,
+          functionType: action || getMethodName(methodData.name) || this.context.t('contractInteraction'),
+          origin,
+        },
+      })
+
+      setMetaMetricsSendCount(metaMetricsSendCount + 1)
+        .then(() => {
+          if (onSubmit) {
+            Promise.resolve(onSubmit(txData))
+              .then(() => {
+                this.setState({
+                  submitting: false,
+                })
+              })
+          } else {
+            sendTransaction(txData)
+              .then(() => {
+                clearConfirmTransaction()
+                this.setState({
+                  submitting: false,
+                }, () => {
+                  history.push(DEFAULT_ROUTE)
+                })
+              })
+              .catch(error => {
+                this.setState({
+                  submitting: false,
+                  submitError: error.message,
+                })
+              })
+          }
+        })
     })
   }
 
@@ -389,6 +473,21 @@ export default class ConfirmTransactionBase extends Component {
     }
   }
 
+  componentDidMount () {
+    const { txData: { origin } = {} } = this.props
+    const { metricsEvent } = this.context
+    metricsEvent({
+      eventOpts: {
+        category: 'Transactions',
+        action: 'Confirm Screen',
+        name: 'Confirm: Started',
+      },
+      customVariables: {
+        origin,
+      },
+    })
+  }
+
   render () {
     const {
       isTxReprice,
@@ -426,7 +525,7 @@ export default class ConfirmTransactionBase extends Component {
         toName={toName}
         toAddress={toAddress}
         showEdit={onEdit && !isTxReprice}
-        action={action || name || this.context.t('contractInteraction')}
+        action={action || getMethodName(name) || this.context.t('contractInteraction')}
         title={title}
         titleComponent={this.renderTitleComponent()}
         subtitle={subtitle}
@@ -461,4 +560,15 @@ export default class ConfirmTransactionBase extends Component {
       />
     )
   }
+}
+
+export function getMethodName (camelCase) {
+  if (!camelCase || typeof camelCase !== 'string') {
+    return ''
+  }
+
+  return camelCase
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z])([a-z])/g, ' $1$2')
+    .replace(/ +/g, ' ')
 }

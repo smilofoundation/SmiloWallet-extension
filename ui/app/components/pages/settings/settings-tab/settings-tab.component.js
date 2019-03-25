@@ -5,7 +5,7 @@ import validUrl from 'valid-url'
 import { exportAsFile } from '../../../../util'
 import SimpleDropdown from '../../../dropdowns/simple-dropdown'
 import ToggleButton from 'react-toggle-button'
-import { REVEAL_SEED_ROUTE } from '../../../../routes'
+import { REVEAL_SEED_ROUTE, MOBILE_SYNC_ROUTE } from '../../../../routes'
 import locales from '../../../../../../app/_locales/index.json'
 import TextField from '../../../text-field'
 import Button from '../../../button'
@@ -33,6 +33,7 @@ const localeOptions = locales.map(locale => {
 export default class SettingsTab extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
+    metricsEvent: PropTypes.func,
   }
 
   static propTypes = {
@@ -51,7 +52,6 @@ export default class SettingsTab extends PureComponent {
     showResetAccountConfirmationModal: PropTypes.func,
     warning: PropTypes.string,
     history: PropTypes.object,
-    isMascara: PropTypes.bool,
     updateCurrentLocale: PropTypes.func,
     currentLocale: PropTypes.string,
     useBlockie: PropTypes.bool,
@@ -61,6 +61,12 @@ export default class SettingsTab extends PureComponent {
     nativeCurrency: PropTypes.string,
     useNativeCurrencyAsPrimaryCurrency: PropTypes.bool,
     setUseNativeCurrencyAsPrimaryCurrencyPreference: PropTypes.func,
+    setAdvancedInlineGasFeatureFlag: PropTypes.func,
+    advancedInlineGas: PropTypes.bool,
+    showFiatInTestnets: PropTypes.bool,
+    setShowFiatConversionOnTestnetsPreference: PropTypes.func.isRequired,
+    participateInMetaMetrics: PropTypes.bool,
+    setParticipateInMetaMetrics: PropTypes.func,
   }
 
   state = {
@@ -230,13 +236,35 @@ export default class SettingsTab extends PureComponent {
 
   validateRpc (newRpc, chainId, ticker = 'ETH', nickname) {
     const { setRpcTarget, displayWarning } = this.props
-
     if (validUrl.isWebUri(newRpc)) {
+      this.context.metricsEvent({
+        eventOpts: {
+          category: 'Settings',
+          action: 'Custom RPC',
+          name: 'Success',
+        },
+        customVariables: {
+          networkId: newRpc,
+          chainId,
+        },
+      })
       if (!!chainId && Number.isNaN(parseInt(chainId))) {
         return displayWarning(`${this.context.t('invalidInput')} chainId`)
       }
+
       setRpcTarget(newRpc, chainId, ticker, nickname)
     } else {
+      this.context.metricsEvent({
+        eventOpts: {
+          category: 'Settings',
+          action: 'Custom RPC',
+          name: 'Error',
+        },
+        customVariables: {
+          networkId: newRpc,
+          chainId,
+        },
+      })
       const appendedRpc = `http://${newRpc}`
 
       if (validUrl.isWebUri(appendedRpc)) {
@@ -328,6 +356,13 @@ export default class SettingsTab extends PureComponent {
               large
               onClick={event => {
                 event.preventDefault()
+                this.context.metricsEvent({
+                  eventOpts: {
+                    category: 'Settings',
+                    action: 'Reveal Seed Phrase',
+                    name: 'Reveal Seed Phrase',
+                  },
+                })
                 history.push(REVEAL_SEED_ROUTE)
               }}
             >
@@ -338,6 +373,35 @@ export default class SettingsTab extends PureComponent {
       </div>
     )
   }
+
+
+  renderMobileSync () {
+    const { t } = this.context
+    const { history } = this.props
+
+    return (
+      <div className="settings-page__content-row">
+        <div className="settings-page__content-item">
+          <span>{ t('syncWithMobile') }</span>
+        </div>
+        <div className="settings-page__content-item">
+          <div className="settings-page__content-item-col">
+            <Button
+              type="primary"
+              large
+              onClick={event => {
+                event.preventDefault()
+                history.push(MOBILE_SYNC_ROUTE)
+              }}
+            >
+              { t('syncWithMobile') }
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
 
   renderResetAccount () {
     const { t } = this.context
@@ -356,6 +420,13 @@ export default class SettingsTab extends PureComponent {
               className="settings-tab__button--orange"
               onClick={event => {
                 event.preventDefault()
+                this.context.metricsEvent({
+                  eventOpts: {
+                    category: 'Settings',
+                    action: 'Reset Account',
+                    name: 'Reset Account',
+                  },
+                })
                 showResetAccountConfirmationModal()
               }}
             >
@@ -406,6 +477,32 @@ export default class SettingsTab extends PureComponent {
             <ToggleButton
               value={sendHexData}
               onToggle={value => setHexDataFeatureFlag(!value)}
+              activeLabel=""
+              inactiveLabel=""
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderAdvancedGasInputInline () {
+    const { t } = this.context
+    const { advancedInlineGas, setAdvancedInlineGasFeatureFlag } = this.props
+
+    return (
+      <div className="settings-page__content-row">
+        <div className="settings-page__content-item">
+          <span>{ t('showAdvancedGasInline') }</span>
+          <div className="settings-page__content-description">
+            { t('showAdvancedGasInlineDescription') }
+          </div>
+        </div>
+        <div className="settings-page__content-item">
+          <div className="settings-page__content-item-col">
+            <ToggleButton
+              value={advancedInlineGas}
+              onToggle={value => setAdvancedInlineGasFeatureFlag(!value)}
               activeLabel=""
               inactiveLabel=""
             />
@@ -469,6 +566,35 @@ export default class SettingsTab extends PureComponent {
     )
   }
 
+  renderShowConversionInTestnets () {
+    const { t } = this.context
+    const {
+      showFiatInTestnets,
+      setShowFiatConversionOnTestnetsPreference,
+    } = this.props
+
+    return (
+      <div className="settings-page__content-row">
+        <div className="settings-page__content-item">
+          <span>{ t('showFiatConversionInTestnets') }</span>
+          <div className="settings-page__content-description">
+            { t('showFiatConversionInTestnetsDescription') }
+          </div>
+        </div>
+        <div className="settings-page__content-item">
+          <div className="settings-page__content-item-col">
+            <ToggleButton
+              value={showFiatInTestnets}
+              onToggle={value => setShowFiatConversionOnTestnetsPreference(!value)}
+              activeLabel=""
+              inactiveLabel=""
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   renderPrivacyOptIn () {
     const { t } = this.context
     const { privacyMode, setPrivacyMode } = this.props
@@ -495,14 +621,41 @@ export default class SettingsTab extends PureComponent {
     )
   }
 
+  renderMetaMetricsOptIn () {
+    const { t } = this.context
+    const { participateInMetaMetrics, setParticipateInMetaMetrics } = this.props
+
+    return (
+      <div className="settings-page__content-row">
+        <div className="settings-page__content-item">
+          <span>{ t('participateInMetaMetrics') }</span>
+          <div className="settings-page__content-description">
+            <span>{ t('participateInMetaMetricsDescription') }</span>
+          </div>
+        </div>
+        <div className="settings-page__content-item">
+          <div className="settings-page__content-item-col">
+            <ToggleButton
+              value={participateInMetaMetrics}
+              onToggle={value => setParticipateInMetaMetrics(!value)}
+              activeLabel=""
+              inactiveLabel=""
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   render () {
-    const { warning, isMascara } = this.props
+    const { warning } = this.props
 
     return (
       <div className="settings-page__content">
         { warning && <div className="settings-tab__error">{ warning }</div> }
         { this.renderCurrentConversion() }
         { this.renderUsePrimaryCurrencyOptions() }
+        { this.renderShowConversionInTestnets() }
         { this.renderCurrentLocale() }
         { this.renderNewRpcUrl() }
         { this.renderStateLogs() }
@@ -511,7 +664,10 @@ export default class SettingsTab extends PureComponent {
         { this.renderClearApproval() }
         { this.renderPrivacyOptIn() }
         { this.renderHexDataOptIn() }
+        { this.renderAdvancedGasInputInline() }
         { this.renderBlockieOptIn() }
+        { this.renderMobileSync() }
+        { this.renderMetaMetricsOptIn() }
       </div>
     )
   }

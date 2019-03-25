@@ -11,6 +11,7 @@ const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
 class TransactionActivityLog extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
+    metricEvent: PropTypes.func,
   }
 
   static propTypes = {

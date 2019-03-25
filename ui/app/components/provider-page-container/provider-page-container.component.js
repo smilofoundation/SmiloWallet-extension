@@ -10,20 +10,46 @@ export default class ProviderPageContainer extends PureComponent {
     rejectProviderRequest: PropTypes.func.isRequired,
     siteImage: PropTypes.string,
     siteTitle: PropTypes.string.isRequired,
+    tabID: PropTypes.string.isRequired,
   };
 
   static contextTypes = {
     t: PropTypes.func,
+    metricsEvent: PropTypes.func,
   };
 
+  componentDidMount () {
+    this.context.metricsEvent({
+      eventOpts: {
+        category: 'Auth',
+        action: 'Connect',
+        name: 'Popup Opened',
+      },
+    })
+  }
+
   onCancel = () => {
-    const { origin, rejectProviderRequest } = this.props
-    rejectProviderRequest(origin)
+    const { tabID, rejectProviderRequest } = this.props
+    this.context.metricsEvent({
+      eventOpts: {
+        category: 'Auth',
+        action: 'Connect',
+        name: 'Canceled',
+      },
+    })
+    rejectProviderRequest(tabID)
   }
 
   onSubmit = () => {
-    const { approveProviderRequest, origin } = this.props
-    approveProviderRequest(origin)
+    const { approveProviderRequest, tabID } = this.props
+    this.context.metricsEvent({
+      eventOpts: {
+        category: 'Auth',
+        action: 'Connect',
+        name: 'Confirmed',
+      },
+    })
+    approveProviderRequest(tabID)
   }
 
   render () {

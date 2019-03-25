@@ -1,27 +1,30 @@
 import { connect } from 'react-redux'
 import CurrencyInput from './currency-input.component'
 import { ETH } from '../../constants/common'
+import {getIsMainnet, preferencesSelector} from '../../selectors'
 
 const mapStateToProps = state => {
   const { metamask: { nativeCurrency, currentCurrency, conversionRate } } = state
+  const { showFiatInTestnets } = preferencesSelector(state)
+  const isMainnet = getIsMainnet(state)
 
   return {
     nativeCurrency,
     currentCurrency,
     conversionRate,
+    hideFiat: (!isMainnet && !showFiatInTestnets),
   }
 }
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { nativeCurrency, currentCurrency } = stateProps
-  const { useFiat } = ownProps
-  const suffix = useFiat ? currentCurrency.toUpperCase() : nativeCurrency || ETH
 
   return {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    suffix,
+    nativeSuffix: nativeCurrency || ETH,
+    fiatSuffix: currentCurrency.toUpperCase(),
   }
 }
 

@@ -1,6 +1,6 @@
 const ObservableStore = require('obs-store')
 const normalizeAddress = require('eth-sig-util').normalize
-const { isValidAddress } = require('ethereumjs-util')
+const { isValidAddress, sha3, bufferToHex } = require('ethereumjs-util')
 const extend = require('xtend')
 
 
@@ -18,7 +18,9 @@ class PreferencesController {
    * @property {object} store.assetImages Contains assets objects related to assets added
    * @property {boolean} store.useBlockie The users preference for blockie identicons within the UI
    * @property {object} store.featureFlags A key-boolean map, where keys refer to features and booleans to whether the
-   * user wishes to see that feature
+   * user wishes to see that feature.
+   *
+   * Feature flags can be set by the global function `setPreference(feature, enabled)`, and so should not expose any sensitive behavior.
    * @property {object} store.knownMethodData Contains all data methods known by the user
    * @property {string} store.currentLocale The preferred language locale key
    * @property {string} store.selectedAddress A hex string that matches the currently selected address in the app
@@ -33,11 +35,15 @@ class PreferencesController {
       tokens: [],
       suggestedTokens: {},
       useBlockie: false,
-      featureFlags: {
-        betaUI: true,
-        skipAnnounceBetaUI: true,
-      },
+
+      // WARNING: Do not use feature flags for security-sensitive things.
+      // Feature flag toggling is available in the global namespace
+      // for convenient testing of pre-release features, and should never
+      // perform sensitive operations.
+      featureFlags: {},
       knownMethodData: {},
+      participateInMetaMetrics: null,
+      firstTimeFlowType: null,
       currentLocale: opts.initLangCode,
       identities: {},
       lostIdentities: {},
@@ -47,6 +53,9 @@ class PreferencesController {
         useNativeCurrencyAsPrimaryCurrency: true,
       },
       completedOnboarding: false,
+      completedUiMigration: true,
+      metaMetricsId: null,
+      metaMetricsSendCount: 0,
     }, opts.initState)
 
     this.diagnostics = opts.diagnostics
@@ -54,6 +63,10 @@ class PreferencesController {
     this.store = new ObservableStore(initState)
     this.openPopup = opts.openPopup
     this._subscribeProviderType()
+
+    global.setPreference = (key, value) => {
+      return this.setFeatureFlag(key, value)
+    }
   }
 // PUBLIC METHODS
 
@@ -82,6 +95,44 @@ class PreferencesController {
   setUseBlockie (val) {
     this.store.updateState({ useBlockie: val })
   }
+
+  /**
+   * Setter for the `participateInMetaMetrics` property
+   *
+   * @param {boolean} bool Whether or not the user wants to participate in MetaMetrics
+   * @returns {string|null} the string of the new metametrics id, or null if not set
+   *
+   */
+  setParticipateInMetaMetrics (bool) {
+    this.store.updateState({ participateInMetaMetrics: bool })
+    let metaMetricsId = null
+    if (bool && !this.store.getState().metaMetricsId) {
+      metaMetricsId = bufferToHex(sha3(String(Date.now()) + String(Math.round(Math.random() * Number.MAX_SAFE_INTEGER))))
+      this.store.updateState({ metaMetricsId })
+    } else if (bool === false) {
+      this.store.updateState({ metaMetricsId })
+    }
+    return metaMetricsId
+  }
+
+  setMetaMetricsSendCount (val) {
+    this.store.updateState({ metaMetricsSendCount: val })
+  }
+
+  getMetaMetricsSendCount () {
+    return this.store.getState().metaMetricsSendCount
+  }
+
+  /**
+   * Setter for the `firstTimeFlowType` property
+   *
+   * @param {String} type Indicates the type of first time flow - create or import - the user wishes to follow
+   *
+   */
+   setFirstTimeFlowType (type) {
+     this.store.updateState({ firstTimeFlowType: type })
+   }
+
 
   getSuggestedTokens () {
     return this.store.getState().suggestedTokens
@@ -407,6 +458,32 @@ class PreferencesController {
   }
 
   /**
+   * updates custom RPC details
+   *
+   * @param {string} url The RPC url to add to frequentRpcList.
+   * @param {number} chainId Optional chainId of the selected network.
+   * @param {string} ticker   Optional ticker symbol of the selected network.
+   * @param {string} nickname Optional nickname of the selected network.
+   * @returns {Promise<array>} Promise resolving to updated frequentRpcList.
+   *
+   */
+
+
+  updateRpc (newRpcDetails) {
+    const rpcList = this.getFrequentRpcListDetail()
+    const index = rpcList.findIndex((element) => { return element.rpcUrl === newRpcDetails.rpcUrl })
+    if (index > -1) {
+      const rpcDetail = rpcList[index]
+      const updatedRpc = extend(rpcDetail, newRpcDetails)
+      rpcList[index] = updatedRpc
+      this.store.updateState({ frequentRpcListDetail: rpcList })
+    } else {
+      const { rpcUrl, chainId, ticker, nickname } = newRpcDetails
+      return this.addToFrequentRpcList(rpcUrl, chainId, ticker, nickname)
+    }
+    return Promise.resolve(rpcList)
+  }
+  /**
    * Adds custom RPC url to state.
    *
    * @param {string} url The RPC url to add to frequentRpcList.
@@ -523,6 +600,14 @@ class PreferencesController {
    */
   completeOnboarding () {
     this.store.updateState({ completedOnboarding: true })
+    return Promise.resolve(true)
+  }
+
+  /**
+   * Sets the {@code completedUiMigration} state to {@code true}, indicating that the user has completed the UI switch.
+   */
+  completeUiMigration () {
+    this.store.updateState({ completedUiMigration: true })
     return Promise.resolve(true)
   }
 

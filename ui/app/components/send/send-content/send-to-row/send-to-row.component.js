@@ -27,11 +27,12 @@ export default class SendToRow extends Component {
 
   static contextTypes = {
     t: PropTypes.func,
+    metricsEvent: PropTypes.func,
   }
 
-  handleToChange (to, nickname = '', toError, toWarning) {
+  handleToChange (to, nickname = '', toError, toWarning, network) {
     const { hasHexData, updateSendTo, updateSendToError, updateGas, tokens, selectedToken, updateSendToWarning } = this.props
-    const toErrorObject = getToErrorObject(to, toError, hasHexData)
+    const toErrorObject = getToErrorObject(to, toError, hasHexData, tokens, selectedToken, network)
     const toWarningObject = getToWarningObject(to, toWarning, tokens, selectedToken)
     updateSendTo(to, nickname)
     updateSendToError(toErrorObject)
@@ -62,14 +63,23 @@ export default class SendToRow extends Component {
         warningType={'to'}
         >
         <EnsInput
-          scanQrCode={_ => this.props.scanQrCode()}
+          scanQrCode={_ => {
+            this.context.metricsEvent({
+              eventOpts: {
+                category: 'Transactions',
+                action: 'Edit Screen',
+                name: 'Used QR scanner',
+              },
+            })
+            this.props.scanQrCode()
+          }}
           accounts={toAccounts}
           closeDropdown={() => closeToDropdown()}
           dropdownOpen={toDropdownOpen}
           inError={inError}
           name={'address'}
           network={network}
-          onChange={({ toAddress, nickname, toError, toWarning }) => this.handleToChange(toAddress, nickname, toError, toWarning)}
+          onChange={({ toAddress, nickname, toError, toWarning }) => this.handleToChange(toAddress, nickname, toError, toWarning, this.props.network)}
           openDropdown={() => openToDropdown()}
           placeholder={this.context.t('recipientAddress')}
           to={to}
