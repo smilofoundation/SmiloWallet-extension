@@ -4,22 +4,22 @@ import {
   multiplyCurrencies,
   conversionGreaterThan,
   conversionGTE
-} from '../conversion-util'
+} from '../helpers/utils/conversion-util'
 import {
   getCurrentCurrency, getIsMainnet, preferencesSelector,
-} from '../selectors'
+} from './selectors'
 import {
   formatCurrency,
-} from '../helpers/confirm-transaction/util'
+} from '../helpers/utils/confirm-tx.util'
 import {
   decEthToConvertedCurrency as ethTotalToConvertedCurrency,
-} from '../helpers/conversions.util'
+} from '../helpers/utils/conversions.util'
 import {
   formatETHFee,
-} from '../helpers/formatters'
+} from '../helpers/utils/formatters'
 import {
   calcGasTotal,
-} from '../components/send/send.utils'
+} from '../components/app/send/send.utils'
 import { addHexPrefix } from 'ethereumjs-util'
 
 const selectors = {
