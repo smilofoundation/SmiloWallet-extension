@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
-import { closeWelcomeScreen } from '../../../../actions'
-import { setParticipateInMetaMetrics } from '../../../../actions'
+import { closeWelcomeScreen } from '../../../store/actions'
+import { setParticipateInMetaMetrics } from '../../../store/actions'
 import Welcome from './welcome.component'
 
 const mapStateToProps = ({ metamask }) => {

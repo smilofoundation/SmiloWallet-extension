@@ -3,52 +3,52 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Route, Switch, withRouter, matchPath } from 'react-router-dom'
 import { compose } from 'recompose'
-import actions from './actions'
+import actions from '../../store/actions'
 import log from 'loglevel'
-import { getMetaMaskAccounts, getNetworkIdentifier } from './selectors'
+import { getMetaMaskAccounts, getNetworkIdentifier } from '../../selectors/selectors'
 
 // init
-import FirstTimeFlow from './components/pages/first-time-flow'
+import FirstTimeFlow from '../first-time-flow'
 // accounts
-const SendTransactionScreen = require('./components/send/send.container')
-const ConfirmTransaction = require('./components/pages/confirm-transaction')
+const SendTransactionScreen = require('../../components/app/send/send.container')
+const ConfirmTransaction = require('../confirm-transaction')
 
 // slideout menu
-const Sidebar = require('./components/sidebars').default
-const { WALLET_VIEW_SIDEBAR } = require('./components/sidebars/sidebar.constants')
+const Sidebar = require('../../components/app/sidebars').default
+const { WALLET_VIEW_SIDEBAR } = require('../../components/app/sidebars/sidebar.constants')
 
 // other views
-import Home from './components/pages/home'
-import Settings from './components/pages/settings'
-import Authenticated from './higher-order-components/authenticated'
-import Initialized from './higher-order-components/initialized'
-import Lock from './components/pages/lock'
-import UiMigrationAnnouncement from './components/ui-migration-annoucement'
-const RestoreVaultPage = require('./components/pages/keychains/restore-vault').default
-const RevealSeedConfirmation = require('./components/pages/keychains/reveal-seed')
-const MobileSyncPage = require('./components/pages/mobile-sync')
-const AddTokenPage = require('./components/pages/add-token')
-const ConfirmAddTokenPage = require('./components/pages/confirm-add-token')
-const ConfirmAddSuggestedTokenPage = require('./components/pages/confirm-add-suggested-token')
-const CreateAccountPage = require('./components/pages/create-account')
-const NoticeScreen = require('./components/pages/notice')
+import Home from '../home'
+import Settings from '../settings'
+import Authenticated from '../../helpers/higher-order-components/authenticated'
+import Initialized from '../../helpers/higher-order-components/initialized'
+import Lock from '../lock'
+import UiMigrationAnnouncement from '../../components/app/ui-migration-annoucement'
+const RestoreVaultPage = require('../keychains/restore-vault').default
+const RevealSeedConfirmation = require('../keychains/reveal-seed')
+const MobileSyncPage = require('../mobile-sync')
+const AddTokenPage = require('../add-token')
+const ConfirmAddTokenPage = require('../confirm-add-token')
+const ConfirmAddSuggestedTokenPage = require('../confirm-add-suggested-token')
+const CreateAccountPage = require('../create-account')
+const NoticeScreen = require('../notice')
 
-const Loading = require('./components/loading-screen')
-const LoadingNetwork = require('./components/loading-network-screen').default
-const NetworkDropdown = require('./components/dropdowns/network-dropdown')
-import AccountMenu from './components/account-menu'
+const Loading = require('../../components/ui/loading-screen')
+const LoadingNetwork = require('../../components/app/loading-network-screen').default
+const NetworkDropdown = require('../../components/app/dropdowns/network-dropdown')
+import AccountMenu from '../../components/app/account-menu'
 
 // Global Modals
-const Modal = require('./components/modals/index').Modal
+const Modal = require('../../components/app/modals/index').Modal
 // Global Alert
-const Alert = require('./components/alert')
+const Alert = require('../../components/ui/alert')
 
-import AppHeader from './components/app-header'
-import UnlockPage from './components/pages/unlock-page'
+import AppHeader from '../../components/app/app-header'
+import UnlockPage from '../unlock-page'
 
 import {
   submittedPendingTransactionsSelector,
-} from './selectors/transactions'
+} from '../../selectors/transactions'
 
 // Routes
 import {
@@ -68,13 +68,13 @@ import {
   INITIALIZE_ROUTE,
   INITIALIZE_UNLOCK_ROUTE,
   NOTICE_ROUTE,
-} from './routes'
+} from '../../helpers/constants/routes'
 
 // enums
 import {
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
-} from '../../app/scripts/lib/enums'
+} from '../../../../app/scripts/lib/enums'
 
 class App extends Component {
   componentWillMount () {
