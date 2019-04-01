@@ -665,9 +665,6 @@ export default class SettingsTab extends PureComponent {
         { this.renderPrivacyOptIn() }
         { this.renderHexDataOptIn() }
         { this.renderAdvancedGasInputInline() }
-        { this.renderBlockieOptIn() }
-        { this.renderMobileSync() }
-        { this.renderMetaMetricsOptIn() }
       </div>
     )
   }
