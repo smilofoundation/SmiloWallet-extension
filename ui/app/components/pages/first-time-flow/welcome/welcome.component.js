@@ -15,6 +15,7 @@ export default class Welcome extends PureComponent {
 
   static contextTypes = {
     t: PropTypes.func,
+    metricsEvent: PropTypes.func
   }
 
   constructor (props) {
@@ -24,13 +25,16 @@ export default class Welcome extends PureComponent {
   }
 
   componentDidMount () {
-    const { history, participateInMetaMetrics, welcomeScreenSeen } = this.props
+    const { history, welcomeScreenSeen, setParticipateInMetaMetrics } = this.props
 
-    if (welcomeScreenSeen && participateInMetaMetrics !== null) {
-      history.push(INITIALIZE_CREATE_PASSWORD_ROUTE)
-    } else if (welcomeScreenSeen) {
-      history.push(INITIALIZE_SELECT_ACTION_ROUTE)
-    }
+    setParticipateInMetaMetrics(false)
+      .then(
+        () => {
+          if(welcomeScreenSeen) {
+            history.push(INITIALIZE_SELECT_ACTION_ROUTE)
+          }
+        }
+      );
   }
 
   handleContinue = () => {

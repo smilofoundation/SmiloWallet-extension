@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import { closeWelcomeScreen } from '../../../../actions'
+import { setParticipateInMetaMetrics } from '../../../../actions'
 import Welcome from './welcome.component'
 
 const mapStateToProps = ({ metamask }) => {
@@ -17,6 +18,7 @@ const mapStateToProps = ({ metamask }) => {
 const mapDispatchToProps = dispatch => {
   return {
     closeWelcomeScreen: () => dispatch(closeWelcomeScreen()),
+    setParticipateInMetaMetrics: (val) => dispatch(setParticipateInMetaMetrics(val)),
   }
 }
 
