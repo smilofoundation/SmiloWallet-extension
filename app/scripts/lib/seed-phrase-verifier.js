@@ -29,6 +29,7 @@ const seedPhraseVerifier = {
       const opts = {
         mnemonic: seedWords,
         numberOfAccounts: createdAccounts.length,
+        hdPath: "m/44'/20080914'/0'/0"
       }
 
       const keyring = new Keyring(opts)
