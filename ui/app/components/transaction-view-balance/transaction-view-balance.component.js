@@ -63,7 +63,7 @@ export default class TransactionViewBalance extends PureComponent {
                 </div>
                 {
                   showFiat && (
-                    <div style={{display: "flex"}}>
+                    <div style={{display: "flex", 'align-items': 'center'}}>
                       <UserPreferencedCurrencyDisplay
                         className={classnames({
                           'transaction-view-balance__cached-secondary-balance': balanceIsCached,
