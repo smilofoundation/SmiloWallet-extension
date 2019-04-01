@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import { checksumAddress } from '../../../../helpers/utils/util'
-import Identicon from '../../../ui/identicon'
+import { checksumAddress } from '../../../util'
+import Identicon from '../../identicon'
 import UserPreferencedCurrencyDisplay from '../../user-preferenced-currency-display'
-import { PRIMARY, SECONDARY } from '../../../../helpers/constants/common'
-import Tooltip from '../../../ui/tooltip-v2'
+import { PRIMARY, SECONDARY } from '../../../constants/common'
+const Web3 = require("web3");
+let web3 = new Web3();
+import Tooltip from '../../tooltip-v2'
 
 export default class AccountListItem extends Component {
 
@@ -42,7 +44,7 @@ export default class AccountListItem extends Component {
       showFiat,
     } = this.props
 
-    const { name, address, balance } = account || {}
+    const { name, address, balance, xsp } = account || {}
 
     return (<div
       className={`account-list-item ${className}`}
@@ -89,20 +91,35 @@ export default class AccountListItem extends Component {
                   balanceIsCached ? <span className="account-list-item__cached-star">*</span> : null
                 }
               </div>
-              {
-                showFiat && (
-                  <UserPreferencedCurrencyDisplay
-                    type={SECONDARY}
-                    value={balance}
-                    hideTitle={true}
-                  />
-                )
-              }
+              <div style={{display: 'flex', 'align-items': 'center'}}>
+                {
+                  showFiat && (
+                    <div style={{display: "flex"}}>
+                      <UserPreferencedCurrencyDisplay
+                        type={SECONDARY}
+                        value={balance}
+                        hideTitle={true}
+                      />
+                      <div style={{marginLeft: "5px", marginRight: "5px"}}>
+                        |
+                      </div>
+                    </div>
+                    )
+                  }
+                  <div className="currency-container__secondary-balance" style={{display: "flex", 'align-items': 'center'}}>
+                    <span className="xsp" style={{display: "inline-block", maxWidth: "60px", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}} title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+                    <span className="xsp-suffix"> XSP</span>
+                  </div>
+              </div>
             </div>
           </Tooltip>
         )
       }
 
     </div>)
+  }
+
+  formatXSP(xsp) {
+    return web3.fromWei(xsp, "ether");
   }
 }
