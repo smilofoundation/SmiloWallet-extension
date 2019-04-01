@@ -61,29 +61,32 @@ export default class TransactionViewBalance extends PureComponent {
                     balanceIsCached ? <span className="transaction-view-balance__cached-star">*</span> : null
                   }
                 </div>
-                {
-                  showFiat && (
-                    <div style={{display: "flex", 'align-items': 'center'}}>
-                      <UserPreferencedCurrencyDisplay
-                        className={classnames({
-                          'transaction-view-balance__cached-secondary-balance': balanceIsCached,
-                          'transaction-view-balance__secondary-balance': !balanceIsCached,
-                        })}
-                        value={balance}
-                        type={SECONDARY}
-                        ethNumberOfDecimals={4}
-                        hideTitle={true}
-                      />
-                      <div className="transaction-view-balance__separator">
-                        |
+
+                <div style={{display: "flex", 'align-items': 'center'}}>
+                  {
+                    showFiat && (
+                      <div style={{display: 'flex'}}>
+                        <UserPreferencedCurrencyDisplay
+                          className={classnames({
+                            'transaction-view-balance__cached-secondary-balance': balanceIsCached,
+                            'transaction-view-balance__secondary-balance': !balanceIsCached,
+                          })}
+                          value={balance}
+                          type={SECONDARY}
+                          ethNumberOfDecimals={4}
+                          hideTitle={true}
+                        />
+                        <div className="transaction-view-balance__separator">
+                          |
+                        </div>
                       </div>
-                      <div className="transaction-view-balance__secondary-balance">
-                        <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
-                        <span className="xsp-suffix">XSP</span>
-                      </div>
-                    </div>
-                  )
-                }
+                    )
+                  }
+                  <div className="transaction-view-balance__secondary-balance">
+                    <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+                    <span className="xsp-suffix">XSP</span>
+                  </div>
+                </div>
             </div>
           </Tooltip>
       )

@@ -49,28 +49,32 @@ export default class Balance extends PureComponent {
           type={PRIMARY}
           ethNumberOfDecimals={4}
         />
-        {
-          showFiat && (
-            <div className="fiat-container">
-              <UserPreferencedCurrencyDisplay
-                value={balanceValue}
-                type={SECONDARY}
-                ethNumberOfDecimals={4}
-              />
-              <div className="balance-display__separator">
-                |
+        <div style={{display: 'flex', 'align-items': 'center'}}>
+          {
+            showFiat && (
+              <div style={{display: 'flex'}}>
+                <div className="fiat-container">
+                  <UserPreferencedCurrencyDisplay
+                    value={balanceValue}
+                    type={SECONDARY}
+                    ethNumberOfDecimals={4}
+                  />
+                  <div className="balance-display__separator">
+                    |
+                  </div>
+                </div>
               </div>
-              <div className="balance-display__secondary-balance">
-                <span className="xsp" title={ this.formatXSP(account.xsp) }>
-                  {this.formatXSP(account.xsp)}
-                </span>
-                <span className="xsp-suffix">
-                  XSP
-                </span>
-              </div>
-            </div>
-          )
-        }
+            )
+          }
+          <div className="balance-display__secondary-balance">
+            <span className="xsp" title={ this.formatXSP(account.xsp) }>
+              {this.formatXSP(account.xsp)}
+            </span>
+            <span className="xsp-suffix">
+              XSP
+            </span>
+          </div>
+        </div>
       </div>
     )
   }

@@ -91,24 +91,26 @@ export default class AccountListItem extends Component {
                   balanceIsCached ? <span className="account-list-item__cached-star">*</span> : null
                 }
               </div>
-              {
-                showFiat && (
-                  <div style={{display: "flex"}}>
-                  <UserPreferencedCurrencyDisplay
-                    type={SECONDARY}
-                    value={balance}
-                    hideTitle={true}
-                  />
-                  <div style={{marginLeft: "5px", marginRight: "5px"}}>
-                    |
-                  </div>
+              <div style={{display: 'flex', 'align-items': 'center'}}>
+                {
+                  showFiat && (
+                    <div style={{display: "flex"}}>
+                      <UserPreferencedCurrencyDisplay
+                        type={SECONDARY}
+                        value={balance}
+                        hideTitle={true}
+                      />
+                      <div style={{marginLeft: "5px", marginRight: "5px"}}>
+                        |
+                      </div>
+                    </div>
+                    )
+                  }
                   <div className="currency-container__secondary-balance" style={{display: "flex", 'align-items': 'center'}}>
                     <span className="xsp" style={{display: "inline-block", maxWidth: "60px", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}} title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
                     <span className="xsp-suffix"> XSP</span>
                   </div>
-                </div>
-                )
-              }
+              </div>
             </div>
           </Tooltip>
         )
