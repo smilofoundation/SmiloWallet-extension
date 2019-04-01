@@ -15,12 +15,14 @@ const request = require('request');
 const {
   MAINNET,
   TESTNET,
+  MAINNET_CODE,
+  TESTNET_CODE,
   LOCALHOST,
   MAINNET_END_POINT,
   TESTNET_END_POINT
 } = require("../controllers/network/enums")
 const Web3 = require('web3')
-const { SINGLE_CALL_BALANCES_ADDRESS, SINGLE_CALL_BALANCES_ADDRESS_RINKEBY, SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN, SINGLE_CALL_BALANCES_ADDRESS_KOVAN } = require('../controllers/network/contract-addresses')
+const { SINGLE_CALL_BALANCES_ABI } = require('../controllers/network/contract-addresses')
 
 
 class AccountTracker {
@@ -215,19 +217,11 @@ class AccountTracker {
 
     switch (currentNetwork) {
       case MAINNET_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS)
+      await Promise.all(addresses.map(this._updateAccount.bind(this)))
       break
 
-      case RINKEYBY_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS_RINKEBY)
-      break
-
-      case ROPSTEN_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN)
-      break
-
-      case KOVAN_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS_KOVAN)
+      case TESTNET_CODE:
+      await Promise.all(addresses.map(this._updateAccount.bind(this)))
       break
 
       default:
