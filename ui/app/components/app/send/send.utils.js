@@ -5,7 +5,7 @@ const {
   multiplyCurrencies,
   conversionGreaterThan,
   conversionLessThan,
-} = require('../../../helpers/utils/conversions.util')
+} = require('../../../helpers/utils/conversion-util')
 const {
   calcTokenAmount,
 } = require('../../../helpers/utils/token-util')
