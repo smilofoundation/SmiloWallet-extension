@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
-import TextField from '../../text-field'
+import TextField from '../../components/ui/text-field'
 import getCaretCoordinates from 'textarea-caret'
 import { EventEmitter } from 'events'
-import Mascot from '../../mascot'
-import { DEFAULT_ROUTE } from '../../../routes'
+import { DEFAULT_ROUTE } from '../routes'
 
 export default class UnlockPage extends Component {
   static contextTypes = {

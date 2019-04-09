@@ -4,12 +4,12 @@ const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
 const connect = require('react-redux').connect
 const explorerLink = require('etherscan-link').createExplorerLink
-const actions = require('../actions')
-const { formatDate, addressSummary } = require('../util')
+const actions = require('../../store/actions')
+const { formatDate, addressSummary } = require('../../helpers/utils/util')
 
-const CopyButton = require('./copyButton')
-const EthBalance = require('./eth-balance')
-const Tooltip = require('./tooltip')
+const CopyButton = require('../ui/copyButton')
+const EthBalance = require('../ui/eth-balance')
+const Tooltip = require('../ui/tooltip')
 
 
 ShiftListItem.contextTypes = {

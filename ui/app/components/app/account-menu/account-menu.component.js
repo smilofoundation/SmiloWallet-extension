@@ -2,12 +2,10 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'lodash.debounce'
 import { Menu, Item, Divider, CloseArea } from '../dropdowns/components/menu'
-import { ENVIRONMENT_TYPE_POPUP } from '../../../../app/scripts/lib/enums'
-import { getEnvironmentType } from '../../../../app/scripts/lib/util'
-import Tooltip from '../tooltip'
-import Identicon from '../identicon'
+import Tooltip from '../../ui/tooltip'
+import Identicon from '../../ui/identicon'
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display'
-import { PRIMARY } from '../../constants/common'
+import { PRIMARY } from '../../../helpers/constants/common'
 import {
   SETTINGS_ROUTE,
   INFO_ROUTE,
@@ -15,7 +13,7 @@ import {
   IMPORT_ACCOUNT_ROUTE,
   CONNECT_HARDWARE_ROUTE,
   DEFAULT_ROUTE,
-} from '../../routes'
+} from '../../../pages/routes'
 
 export default class AccountMenu extends PureComponent {
   static contextTypes = {

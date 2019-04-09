@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import Loading from '../../../loading-screen'
-import GasPriceChart from '../../gas-price-chart'
 import debounce from 'lodash.debounce'
 
 export default class AdvancedTabContent extends Component {

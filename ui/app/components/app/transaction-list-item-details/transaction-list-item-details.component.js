@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import copyToClipboard from 'copy-to-clipboard'
-import SenderToRecipient from '../sender-to-recipient'
-import { FLAT_VARIANT } from '../sender-to-recipient/sender-to-recipient.constants'
+import SenderToRecipient from '../../ui/sender-to-recipient'
+import { FLAT_VARIANT } from '../../ui/sender-to-recipient/sender-to-recipient.constants'
 import TransactionActivityLog from '../transaction-activity-log'
 import { connect } from 'react-redux'
 import TransactionBreakdown from '../transaction-breakdown'
-import Button from '../button'
-import Tooltip from '../tooltip'
-const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
+import Button from '../../ui/button'
+import Tooltip from '../../ui/tooltip'
+const smiloExplorerLinker = require("../../../../lib/smilo-explorer-linker")
 
 class TransactionListItemDetails extends PureComponent {
   static contextTypes = {

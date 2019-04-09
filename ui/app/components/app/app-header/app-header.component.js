@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import Identicon from '../identicon'
-import { DEFAULT_ROUTE } from '../../routes'
+import Identicon from '../../ui/identicon'
+import { DEFAULT_ROUTE } from '../../../pages/routes'
 const NetworkIndicator = require('../network')
 
 export default class AppHeader extends PureComponent {

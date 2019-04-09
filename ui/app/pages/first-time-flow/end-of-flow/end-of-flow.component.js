@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import Button from '../../../button'
-import { DEFAULT_ROUTE } from '../../../../routes'
+import Button from '../../../components/ui/button'
+import { DEFAULT_ROUTE } from '../../routes'
 
 export default class EndOfFlowScreen extends PureComponent {
   static contextTypes = {

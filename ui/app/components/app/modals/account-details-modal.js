@@ -5,12 +5,12 @@ const inherits = require('util').inherits
 const connect = require('react-redux').connect
 const actions = require('../../../store/actions')
 const AccountModalContainer = require('./account-modal-container')
-const { getSelectedIdentity } = require('../../selectors')
-const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
-const QrView = require('../qr-code')
-const EditableLabel = require('../editable-label')
+const { getSelectedIdentity } = require('../../../selectors/selectors')
+const smiloExplorerLinker = require('../../../../lib/smilo-explorer-linker')
+const QrView = require('../../ui/qr-code')
+const EditableLabel = require('../../ui/editable-label')
 
-import Button from '../button'
+import Button from '../../ui/button'
 
 function mapStateToProps (state) {
   return {

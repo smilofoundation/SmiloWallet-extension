@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import { checksumAddress } from '../../../util'
-import Identicon from '../../identicon'
+import { checksumAddress } from '../../../../helpers/utils/util'
+import Identicon from '../../../ui/identicon'
 import UserPreferencedCurrencyDisplay from '../../user-preferenced-currency-display'
-import { PRIMARY, SECONDARY } from '../../../constants/common'
+import { PRIMARY, SECONDARY } from '../../../../helpers/constants/common'
 const Web3 = require("web3");
 let web3 = new Web3();
-import Tooltip from '../../tooltip-v2'
+import Tooltip from '../../../ui/tooltip-v2'
 
 export default class AccountListItem extends Component {
 

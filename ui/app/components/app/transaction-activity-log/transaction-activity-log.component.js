@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import { getEthConversionFromWeiHex, getValueFromWeiHex } from '../../helpers/conversions.util'
-import { formatDate } from '../../util'
+import { getEthConversionFromWeiHex, getValueFromWeiHex } from '../../../helpers/utils/conversion-util'
+import { formatDate } from '../../../helpers/utils/util'
 import TransactionActivityLogIcon from './transaction-activity-log-icon'
 import { CONFIRMED_STATUS } from './transaction-activity-log.constants'
 import { connect } from 'react-redux'
-const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
+const smiloExplorerLinker = require("../../../../lib/smilo-explorer-linker");
 
 class TransactionActivityLog extends PureComponent {
   static contextTypes = {

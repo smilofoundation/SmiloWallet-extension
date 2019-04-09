@@ -1,9 +1,9 @@
 const { Component } = require('react')
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
-const smiloExplorerLinker = require("../../../../../lib/smilo-explorer-linker");
+const smiloExplorerLinker = require('../../../../lib/smilo-explorer-linker')
 const Select = require('react-select').default
-import Button from '../../../button'
+import Button from '../../../components/ui/button'
 
 class AccountList extends Component {
     constructor (props, context) {

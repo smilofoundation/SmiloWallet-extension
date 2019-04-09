@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import Button from '../../../button'
+import Button from '../../../components/ui/button'
 import {
   INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
   INITIALIZE_CREATE_PASSWORD_ROUTE
-} from '../../../../routes'
+} from '../../../pages/routes'
 
 export default class SelectAction extends PureComponent {
   static propTypes = {

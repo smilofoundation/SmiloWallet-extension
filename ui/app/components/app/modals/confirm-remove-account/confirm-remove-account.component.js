@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../../modal'
-import { addressSummary } from '../../../util'
-import Identicon from '../../identicon'
-const smiloExplorerLinker = require("../../../../lib/smilo-explorer-linker");
+import { addressSummary } from '../../../../helpers/utils/util'
+import Identicon from '../../../ui/identicon'
+const smiloExplorerLinker = require('../../../../../lib/smilo-explorer-linker')
 
 export default class ConfirmRemoveAccount extends Component {
   static propTypes = {

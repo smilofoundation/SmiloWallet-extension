@@ -4,7 +4,7 @@ const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
 const connect = require('react-redux').connect
 const actions = require('../../store/actions')
-const { getCurrentViewContext } = require('../../../selectors')
+const { getCurrentViewContext } = require('../../selectors/selectors')
 const classnames = require('classnames')
 const NewAccountCreateForm = require('./new-account')
 const NewAccountImportForm = require('./import-account')
@@ -13,7 +13,7 @@ const {
   NEW_ACCOUNT_ROUTE,
   IMPORT_ACCOUNT_ROUTE,
   CONNECT_HARDWARE_ROUTE,
-} = require('../../../routes')
+} = require('../routes')
 
 class CreateAccountPage extends Component {
   renderTabs () {

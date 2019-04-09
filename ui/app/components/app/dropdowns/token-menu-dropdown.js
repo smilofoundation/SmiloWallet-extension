@@ -4,7 +4,7 @@ const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const connect = require('react-redux').connect
 const actions = require('../../../store/actions')
-const smiloExplorerLinker = require("../../../lib/smilo-explorer-linker");
+const smiloExplorerLinker = require('../../../../lib/smilo-explorer-linker')
 const { Menu, Item, CloseArea } = require('./components/menu')
 
 TokenMenuDropdown.contextTypes = {

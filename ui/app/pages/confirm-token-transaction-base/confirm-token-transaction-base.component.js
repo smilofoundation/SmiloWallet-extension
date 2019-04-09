@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ConfirmTransactionBase from '../confirm-transaction-base'
-import UserPreferencedCurrencyDisplay from '../../user-preferenced-currency-display'
+import UserPreferencedCurrencyDisplay from '../../components/app/user-preferenced-currency-display'
 import {
   formatCurrency,
   convertTokenToFiat,
   addFiat,
   roundExponential,
-} from '../../../helpers/confirm-transaction/util'
-import { getWeiHexFromDecimalValue } from '../../../helpers/conversions.util'
-import { ETH, PRIMARY } from '../../../constants/common'
+} from '../../helpers/utils/confirm-tx.util.test'
+import { getWeiHexFromDecimalValue } from '../../helpers/utils/conversion-util'
+import { ETH, PRIMARY } from '../../helpers/constants/common'
 
 export default class ConfirmTokenTransactionBase extends Component {
   static contextTypes = {

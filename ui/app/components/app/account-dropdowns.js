@@ -1,13 +1,13 @@
 const Component = require('react').Component
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
-const actions = require('../actions')
+const actions = require('../../store/actions')
 const smiloExplorerLinker = require("../../lib/smilo-explorer-linker");
 const connect = require('react-redux').connect
 const Dropdown = require('./dropdown').Dropdown
 const DropdownMenuItem = require('./dropdown').DropdownMenuItem
 const copyToClipboard = require('copy-to-clipboard')
-const { checksumAddress } = require('../util')
+const { checksumAddress } = require('../../helpers/utils/util')
 
 import Identicon from '../ui/identicon'
 

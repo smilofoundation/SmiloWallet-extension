@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import {
   MAINNET_CODE,
   TESTNET_CODE
-} from '../../../../app/scripts/controllers/network/enums'
+} from '../../../../../app/scripts/controllers/network/enums'
 
 const networkToClassHash = {
   [MAINNET_CODE]: 'mainnet',

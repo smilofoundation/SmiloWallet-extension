@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import TokenBalance from '../token-balance'
 import Identicon from '../identicon'
-import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display'
-import { PRIMARY, SECONDARY } from '../../constants/common'
-import { formatBalance } from '../../util'
+import UserPreferencedCurrencyDisplay from '../../app/user-preferenced-currency-display'
+import { PRIMARY, SECONDARY } from '../../../helpers/constants/common'
+import { formatBalance } from '../../../helpers/utils/util'
 const Web3 = require("web3");
 let web3 = new Web3();
 
