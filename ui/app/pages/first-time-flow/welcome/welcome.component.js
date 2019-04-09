@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../../components/ui/button'
-import { INITIALIZE_CREATE_PASSWORD_ROUTE, INITIALIZE_SELECT_ACTION_ROUTE } from '../../routes'
+import { INITIALIZE_CREATE_PASSWORD_ROUTE, INITIALIZE_SELECT_ACTION_ROUTE } from '../../../helpers/constants/routes'
 
 export default class Welcome extends PureComponent {
   static propTypes = {

@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '../../components/ui/text-field'
 import getCaretCoordinates from 'textarea-caret'
 import { EventEmitter } from 'events'
-import { DEFAULT_ROUTE } from '../routes'
+import { DEFAULT_ROUTE } from '../../helpers/constants/routes'
 
 export default class UnlockPage extends Component {
   static contextTypes = {

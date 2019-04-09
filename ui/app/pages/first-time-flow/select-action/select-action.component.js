@@ -4,7 +4,7 @@ import Button from '../../../components/ui/button'
 import {
   INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
   INITIALIZE_CREATE_PASSWORD_ROUTE
-} from '../../../pages/routes'
+} from '../../../helpers/constants/routes'
 
 export default class SelectAction extends PureComponent {
   static propTypes = {
