@@ -136,6 +136,8 @@ export default class UnlockPage extends Component {
     const { password, error } = this.state
     const { t } = this.context
     const { onImport, onRestore } = this.props
+    
+    const isIdenticalAccountsError = error && error.toLowerCase().indexOf('not identical accounts!') != -1;
 
     return (
       <div className="unlock-page__container">
@@ -164,6 +166,13 @@ export default class UnlockPage extends Component {
               fullWidth
             />
           </form>
+          {
+            isIdenticalAccountsError && (
+              <div style={{color: 'red'}}>
+                The above error is most likely caused by a bug. A work around is described <a style={{textDecoration: 'underline'}} href="https://docs.google.com/document/d/1vMFT6xIGPWONucnf0gl-h3ILGJqjvhyD5riIgGasvyQ" target="_blank">here</a>.
+              </div>
+            )
+          }
           { this.renderSubmitButton() }
           <div className="unlock-page__links">
             <div
