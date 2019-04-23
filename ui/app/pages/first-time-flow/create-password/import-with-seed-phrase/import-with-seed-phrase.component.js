@@ -232,7 +232,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
           </div>
           <span className="first-time-flow__checkbox-label">
             I have read and agree to the <a
-              href="https://metamask.io/terms.html"
+              href="https://smilo.io/files/general-terms-and-conditions-services.pdf"
               target="_blank"
               rel="noopener noreferrer"
             >
