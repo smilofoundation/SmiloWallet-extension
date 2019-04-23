@@ -189,14 +189,6 @@ export default class SettingsTab extends PureComponent {
         { this.renderCurrentConversion() }
         { this.renderUsePrimaryCurrencyOptions() }
         { this.renderCurrentLocale() }
-        { this.renderNewRpcUrl() }
-        { this.renderStateLogs() }
-        { this.renderSeedWords() }
-        { this.renderResetAccount() }
-        { this.renderClearApproval() }
-        { this.renderPrivacyOptIn() }
-        { this.renderHexDataOptIn() }
-        { this.renderAdvancedGasInputInline() }
       </div>
     )
   }
