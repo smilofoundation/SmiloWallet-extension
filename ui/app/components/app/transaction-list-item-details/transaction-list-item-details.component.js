@@ -134,7 +134,7 @@ class TransactionListItemDetails extends PureComponent {
         <div className="transaction-list-item-details__header">
           <div>{ t('details') }</div>
           <div className="transaction-list-item-details__header-buttons">
-            {
+            {/* {
               showRetry && (
                 <Button
                   type="raised"
@@ -144,7 +144,7 @@ class TransactionListItemDetails extends PureComponent {
                   { t('speedUp') }
                 </Button>
               )
-            }
+            } */}
             { this.renderCancel() }
             <Tooltip title={justCopied ? t('copiedTransactionId') : t('copyTransactionId')}>
               <Button
