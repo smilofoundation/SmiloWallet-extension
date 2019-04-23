@@ -35,12 +35,6 @@ export default class SeedPhrase extends PureComponent {
             src="/images/logo/smilowallet-extension.svg"
             height={30}
           />
-          <img
-            className="app-header__metafox-logo app-header__metafox-logo--icon"
-            src="/images/logo/metamask-fox.svg"
-            height={42}
-            width={42}
-          />
         </div>
         <Switch>
           <Route

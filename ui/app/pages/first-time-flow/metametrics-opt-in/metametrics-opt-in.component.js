@@ -34,12 +34,6 @@ export default class MetaMetricsOptIn extends Component {
               src="/images/logo/smilowallet-extension.svg"
               height={30}
             />
-            <img
-              className="app-header__metafox-logo app-header__metafox-logo--icon"
-              src="/images/logo/metamask-fox.svg"
-              height={42}
-              width={42}
-            />
           </div>
           <div className="metametrics-opt-in__body-graphic">
             <img src="images/metrics-chart.svg" />
