@@ -44,7 +44,7 @@ class PreferencesController {
         privacyMode: true,
       },
       knownMethodData: {},
-      participateInMetaMetrics: null,
+      participateInMetaMetrics: false,
       firstTimeFlowType: null,
       currentLocale: opts.initLangCode,
       identities: {},
