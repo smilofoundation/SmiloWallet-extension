@@ -1,7 +1,7 @@
 const { Component } = require('react')
 const PropTypes = require('prop-types')
 const h = require('react-hyperscript')
-const genAccountLink = require('../../../../lib/account-link.js')
+const smiloExplorerLinker = require('../../../../lib/smilo-explorer-linker')
 const Select = require('react-select').default
 import Button from '../../../components/ui/button'
 
@@ -14,11 +14,11 @@ class AccountList extends Component {
       return [
         {
           label: `Ledger Live`,
-          value: `m/44'/60'/0'/0/0`,
+          value: `m/44'/1991'/0'/0/0`,
         },
         {
           label: `Legacy (MEW / MyCrypto)`,
-          value: `m/44'/60'/0'`,
+          value: `m/44'/1991'/0'`,
         },
       ]
     }
@@ -105,7 +105,7 @@ class AccountList extends Component {
                 h(
                     'a.hw-account-list__item__link',
                     {
-                    href: genAccountLink(a.address, this.props.network),
+                    href: smiloExplorerLinker.createAccountLink(a.address, this.props.network.type),
                     target: '_blank',
                     title: this.context.t('etherscanView'),
                     },

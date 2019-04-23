@@ -31,7 +31,6 @@ const AddTokenPage = require('../add-token')
 const ConfirmAddTokenPage = require('../confirm-add-token')
 const ConfirmAddSuggestedTokenPage = require('../confirm-add-suggested-token')
 const CreateAccountPage = require('../create-account')
-const NoticeScreen = require('../notice/notice')
 
 const Loading = require('../../components/ui/loading-screen')
 const LoadingNetwork = require('../../components/app/loading-network-screen').default
@@ -39,7 +38,7 @@ const NetworkDropdown = require('../../components/app/dropdowns/network-dropdown
 import AccountMenu from '../../components/app/account-menu'
 
 // Global Modals
-const Modal = require('../../components/app/modals').Modal
+const Modal = require('../../components/app/modals/index').Modal
 // Global Alert
 const Alert = require('../../components/ui/alert')
 
@@ -67,7 +66,6 @@ import {
   CONFIRM_TRANSACTION_ROUTE,
   INITIALIZE_ROUTE,
   INITIALIZE_UNLOCK_ROUTE,
-  NOTICE_ROUTE,
 } from '../../helpers/constants/routes'
 
 // enums
@@ -76,7 +74,7 @@ import {
   ENVIRONMENT_TYPE_POPUP,
 } from '../../../../app/scripts/lib/enums'
 
-class Routes extends Component {
+class App extends Component {
   componentWillMount () {
     const { currentCurrency, setCurrentCurrencyToUSD } = this.props
 
@@ -109,7 +107,6 @@ class Routes extends Component {
         <Authenticated path={REVEAL_SEED_ROUTE} component={RevealSeedConfirmation} exact />
         <Authenticated path={MOBILE_SYNC_ROUTE} component={MobileSyncPage} exact />
         <Authenticated path={SETTINGS_ROUTE} component={Settings} />
-        <Authenticated path={NOTICE_ROUTE} component={NoticeScreen} exact />
         <Authenticated path={`${CONFIRM_TRANSACTION_ROUTE}/:id?`} component={ConfirmTransaction} />
         <Authenticated path={SEND_ROUTE} component={SendTransactionScreen} exact />
         <Authenticated path={ADD_TOKEN_ROUTE} component={AddTokenPage} exact />
@@ -264,12 +261,8 @@ class Routes extends Component {
 
     if (providerName === 'mainnet') {
       name = this.context.t('connectingToMainnet')
-    } else if (providerName === 'ropsten') {
-      name = this.context.t('connectingToRopsten')
-    } else if (providerName === 'kovan') {
-      name = this.context.t('connectingToKovan')
-    } else if (providerName === 'rinkeby') {
-      name = this.context.t('connectingToRinkeby')
+    } if (providerName === 'testnet') {
+      name = this.context.t('connectingToTestnet')
     } else {
       name = this.context.t('connectingTo', [providerId])
     }
@@ -285,12 +278,8 @@ class Routes extends Component {
 
     if (providerName === 'mainnet') {
       name = this.context.t('mainnet')
-    } else if (providerName === 'ropsten') {
-      name = this.context.t('ropsten')
-    } else if (providerName === 'kovan') {
-      name = this.context.t('kovan')
-    } else if (providerName === 'rinkeby') {
-      name = this.context.t('rinkeby')
+    } if (providerName === 'testnet') {
+      name = this.context.t('testnet')
     } else {
       name = this.context.t('unknownNetwork')
     }
@@ -299,7 +288,7 @@ class Routes extends Component {
   }
 }
 
-Routes.propTypes = {
+App.propTypes = {
   currentCurrency: PropTypes.string,
   setCurrentCurrencyToUSD: PropTypes.func,
   isLoading: PropTypes.bool,
@@ -322,7 +311,6 @@ Routes.propTypes = {
   dispatch: PropTypes.func,
   toggleAccountMenu: PropTypes.func,
   selectedAddress: PropTypes.string,
-  noActiveNotices: PropTypes.bool,
   lostAccounts: PropTypes.array,
   isInitialized: PropTypes.bool,
   forgottenPassword: PropTypes.bool,
@@ -360,10 +348,8 @@ function mapStateToProps (state) {
     address,
     keyrings,
     isInitialized,
-    noActiveNotices,
     seedWords,
     unapprovedTxs,
-    nextUnreadNotice,
     lostAccounts,
     unapprovedMsgCount,
     unapprovedPersonalMsgCount,
@@ -380,14 +366,13 @@ function mapStateToProps (state) {
     alertMessage,
     isLoading,
     loadingMessage,
-    noActiveNotices,
     isInitialized,
     isUnlocked: state.metamask.isUnlocked,
     selectedAddress: state.metamask.selectedAddress,
     currentView: state.appState.currentView,
     activeAddress: state.appState.activeAddress,
     transForward: state.appState.transForward,
-    isOnboarding: Boolean(!noActiveNotices || seedWords || !isInitialized),
+    isOnboarding: Boolean(seedWords || !isInitialized),
     isPopup: state.metamask.isPopup,
     seedWords: state.metamask.seedWords,
     submittedPendingTransactions: submittedPendingTransactionsSelector(state),
@@ -400,7 +385,6 @@ function mapStateToProps (state) {
     network: state.metamask.network,
     provider: state.metamask.provider,
     forgottenPassword: state.appState.forgottenPassword,
-    nextUnreadNotice,
     lostAccounts,
     frequentRpcListDetail: state.metamask.frequentRpcListDetail || [],
     currentCurrency: state.metamask.currentCurrency,
@@ -430,7 +414,7 @@ function mapDispatchToProps (dispatch, ownProps) {
   }
 }
 
-Routes.contextTypes = {
+App.contextTypes = {
   t: PropTypes.func,
   metricsEvent: PropTypes.func,
 }
@@ -438,4 +422,4 @@ Routes.contextTypes = {
 module.exports = compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps)
-)(Routes)
+)(App)

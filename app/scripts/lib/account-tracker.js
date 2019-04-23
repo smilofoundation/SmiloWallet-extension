@@ -11,12 +11,18 @@ const EthQuery = require('eth-query')
 const ObservableStore = require('obs-store')
 const log = require('loglevel')
 const pify = require('pify')
+const request = require('request');
+const {
+  MAINNET,
+  TESTNET,
+  MAINNET_CODE,
+  TESTNET_CODE,
+  LOCALHOST,
+  MAINNET_END_POINT,
+  TESTNET_END_POINT
+} = require("../controllers/network/enums")
 const Web3 = require('web3')
-const SINGLE_CALL_BALANCES_ABI = require('single-call-balance-checker-abi')
-
-const { bnToHex } = require('./util')
-const { MAINNET_CODE, RINKEYBY_CODE, ROPSTEN_CODE, KOVAN_CODE } = require('../controllers/network/enums')
-const { SINGLE_CALL_BALANCES_ADDRESS, SINGLE_CALL_BALANCES_ADDRESS_RINKEBY, SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN, SINGLE_CALL_BALANCES_ADDRESS_KOVAN } = require('../controllers/network/contract-addresses')
+const { SINGLE_CALL_BALANCES_ABI } = require('../controllers/network/contract-addresses')
 
 
 class AccountTracker {
@@ -46,6 +52,8 @@ class AccountTracker {
     }
     this.store = new ObservableStore(initState)
 
+    this.setNetworkProvider(opts.networkProvider)
+
     this._provider = opts.provider
     this._query = pify(new EthQuery(this._provider))
     this._blockTracker = opts.blockTracker
@@ -59,6 +67,32 @@ class AccountTracker {
     this.network = opts.network
 
     this.web3 = new Web3(this._provider)
+  }
+
+  _extractNetworkUrl(provider) {
+    if(!provider) {
+      console.warn("Could not read provider at this time. Is SWE not initialized yet?")
+      return null;
+    }
+    
+    switch(provider.type) {
+      case(MAINNET): {
+        return MAINNET_END_POINT
+      }
+      case(TESTNET): {
+        return TESTNET_END_POINT
+      }
+      case(LOCALHOST): {
+        return "http://localhost:8545"
+      }
+      default: {
+        return provider.rpcTarget;
+      }
+    }
+  }
+
+  setNetworkProvider(provider) {
+    this._rpcTarget = this._extractNetworkUrl(provider)
   }
 
   start () {
@@ -183,19 +217,11 @@ class AccountTracker {
 
     switch (currentNetwork) {
       case MAINNET_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS)
+      await Promise.all(addresses.map(this._updateAccount.bind(this)))
       break
 
-      case RINKEYBY_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS_RINKEBY)
-      break
-
-      case ROPSTEN_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN)
-      break
-
-      case KOVAN_CODE:
-      await this._updateAccountsViaBalanceChecker(addresses, SINGLE_CALL_BALANCES_ADDRESS_KOVAN)
+      case TESTNET_CODE:
+      await Promise.all(addresses.map(this._updateAccount.bind(this)))
       break
 
       default:
@@ -214,7 +240,10 @@ class AccountTracker {
   async _updateAccount (address) {
     // query balance
     const balance = await this._query.getBalance(address)
-    const result = { address, balance }
+    // query xsp
+    const xsp = await this._getXSPBalance(address)
+
+    const result = { address, balance, xsp }
     // update accounts state
     const { accounts } = this.store.getState()
     // only populate if the entry is still present
@@ -223,6 +252,31 @@ class AccountTracker {
     this.store.updateState({ accounts })
   }
 
+  async _getXSPBalance (address) {
+    if(!this._rpcTarget) {
+      console.warn('No rpc target defined, could not read XPS')
+      return "0"
+    }
+
+    return new Promise((resolve, reject) => {
+      request.post(
+        this._rpcTarget,
+        {
+          json: true,
+          body: {
+            jsonrpc: '2.0',
+            id: 0,
+            method: 'eth_getSmiloPay',
+            params: [address.toLowerCase(), 'latest']
+          }
+        },
+        (error, res, body) => {
+          resolve(body.result.toString())
+        }
+      );
+    });
+  }
+  
   /**
    * Updates current address balances from balanceChecker deployed contract instance
    * @param {*} addresses

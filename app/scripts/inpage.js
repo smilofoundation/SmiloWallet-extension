@@ -38,22 +38,22 @@ function onMessage (messageType, callback, remove) {
 //
 
 // setup background connection
-const metamaskStream = new LocalMessageDuplexStream({
-  name: 'inpage',
-  target: 'contentscript',
+var sweStream = new LocalMessageDuplexStream({
+  name: 'swe_inpage',
+  target: 'swe_contentscript',
 })
 
 // compose the inpage provider
-const inpageProvider = new MetamaskInpageProvider(metamaskStream)
+var inpageProvider = new MetamaskInpageProvider(sweStream)
 
 // set a high max listener count to avoid unnecesary warnings
 inpageProvider.setMaxListeners(100)
 
 // set up a listener for when MetaMask is locked
-onMessage('metamasksetlocked', () => { isEnabled = false })
+onMessage('swesetlocked', () => { isEnabled = false })
 
 // set up a listener for privacy mode responses
-onMessage('ethereumproviderlegacy', ({ data: { selectedAddress } }) => {
+onMessage('smiloproviderlegacy', ({ data: { selectedAddress } }) => {
   isEnabled = true
   setTimeout(() => {
     inpageProvider.publicConfigStore.updateState({ selectedAddress })
@@ -86,8 +86,8 @@ inpageProvider.enable = function ({ force } = {}) {
         })
       }
     }
-    onMessage('ethereumprovider', providerHandle, true)
-    window.postMessage({ type: 'ETHEREUM_ENABLE_PROVIDER', force }, '*')
+    onMessage('smiloprovider', providerHandle, true)
+    window.postMessage({ type: 'SMILO_ENABLE_PROVIDER', force }, '*')
   })
 }
 
@@ -96,7 +96,7 @@ inpageProvider.enable = function ({ force } = {}) {
 inpageProvider.autoRefreshOnNetworkChange = true
 
 // add metamask-specific convenience methods
-inpageProvider._metamask = new Proxy({
+inpageProvider._smiloWalletExtension = new Proxy({
   /**
    * Determines if this domain is currently enabled
    *
@@ -120,8 +120,8 @@ inpageProvider._metamask = new Proxy({
           resolve(false)
         }
       }
-      onMessage('ethereumisapproved', isApprovedHandle, true)
-      window.postMessage({ type: 'ETHEREUM_IS_APPROVED' }, '*')
+      onMessage('smiloisapproved', isApprovedHandle, true)
+      window.postMessage({ type: 'SMILO_IS_APPROVED' }, '*')
     })
   },
 
@@ -135,15 +135,15 @@ inpageProvider._metamask = new Proxy({
       isUnlockedHandle = ({ data: { isUnlocked } }) => {
         resolve(!!isUnlocked)
       }
-      onMessage('metamaskisunlocked', isUnlockedHandle, true)
-      window.postMessage({ type: 'METAMASK_IS_UNLOCKED' }, '*')
+      onMessage('sweisunlocked', isUnlockedHandle, true)
+      window.postMessage({ type: 'SWE_IS_UNLOCKED' }, '*')
     })
   },
 }, {
   get: function (obj, prop) {
-    !warned && console.warn('Heads up! ethereum._metamask exposes methods that have ' +
+    !warned && console.warn('Heads up! smilo._smiloWalletExtension exposes methods that have ' +
     'not been standardized yet. This means that these methods may not be implemented ' +
-    'in other dapp browsers and may be removed from MetaMask in the future.')
+    'in other dapp browsers and may be removed from the Smilo Wallet Extension in the future.')
     warned = true
     return obj[prop]
   },
@@ -157,14 +157,14 @@ const proxiedInpageProvider = new Proxy(inpageProvider, {
   deleteProperty: () => true,
 })
 
-window.ethereum = createStandardProvider(proxiedInpageProvider)
+window.smilo = createStandardProvider(proxiedInpageProvider)
 
 // detect eth_requestAccounts and pipe to enable for now
 function detectAccountRequest (method) {
   const originalMethod = inpageProvider[method]
   inpageProvider[method] = function ({ method }) {
     if (method === 'eth_requestAccounts') {
-      return window.ethereum.enable()
+      return window.smilo.enable()
     }
     return originalMethod.apply(this, arguments)
   }
@@ -176,21 +176,21 @@ detectAccountRequest('sendAsync')
 // setup web3
 //
 
-if (typeof window.web3 !== 'undefined') {
-  throw new Error(`MetaMask detected another web3.
-     MetaMask will not work reliably with another web3 extension.
+if (typeof window.smiloWeb3 !== 'undefined') {
+  throw new Error(`The Smilo Wallet Extension detected another smiloWeb3.
+     the Smilo Wallet Extension will not work reliably with another smiloWeb3 extension.
      This usually happens if you have two MetaMasks installed,
-     or MetaMask and another web3 extension. Please remove one
+     or the Smilo Wallet Extension and another smiloWeb3 extension. Please remove one
      and try again.`)
 }
 
-const web3 = new Web3(proxiedInpageProvider)
-web3.setProvider = function () {
-  log.debug('MetaMask - overrode web3.setProvider')
+var smiloWeb3 = new Web3(proxiedInpageProvider)
+smiloWeb3.setProvider = function () {
+  log.debug('Smilo Wallet Extension - overrode smiloWeb3.setProvider')
 }
-log.debug('MetaMask - injected web3')
+log.debug('Smilo Wallet Extension - injected smiloWeb3')
 
-setupDappAutoReload(web3, inpageProvider.publicConfigStore)
+setupDappAutoReload(smiloWeb3, inpageProvider.publicConfigStore)
 
 // export global web3, with usage-detection and deprecation warning
 
@@ -215,7 +215,7 @@ global.web3 = new Proxy(web3, {
 
 // set web3 defaultAccount
 inpageProvider.publicConfigStore.subscribe(function (state) {
-  web3.eth.defaultAccount = state.selectedAddress
+  smiloWeb3.eth.defaultAccount = state.selectedAddress
 })
 
 // need to make sure we aren't affected by overlapping namespaces
@@ -233,7 +233,7 @@ function cleanContextForImports () {
   try {
     global.define = undefined
   } catch (_) {
-    console.warn('MetaMask - global.define could not be deleted.')
+    console.warn('Smilo Wallet Extension - global.define could not be deleted.')
   }
 }
 
@@ -244,6 +244,6 @@ function restoreContextAfterImports () {
   try {
     global.define = __define
   } catch (_) {
-    console.warn('MetaMask - global.define could not be overwritten.')
+    console.warn('Smilo Wallet Extension - global.define could not be overwritten.')
   }
 }

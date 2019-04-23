@@ -42,7 +42,7 @@ function injectScript (content) {
     container.insertBefore(scriptTag, container.children[0])
     container.removeChild(scriptTag)
   } catch (e) {
-    console.error('MetaMask script injection failed', e)
+    console.error('SWE script injection failed', e)
   }
 }
 
@@ -53,8 +53,8 @@ function injectScript (content) {
 function setupStreams () {
   // setup communication to page and plugin
   const pageStream = new LocalMessageDuplexStream({
-    name: 'contentscript',
-    target: 'inpage',
+    name: 'swe_contentscript',
+    target: 'swe_inpage',
   })
   const pluginPort = extension.runtime.connect({ name: 'contentscript' })
   const pluginStream = new PortStream(pluginPort)
@@ -76,7 +76,7 @@ function setupStreams () {
     pluginStream,
     approvalTransform,
     pageStream,
-    (err) => logStreamDisconnectWarning('MetaMask Contentscript Forwarding', err)
+    (err) => logStreamDisconnectWarning('SWE Contentscript Forwarding', err)
   )
 
   // setup local multistream channels
@@ -87,13 +87,13 @@ function setupStreams () {
     mux,
     pageStream,
     mux,
-    (err) => logStreamDisconnectWarning('MetaMask Inpage', err)
+    (err) => logStreamDisconnectWarning('SWE Inpage', err)
   )
   pump(
     mux,
     pluginStream,
     mux,
-    (err) => logStreamDisconnectWarning('MetaMask Background', err)
+    (err) => logStreamDisconnectWarning('SWE Background', err)
   )
 
   // connect ping stream
@@ -102,7 +102,7 @@ function setupStreams () {
     mux,
     pongStream,
     mux,
-    (err) => logStreamDisconnectWarning('MetaMask PingPongStream', err)
+    (err) => logStreamDisconnectWarning('SWE PingPongStream', err)
   )
 
   // connect phishing warning stream
@@ -124,7 +124,7 @@ function listenForProviderRequest () {
   window.addEventListener('message', ({ source, data }) => {
     if (source !== window || !data || !data.type) { return }
     switch (data.type) {
-      case 'ETHEREUM_ENABLE_PROVIDER':
+      case 'SMILO_ENABLE_PROVIDER':
         extension.runtime.sendMessage({
           action: 'init-provider-request',
           force: data.force,
@@ -133,13 +133,13 @@ function listenForProviderRequest () {
           siteTitle: getSiteName(source),
         })
         break
-      case 'ETHEREUM_IS_APPROVED':
+      case 'SMILO_IS_APPROVED':
         extension.runtime.sendMessage({
           action: 'init-is-approved',
           origin: source.location.hostname,
         })
         break
-      case 'METAMASK_IS_UNLOCKED':
+      case 'SWE_IS_UNLOCKED':
         extension.runtime.sendMessage({
           action: 'init-is-unlocked',
         })
@@ -151,30 +151,30 @@ function listenForProviderRequest () {
     switch (action) {
       case 'approve-provider-request':
         isEnabled = true
-        window.postMessage({ type: 'ethereumprovider', selectedAddress }, '*')
+        window.postMessage({ type: 'smiloprovider', selectedAddress }, '*')
         break
       case 'approve-legacy-provider-request':
         isEnabled = true
-        window.postMessage({ type: 'ethereumproviderlegacy', selectedAddress }, '*')
+        window.postMessage({ type: 'smiloroviderlegacy', selectedAddress }, '*')
         break
       case 'reject-provider-request':
-        window.postMessage({ type: 'ethereumprovider', error: 'User denied account authorization' }, '*')
+        window.postMessage({ type: 'smiloprovider', error: 'User denied account authorization' }, '*')
         break
       case 'answer-is-approved':
-        window.postMessage({ type: 'ethereumisapproved', isApproved, caching }, '*')
+        window.postMessage({ type: 'smiloisapproved', isApproved, caching }, '*')
         break
       case 'answer-is-unlocked':
-        window.postMessage({ type: 'metamaskisunlocked', isUnlocked }, '*')
+        window.postMessage({ type: 'sweisunlocked', isUnlocked }, '*')
         break
-      case 'metamask-set-locked':
+      case 'swe-set-locked':
         isEnabled = false
-        window.postMessage({ type: 'metamasksetlocked' }, '*')
+        window.postMessage({ type: 'swesetlocked' }, '*')
         break
       case 'ethereum-ping-success':
-        window.postMessage({ type: 'ethereumpingsuccess' }, '*')
+        window.postMessage({ type: 'swepingsuccess' }, '*')
         break
       case 'ethereum-ping-error':
-        window.postMessage({ type: 'ethereumpingerror' }, '*')
+        window.postMessage({ type: 'swepingerror' }, '*')
     }
   })
 }
@@ -194,7 +194,7 @@ function checkPrivacyMode () {
  * @param {Error} err Stream connection error
  */
 function logStreamDisconnectWarning (remoteLabel, err) {
-  let warningMsg = `MetamaskContentscript - lost connection to ${remoteLabel}`
+  let warningMsg = `SmiloWalletExtensionContentscript - lost connection to ${remoteLabel}`
   if (err) warningMsg += '\n' + err.stack
   console.warn(warningMsg)
 }

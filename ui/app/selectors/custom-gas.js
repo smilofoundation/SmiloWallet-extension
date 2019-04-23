@@ -3,6 +3,7 @@ import {
   conversionUtil,
   multiplyCurrencies,
   conversionGreaterThan,
+  conversionGTE
 } from '../helpers/utils/conversion-util'
 import {
   getCurrentCurrency, getIsMainnet, preferencesSelector,
@@ -103,12 +104,12 @@ function getSafeLowEstimate (state) {
   const {
     gas: {
       basicEstimates: {
-        safeLow,
-      },
-    },
-  } = state
+        safeLow
+      }
+    }
+  } = state;
 
-  return safeLow
+  return safeLow;
 }
 
 function isCustomPriceSafe (state) {
@@ -119,7 +120,7 @@ function isCustomPriceSafe (state) {
     return true
   }
 
-  const customPriceSafe = conversionGreaterThan(
+  const customPriceSafe = conversionGTE(
     {
       value: customGasPrice,
       fromNumericBase: 'hex',

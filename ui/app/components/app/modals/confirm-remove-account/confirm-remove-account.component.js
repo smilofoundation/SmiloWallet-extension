@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Modal from '../../modal'
 import { addressSummary } from '../../../../helpers/utils/util'
 import Identicon from '../../../ui/identicon'
-import genAccountLink from '../../../../../lib/account-link'
+const smiloExplorerLinker = require('../../../../../lib/smilo-explorer-linker')
 
 export default class ConfirmRemoveAccount extends Component {
   static propTypes = {
@@ -47,7 +47,7 @@ export default class ConfirmRemoveAccount extends Component {
         <div className="confirm-remove-account__account__link">
           <a
             className=""
-            href={genAccountLink(identity.address, this.props.network)}
+            href={smiloExplorerLinker.createAccountLink(identity.address, this.props.network.type)}
             target={'_blank'}
             title={this.context.t('etherscanView')}
           >

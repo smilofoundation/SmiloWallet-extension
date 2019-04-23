@@ -32,7 +32,7 @@ export default class InfoTab extends PureComponent {
         </div>
         <div className="info-tab__link-item">
           <a
-            href="https://metamask.io/privacy.html"
+            href="https://smilo.io/files/privacy_policy.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -43,7 +43,7 @@ export default class InfoTab extends PureComponent {
         </div>
         <div className="info-tab__link-item">
           <a
-            href="https://metamask.io/terms.html"
+            href="https://smilo.io/files/general-terms-and-conditions-services.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -66,18 +66,7 @@ export default class InfoTab extends PureComponent {
         <hr className="info-tab__separator" />
         <div className="info-tab__link-item">
           <a
-            href="https://support.metamask.io"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="info-tab__link-text">
-              { t('supportCenter') }
-            </span>
-          </a>
-        </div>
-        <div className="info-tab__link-item">
-          <a
-            href="https://metamask.io/"
+            href="https://smilo.io/"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -88,7 +77,7 @@ export default class InfoTab extends PureComponent {
         </div>
         <div className="info-tab__link-item">
           <a
-            href="mailto:help@metamask.io?subject=Feedback"
+            href="mailto:info@smilo.io?subject=Browser Plugin Feedback"
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -18,6 +18,11 @@
 
   &__mascot-container {
     margin-top: 24px;
+
+    img {
+      width: 128px;
+      height: auto;
+    }
   }
 
   &__title {

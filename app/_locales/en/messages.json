@@ -99,7 +99,7 @@
     "message": "Add Suggested Tokens"
   },
   "addAcquiredTokens": {
-    "message": "Add the tokens you've acquired using MetaMask"
+    "message": "Add the tokens you've acquired using the Smilo Browser Extension"
   },
   "agreeTermsOfService": {
     "message": "I agree to the Terms of Service"
@@ -120,11 +120,11 @@
     "message": "Amount + TX Fee"
   },
   "appDescription": {
-    "message": "An Ethereum Wallet in your Browser",
+    "message": "A Smilo Wallet in your Browser",
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "Smilo Browser Extension",
     "description": "The name of the application"
   },
   "approve": {
@@ -186,7 +186,7 @@
     "message": "Your Browser is not supported..."
   },
   "builtInCalifornia": {
-    "message": "MetaMask is designed and built in California."
+    "message": "Forked from MetaMask by the Smilo team. MetaMask is designed and built in California."
   },
   "buy": {
     "message": "Buy"
@@ -240,7 +240,7 @@
     "message": "Close"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "You need to use MetaMask on Google Chrome in order to connect to your Hardware Wallet."
+    "message": "You need to use the Smilo Browser Extension on Google Chrome in order to connect to your Hardware Wallet."
   },
   "company": {
     "message": "Company"
@@ -288,7 +288,10 @@
     "message": "Connecting to Kovan Test Network"
   },
   "connectingToMainnet": {
-    "message": "Connecting to Main Ethereum Network"
+    "message": "Connecting to Smilo Main Network"
+  },
+  "connectingToTestnet": {
+    "message": "Connecting to Smilo Test Network"
   },
   "connectingToRopsten": {
     "message": "Connecting to Ropsten Test Network"
@@ -406,10 +409,10 @@
     "message": "Decimals of Precision"
   },
   "defaultNetwork": {
-    "message": "The default network for Ether transactions is Main Net."
+    "message": "The default network for Smilo transactions is Smilo Main Network."
   },
   "denExplainer": {
-    "message": "Your DEN is your password-encrypted storage within MetaMask."
+    "message": "Your DEN is your password-encrypted storage within the Smilo Browser Extension."
   },
   "deposit": {
     "message": "Deposit"
@@ -425,7 +428,7 @@
     "message": "Deposit Eth"
   },
   "depositEther": {
-    "message": "Deposit Ether"
+    "message": "Deposit Smilo"
   },
   "depositFiat": {
     "message": "Deposit with Fiat"
@@ -437,7 +440,7 @@
     "message": "Deposit with ShapeShift"
   },
   "depositShapeShiftExplainer": {
-    "message": "If you own other cryptocurrencies, you can trade and deposit Ether directly into your MetaMask wallet. No Account Needed."
+    "message": "If you own other cryptocurrencies, you can trade and deposit Smilo directly into your Smilo Browser Extension wallet. No Account Needed."
   },
   "details": {
     "message": "Details"
@@ -446,10 +449,10 @@
     "message": "Direct Deposit"
   },
   "directDepositEther": {
-    "message": "Directly Deposit Ether"
+    "message": "Directly Deposit Smilo"
   },
   "directDepositEtherExplainer": {
-    "message": "If you already have some Ether, the quickest way to get Ether in your new wallet by direct deposit."
+    "message": "If you already have some Smilo, the quickest way to get Smilo in your new wallet by direct deposit."
   },
   "done": {
     "message": "Done"
@@ -497,16 +500,16 @@
     "message": "Never share the phrase with anyone."
   },
   "endOfFlowMessage5": {
-    "message": "Be careful of phishing! MetaMask will never spontaneously ask for your seed phrase."
+    "message": "Be careful of phishing! The Smilo Browser Extension and the Smilo team will never spontaneously ask for your seed phrase."
   },
   "endOfFlowMessage6": {
     "message": "If you need to back your up seed phrase again, you can find it in Settings -> Security."
   },
   "endOfFlowMessage7": {
-    "message": "If you ever have questions or see something fishy, email support@metamask.io."
+    "message": "If you ever have questions or see something fishy, email info@smilo.io."
   },
   "endOfFlowMessage8": {
-    "message": "MetaMask cannot recover your seedphrase. Learn more."
+    "message": "The Smilo Browser Extension cannot recover your seedphrase. Learn more."
   },
   "ensNameNotFound": {
     "message": "ENS name not found"
@@ -521,10 +524,10 @@
     "message": "Enter password to continue"
   },
   "eth": {
-    "message": "ETH"
+    "message": "XSM"
   },
   "etherscanView": {
-    "message": "View account on Etherscan"
+    "message": "View account on block explorer"
   },
   "estimatedProcessingTimes": {
     "message": "Estimated Processing Times"
@@ -638,11 +641,11 @@
     "message": "Generating transaction"
   },
   "getEther": {
-    "message": "Get Ether"
+    "message": "Get Smilo"
   },
   "getEtherFromFaucet": {
-    "message": "Get Ether from a faucet for the $1",
-    "description": "Displays network name for Ether faucet"
+    "message": "Get Smilo from a faucet for the $1",
+    "description": "Displays network name for Smilo faucet"
   },
   "getHelp": {
     "message": "Get Help."
@@ -667,7 +670,7 @@
     "message": "Connect a hardware wallet"
   },
   "hardwareWalletsMsg": {
-    "message": "Select a hardware wallet you'd like to use with MetaMask"
+    "message": "Select a hardware wallet you'd like to use with the Smilo Browser Extension"
   },
   "havingTroubleConnecting": {
     "message": "Having trouble connecting?"
@@ -695,10 +698,10 @@
     "message": "History"
   },
   "howToDeposit": {
-    "message": "How would you like to deposit Ether?"
+    "message": "How would you like to deposit Smilo?"
   },
   "holdEther": {
-    "message": "It allows you to hold ether & tokens, and serves as your bridge to decentralized applications."
+    "message": "It allows you to hold Smilo & tokens, and serves as your bridge to decentralized applications."
   },
   "import": {
     "message": "Import",
@@ -708,7 +711,7 @@
     "message": "Import Account"
   },
   "importAccountMsg": {
-    "message": " Imported accounts will not be associated with your originally created MetaMask account seedphrase. Learn more about imported accounts "
+    "message": " Imported accounts will not be associated with your originally created Smilo Browser Extension account seedphrase. Learn more about imported accounts "
   },
   "importAccountSeedPhrase": {
     "message": "Import an Account with Seed Phrase"
@@ -788,7 +791,7 @@
     "description": "format for importing an account"
   },
   "keepTrackTokens": {
-    "message": "Keep track of the tokens you’ve bought with your MetaMask account."
+    "message": "Keep track of the tokens you’ve bought with your Smilo Browser Extension account."
   },
   "kovan": {
     "message": "Kovan Test Network"
@@ -849,7 +852,10 @@
     "message": "seed words only have lowercase characters"
   },
   "mainnet": {
-    "message": "Main Ethereum Network"
+    "message": "Smilo Main Network"
+  },
+  "testnet": {
+    "message": "Smilo Test Network"
   },
   "memorizePhrase": {
     "message": "Memorize this phrase."
@@ -861,13 +867,13 @@
     "message": "Message"
   },
   "metamaskDescription": {
-    "message": "Connecting you to Ethereum and the Decentralized Web."
+    "message": "The Smilo Browser Extension is a secure identity vault for Smilo."
   },
   "metamaskSeedWords": {
-    "message": "MetaMask Seed Words"
+    "message": "The Smilo Browser Extension Seed Words"
   },
   "metamaskVersion": {
-    "message": "MetaMask Version"
+    "message": "The Smilo Browser Extension Version"
   },
   "min": {
     "message": "Minimum"
@@ -891,7 +897,7 @@
     "message": "Must select at least 1 token."
   },
   "needEtherInWallet": {
-    "message": "To interact with decentralized applications using MetaMask, you’ll need Ether in your wallet."
+    "message": "To interact with decentralized applications using the Smilo Browser Extension, you’ll need Smilo in your wallet."
   },
   "needImportFile": {
     "message": "You must select a file to import.",
@@ -902,7 +908,7 @@
     "description": "Password and file needed to import an account"
   },
   "negativeETH": {
-    "message": "Can not send negative amounts of ETH."
+    "message": "Can not send negative amounts of XSM."
   },
   "networks": {
     "message": "Networks"
@@ -933,7 +939,7 @@
     "message": "New Network"
   },
   "newToMetaMask": {
-    "message": "New to MetaMask?"
+    "message": "New to the Smilo Browser Extension?"
   },
   "noAlreadyHaveSeed": {
     "message": "No, I already have a seed phrase"
@@ -1014,10 +1020,10 @@
     "message": "You have returned to the old UI. You can switch back to the New UI through the option in the top right dropdown menu."
   },
   "onlySendToEtherAddress": {
-    "message": "Only send ETH to an Ethereum address."
+    "message": "Only send XSM to a Smilo address."
   },
   "onlySendTokensToAccountAddress": {
-    "message": "Only send $1 to an Ethereum account address.",
+    "message": "Only send $1 to a Smilo account address.",
     "description": "displays token symbol"
   },
   "openInTab": {
@@ -1094,7 +1100,7 @@
     "message": "Primary Currency"
   },
   "primaryCurrencySettingDescription": {
-    "message": "Select native to prioritize displaying values in the native currency of the chain (e.g. ETH). Select Fiat to prioritize displaying values in your selected fiat currency."
+    "message": "Select native to prioritize displaying values in the native currency of the chain (e.g. XSM). Select Fiat to prioritize displaying values in your selected fiat currency."
   },
   "privacyMsg": {
     "message": "Privacy Policy"
@@ -1256,7 +1262,7 @@
     "message": "Your secret backup phrase makes it easy to back up and restore your account."
   },
   "secretBackupPhraseWarning": {
-    "message": "WARNING: Never disclose your backup phrase. Anyone with this phrase can take your Ether forever."
+    "message": "WARNING: Never disclose your backup phrase. Anyone with this phrase can take your Smilo forever."
   },
   "secretPhrase": {
     "message": "Enter your secret twelve word phrase here to restore your vault."
@@ -1301,13 +1307,13 @@
     "message": "Send Amount"
   },
   "sendETH": {
-    "message": "Send ETH"
+    "message": "Send XSM"
   },
   "sendTokens": {
     "message": "Send Tokens"
   },
   "sentEther": {
-    "message": "sent ether"
+    "message": "sent Smilo"
   },
   "sentTokens": {
     "message": "sent tokens"
@@ -1325,7 +1331,7 @@
     "message": "Select an Account"
   },
   "selectAnAccountHelp": {
-    "message": "Select the account to view in MetaMask"
+    "message": "Select the account to view in the Smilo Browser Extension"
   },
   "selectAHigherGasFee": {
     "message": "Select a higher gas fee to accelerate the processing of your transaction.*"
@@ -1337,7 +1343,7 @@
     "message": "If you don't see your existing Ledger accounts below, try switching paths to \"Legacy (MEW / MyCrypto)\""
   },
   "sendTokensAnywhere": {
-    "message": "Send Tokens to anyone with an Ethereum account"
+    "message": "Send Tokens to anyone with an Smilo account"
   },
   "settings": {
     "message": "Settings"
@@ -1442,7 +1448,7 @@
     "message": "3. Start using dApps and more!"
   },
   "step3HardwareWalletMsg": {
-    "message": "Use your hardware account like you would with any Ethereum account. Log in to dApps, send Eth, buy and store ERC20 tokens and Non-Fungible tokens like CryptoKitties."
+    "message": "Use your hardware account like you would with any Smilo account. Log in to dApps, send Eth, buy and store ERC20 tokens and Non-Fungible tokens like CryptoKitties."
   },
   "storePhrase": {
     "message": "Store this phrase in a password manager like 1Password."
@@ -1499,7 +1505,7 @@
     "message": "To"
   },
   "toETHviaShapeShift": {
-    "message": "$1 to ETH via ShapeShift",
+    "message": "$1 to XSM via ShapeShift",
     "description": "system will fill in deposit type in start of message"
   },
   "token": {
@@ -1524,7 +1530,7 @@
     "message": "Token Symbol"
   },
   "tokenWarning1": {
-    "message": "Keep track of the tokens you’ve bought with your MetaMask account. If you bought tokens using a different account, those tokens will not appear here."
+    "message": "Keep track of the tokens you’ve bought with your Smilo Browser Extension account. If you bought tokens using a different account, those tokens will not appear here."
   },
   "total": {
     "message": "Total"
@@ -1606,10 +1612,10 @@
     "message": "Try again"
   },
   "twelveWords": {
-    "message": "These 12 words are the only way to restore your MetaMask accounts.\nSave them somewhere safe and secret."
+    "message": "These 12 words are the only way to restore your Smilo Browser Extension accounts.\nSave them somewhere safe and secret."
   },
   "typePassword": {
-    "message": "Type your MetaMask password"
+    "message": "Type your Smilo Browser Extension password"
   },
   "uiMigrationAnnouncement": {
     "message": "Welcome to the new MetaMask UI. If you have feedback about the UI or feature requests, please reach out to our support team or on GitHub."
@@ -1618,7 +1624,7 @@
     "message": "Welcome to the New UI (Beta)"
   },
   "uiWelcomeMessage": {
-    "message": "You are now using the new MetaMask UI."
+    "message": "You are now using the new Smilo Browser Extension UI."
   },
   "unapproved": {
     "message": "Unapproved"
@@ -1679,7 +1685,7 @@
     "message": "View Account"
   },
   "viewOnEtherscan": {
-    "message": "View on Etherscan"
+    "message": "View on block explorer"
   },
   "visitWebSite": {
     "message": "Visit our web site"
@@ -1694,7 +1700,7 @@
     "message": "Welcome Back!"
   },
   "welcome": {
-    "message": "Welcome to MetaMask"
+    "message": "Welcome to the Smilo Browser Extension"
   },
   "whatsThis": {
     "message": "What's this?"

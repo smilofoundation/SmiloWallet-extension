@@ -7,6 +7,8 @@ import TokenBalance from '../../ui/token-balance'
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display'
 import { SEND_ROUTE } from '../../../helpers/constants/routes'
 import { PRIMARY, SECONDARY } from '../../../helpers/constants/common'
+const Web3 = require("web3");
+let web3 = new Web3();
 import Tooltip from '../../ui/tooltip-v2'
 
 export default class TransactionViewBalance extends PureComponent {
@@ -31,7 +33,7 @@ export default class TransactionViewBalance extends PureComponent {
   }
 
   renderBalance () {
-    const { selectedToken, balance, balanceIsCached, showFiat } = this.props
+    const { selectedToken, balance, xsp, balanceIsCached, showFiat } = this.props
 
     return selectedToken
       ? (
@@ -59,23 +61,39 @@ export default class TransactionViewBalance extends PureComponent {
                     balanceIsCached ? <span className="transaction-view-balance__cached-star">*</span> : null
                   }
                 </div>
-                {
-                  showFiat && (
-                    <UserPreferencedCurrencyDisplay
-                      className={classnames({
-                        'transaction-view-balance__cached-secondary-balance': balanceIsCached,
-                        'transaction-view-balance__secondary-balance': !balanceIsCached,
-                      })}
-                      value={balance}
-                      type={SECONDARY}
-                      ethNumberOfDecimals={4}
-                      hideTitle={true}
-                    />
-                  )
-                }
+
+                <div style={{display: "flex", 'align-items': 'center'}}>
+                  {
+                    showFiat && (
+                      <div style={{display: 'flex'}}>
+                        <UserPreferencedCurrencyDisplay
+                          className={classnames({
+                            'transaction-view-balance__cached-secondary-balance': balanceIsCached,
+                            'transaction-view-balance__secondary-balance': !balanceIsCached,
+                          })}
+                          value={balance}
+                          type={SECONDARY}
+                          ethNumberOfDecimals={4}
+                          hideTitle={true}
+                        />
+                        <div className="transaction-view-balance__separator">
+                          |
+                        </div>
+                      </div>
+                    )
+                  }
+                  <div className="transaction-view-balance__secondary-balance">
+                    <span className="xsp" title={ this.formatXSP(xsp) }>{ this.formatXSP(xsp) }</span>
+                    <span className="xsp-suffix">XSP</span>
+                  </div>
+                </div>
             </div>
           </Tooltip>
       )
+  }
+
+  formatXSP(xsp) {
+    return web3.fromWei(xsp, "ether");
   }
 
   renderButtons () {
@@ -84,7 +102,7 @@ export default class TransactionViewBalance extends PureComponent {
 
     return (
       <div className="transaction-view-balance__buttons">
-        {
+        {/* {
           !selectedToken && (
             <Button
               type="primary"
@@ -103,7 +121,7 @@ export default class TransactionViewBalance extends PureComponent {
               { t('deposit') }
             </Button>
           )
-        }
+        } */}
         <Button
           type="primary"
           className="transaction-view-balance__button"

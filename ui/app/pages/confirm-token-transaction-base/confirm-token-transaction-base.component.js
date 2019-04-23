@@ -8,7 +8,7 @@ import {
   addFiat,
   roundExponential,
 } from '../../helpers/utils/confirm-tx.util'
-import { getWeiHexFromDecimalValue } from '../../helpers/utils/conversions.util'
+import { getWeiHexFromDecimalValue } from '../../helpers/utils/conversion-util'
 import { ETH, PRIMARY } from '../../helpers/constants/common'
 
 export default class ConfirmTokenTransactionBase extends Component {
@@ -72,7 +72,7 @@ export default class ConfirmTokenTransactionBase extends Component {
       <div>
         <span>{ `${tokensText} + ` }</span>
         <img
-          src="/images/eth.svg"
+          src="/images/smilo_coin.png"
           height="18"
         />
         <span>{ ethTransactionTotal }</span>

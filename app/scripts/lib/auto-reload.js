@@ -6,7 +6,7 @@ function setupDappAutoReload (web3, observable) {
   let lastTimeUsed
   let lastSeenNetwork
 
-  global.web3 = new Proxy(web3, {
+  global.smiloWeb3 = new Proxy(web3, {
     get: (_web3, key) => {
       // get the time of use
       lastTimeUsed = Date.now()

@@ -22,12 +22,12 @@ const ConfirmDetailRow = props => {
         { label }
       </div>
       <div className="confirm-detail-row__details">
-        <div
+        {/* <div
           className={classnames('confirm-detail-row__header-text', headerTextClassName)}
           onClick={() => onHeaderClick && onHeaderClick()}
         >
           { headerText }
-        </div>
+        </div> */}
         {
           primaryText
             ? (

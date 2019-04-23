@@ -1,5 +1,4 @@
 const extension = require('extensionizer')
-const {createExplorerLink: explorerLink} = require('etherscan-link')
 
 class ExtensionPlatform {
 
@@ -47,14 +46,14 @@ class ExtensionPlatform {
     }
   }
 
-  showTransactionNotification (txMeta) {
+  showTransactionNotification (txMeta, provider) {
     const { status, txReceipt: { status: receiptStatus } = {} } = txMeta
 
     if (status === 'confirmed') {
       // There was an on-chain failure
       receiptStatus === '0x0'
         ? this._showFailedTransaction(txMeta, 'Transaction encountered an error.')
-        : this._showConfirmedTransaction(txMeta)
+        : this._showConfirmedTransaction(txMeta, provider.type)
     } else if (status === 'failed') {
       this._showFailedTransaction(txMeta)
     }
@@ -74,16 +73,32 @@ class ExtensionPlatform {
     })
   }
 
-  _showConfirmedTransaction (txMeta) {
+  _getExplorerLinkPrefix(providerType) {
+    let prefix
+    switch (providerType) {
+      case "mainnet":
+        prefix = 'testnet-' // Must be changed when main net is released!
+        break
+      case "testnet":
+        prefix = 'testnet-'
+        break
+      default:
+        prefix = ''
+    }
+    return prefix
+  }
 
+  _showConfirmedTransaction (txMeta, providerType) {
     this._subscribeToNotificationClicked()
 
-    const url = explorerLink(txMeta.hash, parseInt(txMeta.metamaskNetworkId))
     const nonce = parseInt(txMeta.txParams.nonce, 16)
 
     const title = 'Confirmed transaction'
-    const message = `Transaction ${nonce} confirmed! View on EtherScan`
-    this._showNotification(title, message, url)
+    const message = `Transaction ${nonce} confirmed! View on block explorer.`
+
+    const explorerUrl = `https://${ this._getExplorerLinkPrefix(providerType) }explorer.smilo.network/tx/${txMeta.hash}`
+
+    this._showNotification(title, message, explorerUrl)
   }
 
   _showFailedTransaction (txMeta, errorMessage) {
@@ -112,7 +127,7 @@ class ExtensionPlatform {
   }
 
   _viewOnEtherScan (txId) {
-    if (txId.startsWith('http://')) {
+    if (txId.startsWith('https://')) {
       extension.tabs.create({ url: txId })
     }
   }

@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'lodash.debounce'
 import { Menu, Item, Divider, CloseArea } from '../dropdowns/components/menu'
-import { ENVIRONMENT_TYPE_POPUP } from '../../../../../app/scripts/lib/enums'
-import { getEnvironmentType } from '../../../../../app/scripts/lib/util'
 import Tooltip from '../../ui/tooltip'
 import Identicon from '../../ui/identicon'
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display'
@@ -279,7 +277,7 @@ export default class AccountMenu extends PureComponent {
           }
           text={t('importAccount')}
         />
-        <Item
+        {/* <Item
           onClick={() => {
             toggleAccountMenu()
             metricsEvent({
@@ -302,7 +300,7 @@ export default class AccountMenu extends PureComponent {
             />
           }
           text={t('connectHardwareWallet')}
-        />
+        /> */}
         <Divider />
         <Item
           onClick={() => {

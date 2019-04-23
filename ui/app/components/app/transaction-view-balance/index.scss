@@ -6,6 +6,14 @@
   height: 54px;
   min-width: 0;
 
+  &__separator {
+    margin-left: 5px;
+    margin-right: 5px;
+    display: inline-block;
+    font-size: 1.15rem;
+    color: #a0a0a0;
+  }
+
   @media screen and (max-width: $break-small) {
     flex-direction: column;
     height: initial;
@@ -14,8 +22,6 @@
 
   &__balance {
     margin: 0 12px;
-    display: flex;
-    flex-direction: column;
     min-width: 0;
     position: relative;
 
@@ -55,8 +61,21 @@
   }
 
   &__secondary-balance {
-    font-size: 1.15rem;
+    font-size: 0.8rem;
     color: #a0a0a0;
+    display: inline-flex;
+
+    .xsp {
+      max-width: 120px;
+      display: inline-block;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .xsp-suffix {
+      margin-left: 5px;
+    }
   }
 
   &__balance-container {

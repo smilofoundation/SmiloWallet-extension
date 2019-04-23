@@ -19,8 +19,8 @@ const createSubscriptionManager = require('eth-json-rpc-filters/subscriptionMana
 const createOriginMiddleware = require('./lib/createOriginMiddleware')
 const createLoggerMiddleware = require('./lib/createLoggerMiddleware')
 const createProviderMiddleware = require('./lib/createProviderMiddleware')
-const {setupMultiplex} = require('./lib/stream-utils.js')
-const KeyringController = require('eth-keyring-controller')
+const setupMultiplex = require('./lib/stream-utils.js').setupMultiplex
+const KeyringController = require('@smilo-platform/eth-keyring-controller')
 const NetworkController = require('./controllers/network')
 const PreferencesController = require('./controllers/preferences')
 const CurrencyController = require('./controllers/currency')
@@ -127,6 +127,7 @@ module.exports = class MetamaskController extends EventEmitter {
     this.recentBlocksController = new RecentBlocksController({
       blockTracker: this.blockTracker,
       provider: this.provider,
+      networkProvider: initState.provider,
       networkController: this.networkController,
     })
 
@@ -134,11 +135,15 @@ module.exports = class MetamaskController extends EventEmitter {
     this.accountTracker = new AccountTracker({
       provider: this.provider,
       blockTracker: this.blockTracker,
+      networkProvider: (initState.NetworkController || {}).provider,
       network: this.networkController,
     })
 
     // start and stop polling for balances based on activeControllerConnections
     this.on('controllerConnectionChanged', (activeControllerConnections) => {
+      let store = this.networkController.providerStore.getState()
+      this.accountTracker.setNetworkProvider(store)
+      
       if (activeControllerConnections > 0) {
         this.accountTracker.start()
       } else {
@@ -154,6 +159,8 @@ module.exports = class MetamaskController extends EventEmitter {
 
     // ensure accountTracker updates balances after network change
     this.networkController.on('networkDidChange', () => {
+      let store = this.networkController.providerStore.getState()
+      this.accountTracker.setNetworkProvider(store)
       this.accountTracker._updateAccounts()
     })
 
@@ -194,7 +201,7 @@ module.exports = class MetamaskController extends EventEmitter {
     this.txController.on(`tx:status-update`, (txId, status) => {
       if (status === 'confirmed' || status === 'failed') {
         const txMeta = this.txController.txStateManager.getTx(txId)
-        this.platform.showTransactionNotification(txMeta)
+        this.platform.showTransactionNotification(txMeta, this.networkController.getProviderConfig())
       }
     })
 
@@ -1528,7 +1535,7 @@ module.exports = class MetamaskController extends EventEmitter {
       this.currencyController.setCurrentCurrency(currencyCode)
       this.currencyController.updateConversionRate()
       const data = {
-        nativeCurrency: ticker || 'ETH',
+        nativeCurrency: ticker || 'XSM',
         conversionRate: this.currencyController.getConversionRate(),
         currentCurrency: this.currencyController.getCurrentCurrency(),
         conversionDate: this.currencyController.getConversionDate(),
@@ -1587,7 +1594,7 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param {string} nickname - Optional nickname of the selected network.
    * @returns {Promise<String>} - The RPC Target URL confirmed.
    */
-  async setCustomRpc (rpcTarget, chainId, ticker = 'ETH', nickname = '') {
+  async setCustomRpc (rpcTarget, chainId, ticker = 'XSM', nickname = '') {
     const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail()
     const rpcSettings = frequentRpcListDetail.find((rpc) => rpcTarget === rpc.rpcUrl)
 

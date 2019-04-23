@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../../components/ui/button'
 import {
-  INITIALIZE_METAMETRICS_OPT_IN_ROUTE,
+  INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
+  INITIALIZE_CREATE_PASSWORD_ROUTE
 } from '../../../helpers/constants/routes'
 
 export default class SelectAction extends PureComponent {
@@ -27,12 +28,12 @@ export default class SelectAction extends PureComponent {
 
   handleCreate = () => {
     this.props.setFirstTimeFlowType('create')
-    this.props.history.push(INITIALIZE_METAMETRICS_OPT_IN_ROUTE)
+    this.props.history.push(INITIALIZE_CREATE_PASSWORD_ROUTE)
   }
 
   handleImport = () => {
     this.props.setFirstTimeFlowType('import')
-    this.props.history.push(INITIALIZE_METAMETRICS_OPT_IN_ROUTE)
+    this.props.history.push(INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE)
   }
 
   render () {
@@ -43,7 +44,7 @@ export default class SelectAction extends PureComponent {
         <div className="app-header__logo-container">
           <img
             className="app-header__metafox-logo app-header__metafox-logo--horizontal"
-            src="/images/logo/metamask-logo-horizontal.svg"
+            src="/images/logo/smilowallet-extension.svg"
             height={30}
           />
           <img

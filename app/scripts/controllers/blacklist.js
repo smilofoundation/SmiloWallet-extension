@@ -8,6 +8,11 @@ const PHISHING_DETECTION_CONFIG = require('eth-phishing-detect/src/config.json')
 // every four minutes
 const POLLING_INTERVAL = 4 * 60 * 1000
 
+const LIST_URLS = [
+  "https://api.infura.io/v2/blacklist",
+  "https://raw.githubusercontent.com/Smilo-platform/SmiloWallet-extension/develop/app/phishing-config.json"
+]
+
 class BlacklistController {
 
   /**
@@ -75,7 +80,7 @@ class BlacklistController {
   }
 
   /**
-   * Queries `https://api.infura.io/v2/blacklist` for an updated blacklist config. This is passed to this._phishingDetector
+   * Queries the urls defined in LIST_URLS for an updated blacklist config. This is passed to this._phishingDetector
    * to update our phishing detector instance, and is updated in the store. The new phishing config is returned
    *
    *
@@ -83,28 +88,48 @@ class BlacklistController {
    *
    */
   async updatePhishingList () {
-    // make request
-    let response
-    try {
-      response = await fetch('https://api.infura.io/v2/blacklist')
-    } catch (err) {
-      log.error(new Error(`BlacklistController - failed to fetch blacklist:\n${err.stack}`))
-      return
+    let config = {
+      tolerance: 0,
+      fuzzylist: [],
+      whitelist: [],
+      blacklist: []
     }
-    // parse response
-    let rawResponse
-    let phishing
-    try {
-      const rawResponse = await response.text()
-      phishing = JSON.parse(rawResponse)
-    } catch (err) {
-      log.error(new Error(`BlacklistController - failed to parse blacklist:\n${rawResponse}`))
-      return
+    for(let url of LIST_URLS) {
+      // make request
+      let response
+      try {
+        response = await fetch(url)
+      } catch (err) {
+        log.error(new Error(`BlacklistController - failed to fetch blacklist for url '${ url }':\n${err.stack}`))
+        continue
+      }
+      // parse response
+      let rawResponse
+      let phishing
+      try {
+        const rawResponse = await response.text()
+        phishing = JSON.parse(rawResponse)
+      } catch (err) {
+        log.error(new Error(`BlacklistController - failed to parse blacklist for url '${ url }':\n${rawResponse}`))
+        continue
+      }
+
+      // Merge with current working config
+      
+      // Use highest tolerence
+      config.tolerance = Math.max(config.tolerance, phishing.tolerance)
+
+      config.fuzzylist = config.fuzzylist.concat(phishing.fuzzylist)
+      config.whitelist = config.whitelist.concat(phishing.whitelist)
+      config.blacklist = config.blacklist.concat(phishing.blacklist)
     }
+
+    console.log("Updated phishing list to", config)
+    
     // update current blacklist
-    this.store.updateState({ phishing })
-    this._setupPhishingDetector(phishing)
-    return phishing
+    this.store.updateState({ config })
+    this._setupPhishingDetector(config)
+    return config
   }
 
   /**

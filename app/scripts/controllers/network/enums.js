@@ -1,31 +1,24 @@
-const ROPSTEN = 'ropsten'
-const RINKEBY = 'rinkeby'
-const KOVAN = 'kovan'
 const MAINNET = 'mainnet'
+const TESTNET = 'testnet'
 const LOCALHOST = 'localhost'
 
-const MAINNET_CODE = 1
-const ROPSTEN_CODE = 3
-const RINKEYBY_CODE = 4
-const KOVAN_CODE = 42
+const MAINNET_CODE = 20080914
+const TESTNET_CODE = 10
 
-const ROPSTEN_DISPLAY_NAME = 'Ropsten'
-const RINKEBY_DISPLAY_NAME = 'Rinkeby'
-const KOVAN_DISPLAY_NAME = 'Kovan'
-const MAINNET_DISPLAY_NAME = 'Main Ethereum Network'
+const MAINNET_DISPLAY_NAME = 'Smilo Main Network'
+const TESTNET_DISPLAY_NAME = 'Smilo Test Network'
+
+const MAINNET_END_POINT = 'https://api.smilo.network/'
+const TESTNET_END_POINT = 'https://testnet-wallet.smilo.network/api'
 
 module.exports = {
-  ROPSTEN,
-  RINKEBY,
-  KOVAN,
   MAINNET,
+  TESTNET,
   LOCALHOST,
   MAINNET_CODE,
-  ROPSTEN_CODE,
-  RINKEYBY_CODE,
-  KOVAN_CODE,
-  ROPSTEN_DISPLAY_NAME,
-  RINKEBY_DISPLAY_NAME,
-  KOVAN_DISPLAY_NAME,
+  TESTNET_CODE,
   MAINNET_DISPLAY_NAME,
+  TESTNET_DISPLAY_NAME,
+  MAINNET_END_POINT,
+  TESTNET_END_POINT
 }

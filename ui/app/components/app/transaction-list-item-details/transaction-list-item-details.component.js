@@ -4,12 +4,13 @@ import copyToClipboard from 'copy-to-clipboard'
 import SenderToRecipient from '../../ui/sender-to-recipient'
 import { FLAT_VARIANT } from '../../ui/sender-to-recipient/sender-to-recipient.constants'
 import TransactionActivityLog from '../transaction-activity-log'
+import { connect } from 'react-redux'
 import TransactionBreakdown from '../transaction-breakdown'
 import Button from '../../ui/button'
 import Tooltip from '../../ui/tooltip'
-import prefixForNetwork from '../../../../lib/etherscan-prefix-for-network'
+const smiloExplorerLinker = require("../../../../lib/smilo-explorer-linker")
 
-export default class TransactionListItemDetails extends PureComponent {
+class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
     metricsEvent: PropTypes.func,
@@ -30,21 +31,20 @@ export default class TransactionListItemDetails extends PureComponent {
   }
 
   handleEtherscanClick = () => {
-    const { transactionGroup: { primaryTransaction } } = this.props
-    const { hash, metamaskNetworkId } = primaryTransaction
+    const { transactionGroup: { primaryTransaction }, provider } = this.props
+    const { hash } = primaryTransaction
 
-    const prefix = prefixForNetwork(metamaskNetworkId)
-    const etherscanUrl = `https://${prefix}etherscan.io/tx/${hash}`
+    const url = smiloExplorerLinker.createTxLink(hash, provider.type)
 
     this.context.metricsEvent({
       eventOpts: {
         category: 'Navigation',
         action: 'Activity Log',
-        name: 'Clicked "View on Etherscan"',
+        name: 'Clicked "View on Block Explorer"',
       },
     })
 
-    global.platform.openWindow({ url: etherscanUrl })
+    global.platform.openWindow({ url: url })
   }
 
   handleCancel = event => {
@@ -213,3 +213,13 @@ export default class TransactionListItemDetails extends PureComponent {
     )
   }
 }
+
+
+
+function mapStateToProps(state) {
+  return {
+    provider: state.metamask.provider
+  };
+}
+
+export default connect(mapStateToProps)(TransactionListItemDetails);
