@@ -201,7 +201,6 @@ class App extends Component {
           }
         }}
       >
-        <UiMigrationAnnouncement />
         <Modal />
         <Alert
           visible={this.props.alertOpen}
