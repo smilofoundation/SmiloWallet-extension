@@ -285,30 +285,33 @@ class AddToken extends Component {
     const { tokenSelectorError, selectedTokens, searchResults } = this.state
 
     return (
-      <div className="add-token__search-token">
-        <TokenSearch
-          onSearch={({ results = [] }) => this.setState({ searchResults: results })}
-          error={tokenSelectorError}
-        />
-        <div className="add-token__token-list">
-          <TokenList
-            results={searchResults}
-            selectedTokens={selectedTokens}
-            onToggleToken={token => this.handleToggleToken(token)}
-          />
-        </div>
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+        Coming soon...
       </div>
+      // <div className="add-token__search-token">
+      //   <TokenSearch
+      //     onSearch={({ results = [] }) => this.setState({ searchResults: results })}
+      //     error={tokenSelectorError}
+      //   />
+      //   <div className="add-token__token-list">
+      //     <TokenList
+      //       results={searchResults}
+      //       selectedTokens={selectedTokens}
+      //       onToggleToken={token => this.handleToggleToken(token)}
+      //     />
+      //   </div>
+      // </div>
     )
   }
 
   renderTabs () {
     return (
       <Tabs>
-        <Tab name={this.context.t('search')}>
-          { this.renderSearchToken() }
-        </Tab>
         <Tab name={this.context.t('customToken')}>
           { this.renderCustomTokenForm() }
+        </Tab>
+        <Tab name={this.context.t('search')}>
+          { this.renderSearchToken() }
         </Tab>
       </Tabs>
     )
