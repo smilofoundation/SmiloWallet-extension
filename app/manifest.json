@@ -67,22 +67,12 @@
     "unlimitedStorage",
     "clipboardWrite",
     "http://localhost:8545/",
-    "https://*.infura.io/",
     "activeTab",
     "webRequest",
-    "*://*.eth/",
     "notifications"
   ],
   "web_accessible_resources": [
     "inpage.js",
     "phishing.html"
-  ],
-  "externally_connectable": {
-    "matches": [
-      "https://metamask.io/*"
-    ],
-    "ids": [
-      "*"
-    ]
-  }
+  ]
 }
