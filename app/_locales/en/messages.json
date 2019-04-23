@@ -44,6 +44,12 @@
   "providerRequestInfo": {
     "message": "This site is requesting access to view your current account address. Always make sure you trust the sites you interact with."
   },
+  "about": {
+    "message": "About"
+  },
+  "aboutSettingsDescription": {
+    "message": "Version, support center, and contact info."
+  },
   "aboutUs": {
     "message": "About Us"
   },
@@ -201,7 +207,13 @@
     "message": "Buy ETH with Wyre"
   },
   "buyWithWyreDescription": {
-    "message": "Wyre lets you use aa credit card to deposit ETH right in to your MetaMask account. From the Airswap website, click \"Use Fiat\" in the top-right corner. You can also use Airswap to get started with ERC 20 tokens!"
+    "message": "Wyre lets you use a credit card to deposit ETH right in to your MetaMask account."
+  },
+  "buyCoinSwitch": {
+    "message": "Buy on CoinSwitch"
+  },
+  "buyCoinSwitchExplainer": {
+    "message": "CoinSwitch is the one-stop destination to exchange more than 300 cryptocurrencies at the best rate."
   },
   "bytes": {
     "message": "Bytes"
@@ -316,6 +328,9 @@
   },
   "continueToWyre": {
     "message": "Continue to Wyre"
+  },
+  "continueToCoinSwitch": {
+    "message": "Continue to CoinSwitch"
   },
   "contractDeployment": {
     "message": "Contract Deployment"

@@ -330,7 +330,7 @@ export function fetchGasEstimates (blockTime) {
   return (dispatch, getState) => {
     const state = getState()
 
-    if (isEthereumNetwork(state)) {
+    if (!isEthereumNetwork(state)) {
       return Promise.resolve(null)
     }
 
