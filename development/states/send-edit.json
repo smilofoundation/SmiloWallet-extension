@@ -23,6 +23,7 @@
         "name": "Send Account 4"
       }
     },
+    "cachedBalances": {},
     "assetImages": {},
     "unapprovedTxs": {},
     "currentCurrency": "USD",
@@ -134,7 +135,8 @@
     },
     "currentLocale": "en",
     "preferences": {
-      "useNativeCurrencyAsPrimaryCurrency": true
+      "useNativeCurrencyAsPrimaryCurrency": true,
+      "showFiatInTestnets": true
     }
   },
   "appState": {

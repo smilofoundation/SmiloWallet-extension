@@ -23,6 +23,7 @@
         "name": "Send Account 4"
       }
     },
+    "cachedBalances": {},
     "unapprovedTxs": {},
     "currentCurrency": "USD",
     "conversionRate": 19855,
@@ -112,7 +113,8 @@
     },
     "currentLocale": "en",
     "preferences": {
-      "useNativeCurrencyAsPrimaryCurrency": true
+      "useNativeCurrencyAsPrimaryCurrency": true,
+      "showFiatInTestnets": true
     }
   },
   "appState": {

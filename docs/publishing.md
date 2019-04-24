@@ -15,7 +15,11 @@ We try to ensure certain criteria are met before deploying:
 
 Version can be automatically incremented [using our bump script](./bumping-version.md).
 
-npm run version:bump $BUMP_TYPE` where `$BUMP_TYPE` is one of `major`, `minor`, or `patch`.
+npm run version:bump `$BUMP_TYPE` where `$BUMP_TYPE` is one of `major`, `minor`, or `patch`.
+
+## Preparing for Sensitive Changes
+
+In the case that a new release has sensitive changes that cannot be fully verified prior to publication, please follow the [sensitive release protocol](./sensitive-release.md).
 
 ## Building
 

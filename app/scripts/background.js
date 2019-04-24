@@ -102,12 +102,10 @@ setupMetamaskMeshMetrics()
  * @property {boolean} isInitialized - Whether the first vault has been created.
  * @property {boolean} isUnlocked - Whether the vault is currently decrypted and accounts are available for selection.
  * @property {boolean} isAccountMenuOpen - Represents whether the main account selection UI is currently displayed.
- * @property {boolean} isMascara - True if the current context is the extensionless MetaMascara project.
  * @property {boolean} isPopup - Returns true if the current view is an externally-triggered notification.
  * @property {string} rpcTarget - DEPRECATED - The URL of the current RPC provider.
  * @property {Object} identities - An object matching lower-case hex addresses to Identity objects with "address" and "name" (nickname) keys.
  * @property {Object} unapprovedTxs - An object mapping transaction hashes to unapproved transactions.
- * @property {boolean} noActiveNotices - False if there are notices the user should confirm before using the application.
  * @property {Array} frequentRpcList - A list of frequently used RPCs, including custom user-provided ones.
  * @property {Array} addressBook - A list of previously sent to addresses.
  * @property {address} selectedTokenAddress - Used to indicate if a token is globally selected. Should be deprecated in favor of UI-centric token selection.
@@ -421,13 +419,13 @@ function setupController (initState, initLangCode) {
    * The number reflects the current number of pending transactions or message signatures needing user approval.
    */
   function updateBadge () {
-    var label = ''
-    var unapprovedTxCount = controller.txController.getUnapprovedTxCount()
-    var unapprovedMsgCount = controller.messageManager.unapprovedMsgCount
-    var unapprovedPersonalMsgs = controller.personalMessageManager.unapprovedPersonalMsgCount
-    var unapprovedTypedMsgs = controller.typedMessageManager.unapprovedTypedMessagesCount
+    let label = ''
+    const unapprovedTxCount = controller.txController.getUnapprovedTxCount()
+    const unapprovedMsgCount = controller.messageManager.unapprovedMsgCount
+    const unapprovedPersonalMsgs = controller.personalMessageManager.unapprovedPersonalMsgCount
+    const unapprovedTypedMsgs = controller.typedMessageManager.unapprovedTypedMessagesCount
     const pendingProviderRequests = controller.providerApprovalController.store.getState().providerRequests.length
-    var count = unapprovedTxCount + unapprovedMsgCount + unapprovedPersonalMsgs + unapprovedTypedMsgs + pendingProviderRequests
+    const count = unapprovedTxCount + unapprovedMsgCount + unapprovedPersonalMsgs + unapprovedTypedMsgs + pendingProviderRequests
     if (count) {
       label = String(count)
     }
@@ -463,7 +461,7 @@ function openPopup () {
   triggerUi()
   return new Promise(
     (resolve) => {
-      var interval = setInterval(() => {
+      const interval = setInterval(() => {
         if (!notificationIsOpen) {
           clearInterval(interval)
           resolve()

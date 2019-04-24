@@ -1,6 +1,6 @@
 import assert from 'assert'
-import reduceApp from '../../../../../ui/app/reducers/app'
-import * as actions from '../../../../../ui/app/actions'
+import reduceApp from '../../../../../ui/app/ducks/app/app'
+import * as actions from '../../../../../ui/app/store/actions'
 
 describe('App State', () => {
 
@@ -443,15 +443,6 @@ describe('App State', () => {
     assert.equal(state.warning, null)
     assert.equal(state.scrollToBottom, false)
     assert.equal(state.forgottenPassword, false)
-  })
-
-  it('shows notice', () => {
-    const state = reduceApp(metamaskState, {
-      type: actions.SHOW_NOTICE,
-    })
-
-    assert.equal(state.transForward, true)
-    assert.equal(state.isLoading, false)
   })
 
   it('reveals account', () => {

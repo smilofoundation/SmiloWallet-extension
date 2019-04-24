@@ -15,10 +15,15 @@ const request = require('request');
 const {
   MAINNET,
   TESTNET,
+  MAINNET_CODE,
+  TESTNET_CODE,
   LOCALHOST,
   MAINNET_END_POINT,
   TESTNET_END_POINT
 } = require("../controllers/network/enums")
+const Web3 = require('web3')
+const { SINGLE_CALL_BALANCES_ABI } = require('../controllers/network/contract-addresses')
+
 
 class AccountTracker {
 
@@ -59,6 +64,9 @@ class AccountTracker {
     })
     // bind function for easier listener syntax
     this._updateForBlock = this._updateForBlock.bind(this)
+    this.network = opts.network
+
+    this.web3 = new Web3(this._provider)
   }
 
   _extractNetworkUrl(provider) {
@@ -151,7 +159,7 @@ class AccountTracker {
     this.store.updateState({ accounts })
     // fetch balances for the accounts if there is block number ready
     if (!this._currentBlockNumber) return
-    addresses.forEach(address => this._updateAccount(address))
+    this._updateAccounts()
   }
 
   /**
@@ -196,7 +204,8 @@ class AccountTracker {
   }
 
   /**
-   * Calls this._updateAccount for each account in this.store
+   * balanceChecker is deployed on main eth (test)nets and requires a single call
+   * for all other networks, calls this._updateAccount for each account in this.store
    *
    * @returns {Promise} after all account balances updated
    *
@@ -204,7 +213,20 @@ class AccountTracker {
   async _updateAccounts () {
     const accounts = this.store.getState().accounts
     const addresses = Object.keys(accounts)
-    await Promise.all(addresses.map(this._updateAccount.bind(this)))
+    const currentNetwork = parseInt(this.network.getNetworkState())
+
+    switch (currentNetwork) {
+      case MAINNET_CODE:
+      await Promise.all(addresses.map(this._updateAccount.bind(this)))
+      break
+
+      case TESTNET_CODE:
+      await Promise.all(addresses.map(this._updateAccount.bind(this)))
+      break
+
+      default:
+      await Promise.all(addresses.map(this._updateAccount.bind(this)))
+    }
   }
 
   /**
@@ -253,6 +275,30 @@ class AccountTracker {
         }
       );
     });
+  }
+  
+  /**
+   * Updates current address balances from balanceChecker deployed contract instance
+   * @param {*} addresses
+   * @param {*} deployedContractAddress
+   */
+  async _updateAccountsViaBalanceChecker (addresses, deployedContractAddress) {
+    const accounts = this.store.getState().accounts
+    this.web3.setProvider(this._provider)
+    const ethContract = this.web3.eth.contract(SINGLE_CALL_BALANCES_ABI).at(deployedContractAddress)
+    const ethBalance = ['0x0']
+
+    ethContract.balances(addresses, ethBalance, (error, result) => {
+      if (error) {
+        log.warn(`MetaMask - Account Tracker single call balance fetch failed`, error)
+        return Promise.all(addresses.map(this._updateAccount.bind(this)))
+      }
+      addresses.forEach((address, index) => {
+        const balance = bnToHex(result[index])
+        accounts[address] = { address, balance }
+      })
+      this.store.updateState({ accounts })
+    })
   }
 
 }

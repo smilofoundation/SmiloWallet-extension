@@ -1,6 +1,5 @@
 const injectCss = require('inject-css')
-const MetaMaskUiCss = require('../../ui/css')
-const {getShouldUseNewUi} = require('../../ui/app/selectors')
+const NewMetaMaskUiCss = require('../../ui/css')
 const startPopup = require('./popup-core')
 const PortStream = require('extension-port-stream')
 const { getEnvironmentType } = require('./lib/util')
@@ -48,30 +47,14 @@ async function start () {
     if (err) return displayCriticalError(err)
 
     const state = store.getState()
-    const { metamask: { completedOnboarding, featureFlags } = {} } = state
+    const { metamask: { completedOnboarding } = {} } = state
 
     if (!completedOnboarding && windowType !== ENVIRONMENT_TYPE_FULLSCREEN) {
       global.platform.openExtensionInBrowser()
       return
     }
 
-    let betaUIState = Boolean(featureFlags && featureFlags.betaUI)
-    const useBetaCss = getShouldUseNewUi(state)
-
-    let css = MetaMaskUiCss()
-    let deleteInjectedCss = injectCss(css)
-    let newBetaUIState
-
-    store.subscribe(() => {
-      const state = store.getState()
-      newBetaUIState = state.metamask.featureFlags.betaUI
-      if (newBetaUIState !== betaUIState) {
-        deleteInjectedCss()
-        betaUIState = newBetaUIState
-        css = MetaMaskUiCss()
-        deleteInjectedCss = injectCss(css)
-      }
-    })
+    injectCss(NewMetaMaskUiCss())
   })
 
 

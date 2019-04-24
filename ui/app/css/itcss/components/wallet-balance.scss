@@ -42,6 +42,7 @@ $wallet-balance-breakpoint-range: "screen and (min-width: #{$break-large}) and (
 
     &__secondary-balance {
       display: inline-flex;
+      font-size: 0.8rem;
 
       .xsp {
         max-width: 60px;

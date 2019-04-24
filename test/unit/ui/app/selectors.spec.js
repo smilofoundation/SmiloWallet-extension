@@ -1,5 +1,5 @@
 const assert = require('assert')
-const selectors = require('../../../../ui/app/selectors')
+const selectors = require('../../../../ui/app/selectors/selectors')
 const mockState = require('../../../data/mock-state.json')
 const Eth = require('ethjs')
 
@@ -19,6 +19,7 @@ describe('Selectors', function () {
               'address': '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
             },
           },
+          cachedBalances: {},
         },
       }
     })
