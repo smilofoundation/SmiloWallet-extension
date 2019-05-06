@@ -322,7 +322,7 @@ function createTasksForBuildJsUIDeps ({ dependenciesToBundle, filename }) {
   const bundleTaskOpts = Object.assign({
     buildSourceMaps: true,
     sourceMapDir: '../sourcemaps',
-    minifyBuild: false,
+    minifyBuild: true,
     devMode: false,
   })
 
@@ -345,9 +345,9 @@ function createTasksForBuildJsExtension ({ buildJsFiles, taskPrefix, devMode, te
   const destinations = browserPlatforms.map(platform => `./dist/${platform}`)
   bundleTaskOpts = Object.assign({
     buildSourceMaps: true,
-    sourceMapDir: false ? './' : '../sourcemaps',
-    minifyBuild: false,
-    buildWithFullPaths: false,
+    sourceMapDir: devMode ? './' : '../sourcemaps',
+    minifyBuild: !devMode,
+    buildWithFullPaths: devMode,
     watch: devMode,
     devMode,
     testing,
