@@ -32,7 +32,7 @@ export default class InfoTab extends PureComponent {
         </div>
         <div className="info-tab__link-item">
           <a
-            href="https://smilo.io/files/privacy_policy.pdf"
+            href="https://smilowallet.io/#/privacy-policy"
             target="_blank"
             rel="noopener noreferrer"
           >
