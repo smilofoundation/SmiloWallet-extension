@@ -24,6 +24,10 @@ This is not a comprehensive list of changes! Things will be missing! Please use 
 
 ### Plugin changes
 
+#### ./app/manifest.json
+
+Changed manifest so the store listing shows the correct information.
+
 #### ./app/scripts/controllers/blacklist.js
 
 Apart from the official blacklist maintained by MetaMask we've also included our own custom blacklist. This blacklist can be found [here](https://github.com/Smilo-platform/SmiloWallet-extension/blob/develop/app/phishing-config.json).
