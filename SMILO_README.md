@@ -2,9 +2,23 @@
 
 This readme serves as an extra readme documenting the knowledge gathered by the Smilo team while working on the Smilo Browser Extension. It also contains an overview of the changes made by the Smilo team.
 
+## Read the docs!
+
+The `./docs` folder contains a lot of information provided by the MetaMask team. Before you start working on this project make sure you have at least read through this documentation.
+
+## QA tips
+
+The [MetaMask QA docs](./docs/QA_Guide.md) provides a good starting point on testing before a release. Things to keep in mind though:
+
+- If you want to test deployment of a dapp you can use [the Smilo Remix website](https://remix.smilo.network). 
+- You can replace MEW (My Ether Wallet) with [the Smilo Wallet](https://smilowallet.io).
+- You can replace references to various Ethereum test nets simply with the Smilo Test net.
+
 ## Creating a new release
 
 First update the plugin manifest found in `./app/manifest.json`. Make sure the `manifest_version` is newer than the current release. If merging with the MetaMask team this value is most likely updated already.
+
+Also see [this MetaMask readme](./docs/bumping_version.md).
 
 Next run the dist command:
 
