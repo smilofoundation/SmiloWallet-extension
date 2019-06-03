@@ -70,6 +70,14 @@ We've divided this list in plugin and ui changes. Plugin changes refer to all ch
 
 Changed manifest so the store listing shows the correct information. Also changed the hotkeys with which the plugin can be opened.
 
+#### ./app/_locales/en/messages.json
+
+Updates Ethereum references to Smilo.
+
+#### ./app/scripts/controllers/currency.js
+
+Changed Ethereum references to Smilo.
+
 #### ./app/scripts/controllers/blacklist.js
 
 Apart from the official blacklist maintained by MetaMask we've also included our own custom blacklist. This blacklist can be found [here](https://github.com/Smilo-platform/SmiloWallet-extension/blob/develop/app/phishing-config.json).
@@ -83,6 +91,8 @@ _This is the place to change the default rpc end point should it ever change aga
 #### ./app/scripts/controllers/network/network.js
 
 Changed the way a connection with the main net and test net is made. In MetaMask the Infura API is used. We've removed this code and replaced it with a plain RPC target.
+
+Also changes Ethereum references to Smilo.
 
 #### ./app/scripts/inpage.js
 
