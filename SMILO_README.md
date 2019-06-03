@@ -2,6 +2,20 @@
 
 This readme contains an overview of the changes made by the Smilo team to get the MetaMask browser plugin working on the Smilo Blockchain.
 
+## Creating a new release
+
+First update the plugin manifest found in `./app/manifest.json`. Make sure the `manifest_version` is newer than the current release. If merging with the MetaMask team this value is most likely updated already.
+
+Next run the dist command:
+
+```
+npm run dist
+```
+
+This will clean any old builds, create a new distribution build and create a zipped version of the source code.
+
+
+
 ## Known issues
 
 These are known issues as of the time of writing.
@@ -16,17 +30,19 @@ The build watch which is started when running `gulp dev` is not reliable. At tim
 
 This is most likely an issue with MetaMask as it has always been unreliable.
 
-## Code changes
+## Changes made by the Smilo team
 
-Globally speaking the code is defined in a plugin and ui part. The plugin part is running in the background while the ui part is responsible for the ui shown to the user.
+We've made several changes to integrate this browser plugin with the Smilo Blockchain. We'll discuss these changes in this chapter on a per-file basis.
 
 This is not a comprehensive list of changes! Things will be missing! Please use the git commit log and git blame to get a better understanding of all changes.
+
+We've divided this list in plugin and ui changes. Plugin changes refer to all changes made to the logic running in the background. These files can be found in the `./app` directory. UI refers to the user interface shown to the user. These files can be found in the `./ui` directory.
 
 ### Plugin changes
 
 #### ./app/manifest.json
 
-Changed manifest so the store listing shows the correct information.
+Changed manifest so the store listing shows the correct information. Also changed the hotkeys with which the plugin can be opened.
 
 #### ./app/scripts/controllers/blacklist.js
 
@@ -36,7 +52,7 @@ Apart from the official blacklist maintained by MetaMask we've also included our
 
 Changed the main net and test net codes, display names and end point.
 
-__This is the place to change the default rpc end point should it ever change again in the future!__
+_This is the place to change the default rpc end point should it ever change again in the future!_
 
 #### ./app/scripts/controllers/network/network.js
 
