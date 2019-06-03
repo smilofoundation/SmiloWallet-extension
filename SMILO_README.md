@@ -1,6 +1,6 @@
 # Smilo Readme
 
-This readme contains an overview of the changes made by the Smilo team to get the MetaMask browser plugin working on the Smilo Blockchain.
+This readme serves as an extra readme documenting the knowledge gathered by the Smilo team while working on the Smilo Browser Extension. It also contains an overview of the changes made by the Smilo team.
 
 ## Creating a new release
 
@@ -14,7 +14,15 @@ npm run dist
 
 This will clean any old builds, create a new distribution build and create a zipped version of the source code.
 
+Next open the `builds` folder to find browser specific builds. You will also find `src.zip` which you will need when uploading to Firefox.
 
+## Tips when merging with the MetaMask team
+
+Merging changes from the MetaMask team is bound to lead to merge conflicts. Below we share some tips which might help to make this process a little less painful.
+
+- Only merge official tagged releases. A list of official releases can be found [here](https://github.com/MetaMask/metamask-extension/releases). These releases have been tested properly by the MetaMask team. Merging anything else increases the risk of merging bugs introduced by the MetaMask team.
+- Incrementally merge changes. By incrementally merging each release you decrease the amount of merge conflicts. This also allows you to test each release's changes properly.
+- Don't wait too long. Ideally merge new releases every two weeks.
 
 ## Known issues
 
