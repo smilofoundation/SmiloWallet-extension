@@ -42,7 +42,7 @@ Merging changes from the MetaMask team is bound to lead to merge conflicts. Belo
 
 These are known issues as of the time of writing.
 
-### Testing
+### Automated Testing
 
 Unit tests have not been updated to reflect the changes made. This is a major issue and should preferably be fixed before including more updates from the MetaMask team.
 
