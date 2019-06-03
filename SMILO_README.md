@@ -52,6 +52,10 @@ The build watch which is started when running `gulp dev` is not reliable. At tim
 
 This is most likely an issue with MetaMask as it has always been unreliable.
 
+### Missing translations
+
+All translations other than English have been removed. We've decided to do this because we could not confidently update the translations in all supported languages. Luckily we have not added any translation strings so if, in the future, we decide to add other languages we can easily do so by using the original translation files in the MetaMask repo.
+
 ## Changes made by the Smilo team
 
 We've made several changes to integrate this browser plugin with the Smilo Blockchain. We'll discuss these changes in this chapter on a per-file basis.
@@ -149,6 +153,22 @@ Changed privacy policy link, terms and conditions link, website link and mail li
 #### ./ui/lib/account-link.js
 
 Added logic to return the correct explorer link.
+
+#### ./ui/app/components/app/send/account-list-item/account-list-item.component.js
+
+Added amount of XSP account has.
+
+#### ./ui/app/components/app/transaction-view-balance/transaction-view-balance.component.js
+
+Added amount of XSP account has.
+
+#### ./ui/app/components/app/transaction-view-balance/transaction-view-balance.container.js
+
+Read XSP from state so component can use this value.
+
+#### ./ui/app/components/ui/balance/balance.component.js
+
+Added amount of XSP account has.
 
 ## Build setup changes
 
