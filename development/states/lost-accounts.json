@@ -2,7 +2,7 @@
   "metamask": {
     "currentCurrency": "USD",
     "lostAccounts": [
-      "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
+      "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
       "0xec1adf982415d2ef5ec55899b9bfb8bc0f29251b"
     ],
     "conversionRate": 11.06608791,
@@ -12,9 +12,9 @@
     "currentDomain": "example.com",
     "rpcTarget": "https://rawtestrpc.metamask.io/",
     "identities": {
-      "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
+      "0x56b8bea0e16f365a295500b745b163a1b17c3df2": {
         "name": "Wallet 1",
-        "address": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
+        "address": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
         "mayBeFauceting": false
       },
       "0xec1adf982415d2ef5ec55899b9bfb8bc0f29251b": {
@@ -35,11 +35,11 @@
     },
     "unconfTxs": {},
     "accounts": {
-      "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
+      "0x56b8bea0e16f365a295500b745b163a1b17c3df2": {
         "code": "0x",
         "balance": "0x100000000000",
         "nonce": "0x0",
-        "address": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc"
+        "address": "0x56b8bea0e16f365a295500b745b163a1b17c3df2"
       },
       "0xec1adf982415d2ef5ec55899b9bfb8bc0f29251b": {
         "code": "0x",
@@ -61,7 +61,7 @@
       }
     },
     "transactions": [],
-    "selectedAddress": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
+    "selectedAddress": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
     "network": "2",
     "seedWords": null,
     "unconfMsgs": {},
@@ -69,14 +69,14 @@
     "provider": {
       "type": "testnet"
     },
-    "selectedAddress": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc"
+    "selectedAddress": "0x56b8bea0e16f365a295500b745b163a1b17c3df2"
   },
   "appState": {
     "menuOpen": false,
     "currentView": {
       "name": "accountDetail",
       "detailView": null,
-      "context": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc"
+      "context": "0x56b8bea0e16f365a295500b745b163a1b17c3df2"
     },
     "accountDetail": {
       "subview": "transactions"

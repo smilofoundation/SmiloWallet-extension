@@ -5,7 +5,7 @@ describe('', function () {
   const mainnet = {
     network: '1',
     amount: 5,
-    address: '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
+    address: '0x56b8bea0e16f365a295500b745b163a1b17c3df2',
   }
   const ropsten = {
     network: '3',

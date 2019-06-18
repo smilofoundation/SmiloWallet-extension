@@ -74,7 +74,7 @@ class AccountTracker {
       console.warn("Could not read provider at this time. Is SWE not initialized yet?")
       return null;
     }
-    
+
     switch(provider.type) {
       case(MAINNET): {
         return MAINNET_END_POINT
@@ -255,7 +255,7 @@ class AccountTracker {
   async _getXSPBalance (address) {
     if(!this._rpcTarget) {
       console.warn('No rpc target defined, could not read XPS')
-      return "0"
+      return promise.resolve("0")
     }
 
     return new Promise((resolve, reject) => {
@@ -271,12 +271,17 @@ class AccountTracker {
           }
         },
         (error, res, body) => {
-          resolve(body.result.toString())
+          if(error){
+            console.warn('ERROR: could not read XPS', error)
+            resolve("0")
+          }else {
+            resolve(body && body.result ? body.result.toString() : "0")
+          }
         }
       );
     });
   }
-  
+
   /**
    * Updates current address balances from balanceChecker deployed contract instance
    * @param {*} addresses

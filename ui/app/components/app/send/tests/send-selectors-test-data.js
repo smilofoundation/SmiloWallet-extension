@@ -207,7 +207,7 @@ module.exports = {
     'currentView': {
       'name': 'accountDetail',
       'detailView': null,
-      'context': '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
+      'context': '0x56b8bea0e16f365a295500b745b163a1b17c3df2',
     },
     'accountDetail': {
       'subview': 'transactions',

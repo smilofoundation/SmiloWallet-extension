@@ -14,9 +14,9 @@ describe('Selectors', function () {
       state = {
         metamask: {
           accounts: {
-            '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc': {
+            '0x56b8bea0e16f365a295500b745b163a1b17c3df2': {
               'balance': '0x0',
-              'address': '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc',
+              'address': '0x56b8bea0e16f365a295500b745b163a1b17c3df2',
             },
           },
           cachedBalances: {},
@@ -25,25 +25,25 @@ describe('Selectors', function () {
     })
 
     it('returns first account if selectedAddress is undefined', function () {
-      assert.equal(selectors.getSelectedAddress(state), '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
+      assert.equal(selectors.getSelectedAddress(state), '0x56b8bea0e16f365a295500b745b163a1b17c3df2')
     })
 
     it('returns selectedAddress', function () {
-      assert.equal(selectors.getSelectedAddress(mockState), '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
+      assert.equal(selectors.getSelectedAddress(mockState), '0x56b8bea0e16f365a295500b745b163a1b17c3df2')
     })
 
   })
 
   it('returns selected identity', function () {
     const identity = selectors.getSelectedIdentity(mockState)
-    assert.equal(identity.address, '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
+    assert.equal(identity.address, '0x56b8bea0e16f365a295500b745b163a1b17c3df2')
     assert.equal(identity.name, 'Test Account')
   })
 
   it('returns selected account', function () {
     const account = selectors.getSelectedAccount(mockState)
     assert.equal(account.balance, '0x0')
-    assert.equal(account.address, '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
+    assert.equal(account.address, '0x56b8bea0e16f365a295500b745b163a1b17c3df2')
   })
 
   it('returns selected token from first token list', function () {
@@ -90,7 +90,7 @@ describe('Selectors', function () {
 
   it('returns address book from state', function () {
     const addressBook = selectors.getAddressBook(mockState)
-    assert.equal(addressBook[0].address, '0xc42edfcc21ed14dda456aa0756c153f7985d8813')
+    assert.equal(addressBook[0].address, '0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1')
     assert.equal(addressBook[0].name, '')
   })
 
@@ -98,14 +98,14 @@ describe('Selectors', function () {
     const accountsWithSendEther = selectors.accountsWithSendEtherInfoSelector(mockState)
     assert.equal(accountsWithSendEther.length, 2)
     assert.equal(accountsWithSendEther[0].balance, '0x0')
-    assert.equal(accountsWithSendEther[0].address, '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
+    assert.equal(accountsWithSendEther[0].address, '0x56b8bea0e16f365a295500b745b163a1b17c3df2')
     assert.equal(accountsWithSendEther[0].name, 'Test Account')
   })
 
   it('returns selected account with balance, address, and name from accountsWithSendEtherInfoSelector', function () {
     const currentAccountwithSendEther = selectors.getCurrentAccountWithSendEtherInfo(mockState)
     assert.equal(currentAccountwithSendEther.balance, '0x0')
-    assert.equal(currentAccountwithSendEther.address, '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
+    assert.equal(currentAccountwithSendEther.address, '0x56b8bea0e16f365a295500b745b163a1b17c3df2')
     assert.equal(currentAccountwithSendEther.name, 'Test Account')
   })
 
@@ -123,7 +123,7 @@ describe('Selectors', function () {
   describe('Send From', () => {
     it('#getSendFrom', () => {
       const sendFrom = selectors.getSendFrom(mockState)
-      assert.equal(sendFrom, '0xc42edfcc21ed14dda456aa0756c153f7985d8813')
+      assert.equal(sendFrom, '0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1')
     })
 
     it('#getForceGasMin', () => {
@@ -166,7 +166,7 @@ describe('Selectors', function () {
 
   it('#getCurrentViewContext', () => {
     const currentViewContext = selectors.getCurrentViewContext(mockState)
-    assert.equal(currentViewContext, '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc')
+    assert.equal(currentViewContext, '0x56b8bea0e16f365a295500b745b163a1b17c3df2')
   })
 
   it('#getTotalUnapprovedCount', () => {
