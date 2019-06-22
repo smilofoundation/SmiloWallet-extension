@@ -34,7 +34,7 @@ class DetectTokensController {
     const tokensToDetect = []
     this.web3.setProvider(this._network._provider)
     for (const contractAddress in contracts) {
-      if (contracts[contractAddress].erc20 && !(this.tokenAddresses.includes(contractAddress.toLowerCase()))) {
+      if (contracts[contractAddress].erc20 && !(this.tokenAddresses && this.tokenAddresses.includes(contractAddress.toLowerCase()))) {
         tokensToDetect.push(contractAddress)
       }
     }

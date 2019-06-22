@@ -201,7 +201,7 @@ describe('send selectors', () => {
     it('should return the context of the current view', () => {
       assert.equal(
         getCurrentViewContext(mockState),
-        '0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc'
+        '0x56b8bea0e16f365a295500b745b163a1b17c3df2'
       )
     })
   })

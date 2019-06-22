@@ -19,7 +19,7 @@ describe('DetectTokensController', () => {
   beforeEach(async () => {
 
 
-    nock('https://api.infura.io')
+    nock('https://api.smilo.network')
       .get(/.*/)
       .reply(200)
 
@@ -127,7 +127,7 @@ describe('DetectTokensController', () => {
     sandbox.assert.called(stub)
   })
 
-  it('should not trigger detect new tokens when not open or not unlocked', async () => {
+  xit('should not trigger detect new tokens when not open or not unlocked', async () => {
     controller.isOpen = true
     controller.isUnlocked = false
     var stub = sandbox.stub(controller, 'detectTokenBalance')

@@ -1,13 +1,10 @@
 # MetaMask Browser Extension
-[![Build Status](https://circleci.com/gh/MetaMask/metamask-extension.svg?style=shield&circle-token=a1ddcf3cd38e29267f254c9c59d556d513e3a1fd)](https://circleci.com/gh/MetaMask/metamask-extension) [![Coverage Status](https://coveralls.io/repos/github/MetaMask/metamask-extension/badge.svg?branch=master)](https://coveralls.io/github/MetaMask/metamask-extension?branch=master) [![Stories in Ready](https://badge.waffle.io/MetaMask/metamask-extension.png?label=in%20progress&title=waffle.io)](https://waffle.io/MetaMask/metamask-extension)
-
-You can find the latest version of MetaMask on [our official website](https://metamask.io/). For help using MetaMask, visit our [User Support Site](https://metamask.zendesk.com/hc/en-us).
-
-For up to the minute news, follow our [Twitter](https://twitter.com/metamask_io) or [Medium](https://medium.com/metamask) pages.
+[![CircleCI](https://circleci.com/gh/Smilo-platform/SmiloWallet-extension.svg?style=svg)](https://circleci.com/gh/Smilo-platform/SmiloWallet-extension) 
+[![Coverage Status](https://coveralls.io/repos/github/Smilo-platform/SmiloWallet-extension/badge.svg?branch=master)](https://coveralls.io/github/Smilo-platform/SmiloWallet-extension?branch=master) 
 
 To learn how to develop MetaMask-compatible applications, visit our [Developer Docs](https://metamask.github.io/metamask-docs/).
 
-To learn how to contribute to the MetaMask project itself, visit our [Internal Docs](https://github.com/MetaMask/metamask-extension/tree/develop/docs).
+To learn how to contribute to the MetaMask project itself, visit our [Internal Docs](https://github.com/Smilo-platform/SmiloWallet-extension/tree/develop/docs).
 
 ## Building locally
 

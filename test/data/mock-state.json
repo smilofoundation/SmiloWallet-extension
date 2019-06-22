@@ -2,12 +2,12 @@
   "metamask": {
     "network": "4",
     "identities": {
-      "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
-        "address": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
+      "0x56b8bea0e16f365a295500b745b163a1b17c3df2": {
+        "address": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
         "name": "Test Account"
       },
-      "0xc42edfcc21ed14dda456aa0756c153f7985d8813": {
-        "address": "0xc42edfcc21ed14dda456aa0756c153f7985d8813",
+      "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1": {
+        "address": "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1",
         "name": "Test Account 2"
       }
     },
@@ -20,8 +20,8 @@
         "metamaskNetworkId": "4",
         "loadingDefaults": false,
         "txParams": {
-          "from": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
-          "to": "0xc42edfcc21ed14dda456aa0756c153f7985d8813",
+          "from": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
+          "to": "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1",
           "value": "0x0",
           "gas": "0x5208",
           "gasPrice": "0x3b9aca00"
@@ -34,8 +34,8 @@
             "metamaskNetworkId": "4",
             "loadingDefaults": true,
             "txParams": {
-              "from": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
-              "to": "0xc42edfcc21ed14dda456aa0756c153f7985d8813",
+              "from": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
+              "to": "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1",
               "value": "0x0",
               "gas": "0x5208",
               "gasPrice": "0x3b9aca00"
@@ -80,14 +80,14 @@
         "origin": "MetaMask"
       }
     },
-    "selectedAddress": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
+    "selectedAddress": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
     "accounts": {
-      "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
+      "0x56b8bea0e16f365a295500b745b163a1b17c3df2": {
         "balance": "0x0",
-        "address": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc"
+        "address": "0x56b8bea0e16f365a295500b745b163a1b17c3df2"
       },
-      "0xc42edfcc21ed14dda456aa0756c153f7985d8813": {
-        "address": "0xc42edfcc21ed14dda456aa0756c153f7985d8813",
+      "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1": {
+        "address": "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1",
         "balance": "0x0"
       }
     },
@@ -112,13 +112,13 @@
       "0x108cf70c7d384c552f42c07c41c0e1e46d77ea0d": 0.00039345803819379796,
       "0xd8f6a2ffb0fc5952d16c9768b71cfd35b6399aa5": 0.00008189274407698049
     },
-    "ticker": "ETH",
+    "ticker": "XSM",
     "currentCurrency": "usd",
     "nativeCurrency": "ETH",
     "conversionRate": 556.12,
     "addressBook": [
       {
-        "address": "0xc42edfcc21ed14dda456aa0756c153f7985d8813",
+        "address": "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1",
         "name": ""
       }
     ],
@@ -134,7 +134,7 @@
       "gasPrice": "0xee6b2800",
       "gasTotal": "0x4c65c6294000",
       "tokenBalance": null,
-      "from": "0xc42edfcc21ed14dda456aa0756c153f7985d8813",
+      "from": "0x90cd4212df6fe4f81dddb21a9b1cd2dc88e87ec1",
       "to": "",
       "amount": "1bc16d674ec80000",
       "memo": "",
@@ -1248,7 +1248,7 @@
     "currentView": {
       "name": "accountDetail",
       "detailView": null,
-      "context": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc"
+      "context": "0x56b8bea0e16f365a295500b745b163a1b17c3df2"
     }
   }
 }

@@ -2,8 +2,8 @@
   "provider": { "type": "rpc", "rpcTarget": "http://localhost:8545" },
   "network": "loading",
   "accounts": {
-    "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
-      "address": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
+    "0x56b8bea0e16f365a295500b745b163a1b17c3df2": {
+      "address": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
       "balance": "0x0"
     },
     "0xec1adf982415d2ef5ec55899b9bfb8bc0f29251b": {
@@ -26,7 +26,7 @@
   "keyrings":[
     { "type": "HD Key Tree",
       "accounts": [
-        "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc"
+        "0x56b8bea0e16f365a295500b745b163a1b17c3df2"
       ]
     },
     {
@@ -43,9 +43,9 @@
   "featureFlags": {},
   "currentLocale": null,
   "identities": {
-    "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
+    "0x56b8bea0e16f365a295500b745b163a1b17c3df2": {
       "name": "Account 1",
-      "address": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc"
+      "address": "0x56b8bea0e16f365a295500b745b163a1b17c3df2"
     },
     "0xec1adf982415d2ef5ec55899b9bfb8bc0f29251b": {
       "name": "Account 2",
@@ -54,7 +54,7 @@
   },
 
   "lostIdentities": {},
-  "selectedAddress": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
+  "selectedAddress": "0x56b8bea0e16f365a295500b745b163a1b17c3df2",
   "recentBlocks": [],
   "addressBook": [],
   "currentCurrency": "usd",
