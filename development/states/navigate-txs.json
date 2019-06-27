@@ -271,8 +271,8 @@
     "gasIsLoading": false,
     "networkNonce": "0x92",
     "defaultHdPaths": {
-      "trezor": "m/44'/1991'/0'/0",
-      "ledger": "m/44'/1991'/0'/0/0"
+      "trezor": "m/44'/20080914'/0'/0",
+      "ledger": "m/44'/20080914'/0'/0/0"
     }
   },
   "localeMessages": {},
